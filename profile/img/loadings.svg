@@ -14,12 +14,12 @@
 
       .spinner {
         transform-origin: 50px 50px;
-        animation: spin 0.9s linear infinite;
+        animation: spin 1s linear infinite;
       }
 
       .logo {
         transform-origin: 50px 50px;
-        animation: pulse 0.9s ease-in-out infinite;
+        animation: pulse 1.5s ease-in-out infinite;
       }
     </style>
   </defs>
