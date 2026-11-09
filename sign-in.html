@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign in</title><link rel="stylesheet" href="style.css"></head>
+<title>Sign in</title>
+<style>
+/* Base Styles aur Fixes taake inputs par typing block na ho */
+*{box-sizing:border-box;margin:0;font-family:system-ui,sans-serif}
+body{background:#10131c;color:#e8ebf4;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:14px}
+.box{width:100%;max-width:380px;background:#1a1f2e;border:1px solid #2b3247;border-radius:12px;padding:24px}
+.logo{font-size:24px;font-weight:700;margin-bottom:6px}
+.logo b{color:#2b99ff}
+.sub{color:#8c94ad;font-size:13px;margin-bottom:20px}
+label{display:block;font-size:12px;color:#8c94ad;margin-bottom:6px;margin-top:12px}
+input{width:100%;padding:10px 12px;border-radius:6px;border:1px solid #2b3247;background:#10131c;color:#e8ebf4;font-size:14px;outline:none}
+input:focus{border-color:#2b99ff}
+button{width:100%;margin-top:20px;padding:10px;border-radius:6px;border:0;background:#2b99ff;color:#fff;font-weight:600;font-size:14px;cursor:pointer}
+button:hover{opacity:0.9}
+.err{color:#ef5d4e;font-size:12px;margin-top:10px;min-height:16px}
+.alt{margin-top:16px;font-size:13px;text-align:center;color:#8c94ad}
+.alt a{color:#2b99ff;text-decoration:none}
+</style>
+</head>
 <body><div class="box">
 <div class="logo">ZEE<b>TEX</b></div><div class="sub">Sign in with your Trader ID.</div>
 <label>Trader ID</label><input id="u" inputmode="numeric" autocomplete="username">
