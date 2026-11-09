@@ -2,23 +2,17 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sign up</title><link rel="stylesheet" href="style.css"></head>
 <body><div class="box">
-<div class="logo">ZEE<b>TEX</b></div><div class="sub">Create a demo account with $500 balance.</div>
+<div class="logo">ZEE<b>TEX</b></div><div class="sub">Create a demo account.</div>
 <label>Name</label><input id="n" autocomplete="name">
-<label>Email</label><input id="e" type="email" autocomplete="email">
+<label>Trader ID (4-12 digits)</label><input id="u" inputmode="numeric">
 <label>Password (min 6)</label><input id="p" type="password" autocomplete="new-password">
 <button id="go">Create account</button><div class="err" id="err"></div>
 <div class="alt">Already registered? <a href="sign-in.html">Sign in</a></div></div>
 <script>
-const $=id=>document.getElementById(id);
-$('go').onclick=()=>{
- const n=$('n').value.trim(),e=$('e').value.trim().toLowerCase(),p=$('p').value;
- if(!n||!/^\S+@\S+\.\S+$/.test(e))return $('err').textContent='Enter a valid name and email.';
- if(p.length<6)return $('err').textContent='Password must be at least 6 characters.';
- const users=JSON.parse(localStorage.getItem('zt_users')||'{}');
- if(users[e])return $('err').textContent='This email is already registered.';
- users[e]={name:n,pass:p,id:String(1000+Object.keys(users).length+1)};
- localStorage.setItem('zt_users',JSON.stringify(users));
- localStorage.setItem('zt_session',JSON.stringify({email:e,name:n,id:users[e].id}));
- location.href='demo-trade.html';
-};
+const API='https://zeetex-chart.vercel.app',$=id=>document.getElementById(id),post=(p,b)=>fetch(API+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json());
+$('go').onclick=async()=>{$('err').textContent='';
+ try{const id=$('u').value.trim(),password=$('p').value;let j=await post('/api/auth/signup',{id,name:$('n').value.trim(),password});
+  if(!j.status)return $('err').textContent=j.message;
+  j=await post('/api/auth/login',{userId:id,password});localStorage.setItem('zt_session',JSON.stringify(j.user));location.href='demo-trade.html'}
+ catch(e){$('err').textContent='Network error. Try again.'}};
 </script></body></html>
