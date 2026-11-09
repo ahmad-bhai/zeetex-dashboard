@@ -2,18 +2,17 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sign in</title><link rel="stylesheet" href="style.css"></head>
 <body><div class="box">
-<div class="logo">ZEE<b>TEX</b></div><div class="sub">Sign in to your demo account.</div>
-<label>Email</label><input id="e" type="email" autocomplete="email">
+<div class="logo">ZEE<b>TEX</b></div><div class="sub">Sign in with your Trader ID.</div>
+<label>Trader ID</label><input id="u" inputmode="numeric" autocomplete="username">
 <label>Password</label><input id="p" type="password" autocomplete="current-password">
 <button id="go">Sign in</button><div class="err" id="err"></div>
 <div class="alt">New here? <a href="sign-up.html">Create account</a></div></div>
 <script>
-const $=id=>document.getElementById(id);
-const submit=()=>{
- const e=$('e').value.trim().toLowerCase(),users=JSON.parse(localStorage.getItem('zt_users')||'{}'),u=users[e];
- if(!u||u.pass!==$('p').value)return $('err').textContent='Wrong email or password.';
- localStorage.setItem('zt_session',JSON.stringify({email:e,name:u.name,id:u.id}));
- location.href='demo-trade.html';
-};
-$('go').onclick=submit;$('p').onkeydown=ev=>ev.key==='Enter'&&submit();
+const API='https://zeetex-chart.vercel.app',$=id=>document.getElementById(id);
+async function go(){$('err').textContent='';
+ try{const j=await(await fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:$('u').value.trim(),password:$('p').value})})).json();
+  if(!j.status)return $('err').textContent=j.message||'Login failed';
+  localStorage.setItem('zt_session',JSON.stringify(j.user));location.href='demo-trade.html'}
+ catch(e){$('err').textContent='Network error. Try again.'}}
+$('go').onclick=go;$('p').onkeydown=e=>e.key==='Enter'&&go();
 </script></body></html>
