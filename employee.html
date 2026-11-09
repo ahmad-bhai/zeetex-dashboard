@@ -23,7 +23,7 @@ label{font-size:12px;color:var(--mu)}input[type=range]{width:100%}
 @media(max-width:899px){#pan{grid-template-columns:1fr;grid-template-rows:55vw auto;overflow-y:auto}.chart{min-height:260px}}
 </style></head>
 <body>
-<header><b>🛡️ Employee Panel</b><div class="crumb" id="cr"></div><div class="sp"></div><small id="emp"></small><a href="admin.html" style="color:var(--ac);font-size:13px">Admin</a></header>
+<header><b>🛡️ Employee Panel</b><div class="crumb" id="cr"></div><div class="sp"></div><small id="emp"></small><a href="https://zeetex-dashboard.vercel.app/admin.html" style="color:var(--ac);font-size:13px">Admin</a></header>
 <div class="pick" id="pk"></div>
 <div id="pan">
  <div class="chart"><canvas id="cv"></canvas><div class="ttl" id="ttl"></div></div>
@@ -37,7 +37,7 @@ label{font-size:12px;color:var(--mu)}input[type=range]{width:100%}
 <script src="chart.js"></script>
 <script>
 const API='https://zeetex-chart.vercel.app',$=id=>document.getElementById(id),q=new URLSearchParams(location.search);
-let K=localStorage.adminKey||'';if(!K)location.href='admin.html';
+let K=localStorage.adminKey||'';if(!K){ alert('Admin key missing! Please login first.'); }
 if(!localStorage.emp)localStorage.emp=prompt('Employee name?')||'employee';$('emp').textContent='👤 '+localStorage.emp;
 const H=()=>({'Content-Type':'application/json','x-admin-key':K,'x-employee':localStorage.emp});
 const api=(p,m='GET',b)=>fetch(API+p,{method:m,headers:H(),body:b&&JSON.stringify(b)}).then(r=>r.json());
@@ -46,7 +46,7 @@ let st={pair:q.get('pair')||'',tf:'',dur:0},D=null,ch=null,skew=0,tm=null;
 function step(){
  $('cr').innerHTML=['pair','tf','dur'].map(k=>st[k]?`<button onclick="st.${k}=${k==='dur'?0:"''"};${k==='pair'?"st.tf='';st.dur=0;":k==='tf'?'st.dur=0;':''}step()">${k==='dur'?dn(st[k]):st[k]} ✕</button>`:'').join('');
  clearInterval(tm);$('pan').style.display='none';$('pk').style.display='block';
- if(!st.pair)return api('/api/admin/overview').then(r=>{if(r.status===false)return location.href='admin.html';$('pk').innerHTML='<h2>1. Select pair</h2><div class="grid">'+Object.keys(r.pairs).map(k=>`<button onclick="st.pair='${k}';step()">${k}<small>UP ${money(r.pairs[k].up)} · DOWN ${money(r.pairs[k].down)}</small></button>`).join('')+'</div>'});
+ if(!st.pair)return api('/api/admin/overview').then(r=>{if(r.status===false){ $('pk').innerHTML='<h2 style="color:var(--dn)">Connection or Authentication Error. Please check Admin Key.</h2>'; return;}$('pk').innerHTML='<h2>1. Select pair</h2><div class="grid">'+Object.keys(r.pairs).map(k=>`<button onclick="st.pair='${k}';step()">${k}<small>UP ${money(r.pairs[k].up)} · DOWN ${money(r.pairs[k].down)}</small></button>`).join('')+'</div>'});
  if(!st.tf)return $('pk').innerHTML='<h2>2. Chart time frame</h2><div class="grid">'+Object.keys(TFS).map(t=>`<button onclick="st.tf='${t}';step()">${t}</button>`).join('')+'</div>';
  if(!st.dur)return $('pk').innerHTML='<h2>3. Trade time</h2><div class="grid">'+DUR.map(d=>`<button onclick="st.dur=${d};step()">${dn(d)}</button>`).join('')+'</div>';
  $('pk').style.display='none';$('pan').style.display='grid';$('dl').textContent=dn(st.dur);
