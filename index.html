@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zeetex - Login</title>
+<style>
+  body { background: #0d1117; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+  .box { background: #161b22; padding: 30px; border-radius: 10px; width: 100%; max-width: 400px; border: 1px solid #30363d; }
+  h2 { text-align: center; color: #58a6ff; margin-bottom: 20px; }
+  input { width: 100%; padding: 12px; margin: 8px 0; background: #0d1117; border: 1px solid #30363d; color: #fff; border-radius: 6px; box-sizing: border-box; }
+  button { width: 100%; padding: 12px; background: #238636; border: none; color: #fff; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+  button:hover { background: #2ea043; }
+  .link { text-align: center; margin-top: 15px; font-size: 14px; }
+  .link a { color: #58a6ff; text-decoration: none; }
+  .error { color: #f85149; font-size: 13px; text-align: center; margin-top: 10px; display: none; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>Welcome Back</h2>
+  <input type="text" id="userId" placeholder="Trader ID / User ID" />
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="login()">Sign In</button>
+  <div class="error" id="errorMsg">Invalid credentials</div>
+  <div class="link">Don't have an account? <a href="/signup">Sign Up</a></div>
+</div>
+
+<script>
+  async function login() {
+    const id = document.getElementById('userId').value;
+    const pass = document.getElementById('password').value;
+    const btn = event.target;
+    
+    btn.innerText = "Checking...";
+    try {
+      const res = await fetch('https://zeetex-chart.vercel.app/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: id, password: pass })
+      });
+      const data = await res.json();
+      
+      if (data.status) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        window.location.href = '/dashboard';
+      } else {
+        document.getElementById('errorMsg').innerText = data.message;
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    } catch (e) {
+      alert("Connection Error! Check Internet.");
+    }
+    btn.innerText = "Sign In";
+  }
+</script>
+</body>
+</html>
