@@ -4,7 +4,6 @@
     if (!c) return null;
     if (c.dir === 'flat') return Number(c.price);
     const s = Math.max(0, (t - c.since) / 1000), d = c.dir === 'up' ? 1 : -1, sp = Number(c.speed) || 1, v = Number(c.vol) || 0.1;
-    // Smooth continuous wave instead of sudden random jumps
     const wave = Math.sin(t / 400 + (c.since % 97)) * 0.5 + (nz(Math.floor(t / 1000) + c.since % 53) - 0.5) * 0.3;
     return Number(c.price) + d * sp * v * s * 0.05 + wave * v * 0.15 * sp * Math.min(1, s / 2);
   };
@@ -20,32 +19,89 @@
       this.upColor = '#0faf59';
       this.dnColor = '#ef5d4e';
       this.tradeDuration = 60;
+      this.wmPhase = 0;
       this.updateThemeColors();
 
-      let d = null;
+      // Pointer & Pinch-to-Zoom support
+      let pointers = new Map();
+      let panStart = null;
+      let initPinchDist = 0;
+      let initCw = this.cw;
+
       cv.addEventListener('pointerdown', e => {
-        const r = this.cv.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top;
-        if (this.drawingMode) { this.currentDraw = [{x, y}, {x, y}]; return; }
-        d = { x: e.clientX, o: this.off }; cv.setPointerCapture(e.pointerId);
+        const r = this.cv.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+        if (this.drawingMode && pointers.size === 1) {
+          this.currentDraw = [{x, y}, {x, y}];
+          return;
+        }
+
+        if (pointers.size === 1) {
+          panStart = { x: e.clientX, o: this.off };
+        } else if (pointers.size === 2) {
+          panStart = null;
+          const pts = [...pointers.values()];
+          initPinchDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+          initCw = this.cw;
+        }
+        try { cv.setPointerCapture(e.pointerId); } catch (_) {}
       });
+
       cv.addEventListener('pointermove', e => {
-        const r = this.cv.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top;
-        if (this.drawingMode && this.currentDraw) { this.currentDraw[1] = {x, y}; return; }
-        if (d) this.off = Math.max(0, Math.min(Math.max(0, this.C.length - 8), d.o + (e.clientX - d.x) / this.cw));
+        if (!pointers.has(e.pointerId)) return;
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+        if (this.drawingMode && this.currentDraw && pointers.size === 1) {
+          const r = this.cv.getBoundingClientRect();
+          this.currentDraw[1] = { x: e.clientX - r.left, y: e.clientY - r.top };
+          return;
+        }
+
+        if (pointers.size === 2 && initPinchDist > 0) {
+          const pts = [...pointers.values()];
+          const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+          this.cw = Math.max(4, Math.min(44, initCw * (dist / initPinchDist)));
+        } else if (pointers.size === 1 && panStart) {
+          this.off = Math.max(0, Math.min(Math.max(0, this.C.length - 6), panStart.o + (e.clientX - panStart.x) / this.cw));
+        }
       });
-      cv.addEventListener('pointerup', () => {
-        if (this.drawingMode && this.currentDraw) { this.drawings.push(this.currentDraw); this.currentDraw = null; }
-        d = null;
-      });
-      cv.addEventListener('wheel', e => { e.preventDefault(); this.cw = Math.max(5, Math.min(38, this.cw * (e.deltaY > 0 ? .92 : 1.08))); }, { passive: false });
-      new ResizeObserver(() => this.size()).observe(cv.parentElement); this.size(); this.draw();
+
+      const endPointer = e => {
+        pointers.delete(e.pointerId);
+        if (this.drawingMode && this.currentDraw) {
+          this.drawings.push(this.currentDraw);
+          this.currentDraw = null;
+        }
+        if (pointers.size < 2) initPinchDist = 0;
+        if (pointers.size === 1) {
+          const rem = [...pointers.values()][0];
+          panStart = { x: rem.x, o: this.off };
+        } else {
+          panStart = null;
+        }
+      };
+      cv.addEventListener('pointerup', endPointer);
+      cv.addEventListener('pointercancel', endPointer);
+
+      // Mouse wheel zoom
+      cv.addEventListener('wheel', e => {
+        e.preventDefault();
+        const factor = e.deltaY > 0 ? 0.9 : 1.11;
+        this.cw = Math.max(4, Math.min(44, this.cw * factor));
+      }, { passive: false });
+
+      new ResizeObserver(() => this.size()).observe(cv.parentElement);
+      this.size();
+      this.draw();
     }
 
     updateThemeColors() {
       const style = getComputedStyle(document.documentElement);
       this.gridRgb = style.getPropertyValue('--grid-rgb').trim() || '255,255,255';
       this.textColor = style.getPropertyValue('--mu').trim() || '#8f95ad';
-      this.watermarkColor = style.getPropertyValue('--watermark').trim() || 'rgba(255,255,255,0.03)';
+      this.watermarkColor = style.getPropertyValue('--watermark').trim() || 'rgba(255,255,255,0.035)';
     }
 
     size() {
@@ -82,10 +138,10 @@
       const { g, W, H, C } = this; g.clearRect(0, 0, W, H);
       if (!W || !C.length) return;
 
-      const now = Date.now() + this.skew, AX = 68, pw = W - AX, R = pw * .76, cw = this.cw;
+      // Open ground layout: generous right open space (R = pw * 0.64) so nothing overlaps
+      const now = Date.now() + this.skew, AX = 68, pw = W - AX, R = pw * 0.64, cw = this.cw;
       const fo = Math.floor(this.off), last = C.length - 1 - fo, first = Math.max(0, last - Math.ceil(R / cw) - 2);
 
-      // Ultra-smooth price interpolation (eliminates jhatka/jitter)
       this.disp += (this.price - this.disp) * 0.14;
 
       const K = i => {
@@ -95,21 +151,23 @@
 
       let mn = 1e18, mx = -1e18;
       for (let i = first; i <= last; i++) { const k = K(i); mn = Math.min(mn, k.l); mx = Math.max(mx, k.h); }
-      const span = Math.max(mx - mn, this.price * .0006), mid = (mx + mn) / 2, pad = span * .28;
+      const span = Math.max(mx - mn, this.price * .0006), mid = (mx + mn) / 2, pad = span * .30;
       this.lo += (mid - span / 2 - pad - this.lo) * .12;
       this.hi += (mid + span / 2 + pad - this.hi) * .12;
 
-      const Y = v => 18 + (this.hi - v) / (this.hi - this.lo) * (H - 46);
+      const Y = v => 24 + (this.hi - v) / (this.hi - this.lo) * (H - 54);
       const X = i => R - (last - i + .5) * cw - (this.off % 1) * cw;
       const f = v => v.toFixed(this.dec);
 
-      // Background DEMO Watermark (Quotex Style)
+      // Floating DEMO Watermark moving up & down smoothly at speed 0.02
+      this.wmPhase += 0.02;
+      const floatY = (H * 0.5) + Math.sin(this.wmPhase) * 24;
       g.save();
       g.fillStyle = this.watermarkColor;
-      g.font = `900 ${Math.min(W * 0.22, 140)}px system-ui,sans-serif`;
+      g.font = `900 ${Math.min(W * 0.22, 135)}px system-ui,sans-serif`;
       g.textAlign = 'center';
       g.textBaseline = 'middle';
-      g.fillText('DEMO', pw * 0.5, H * 0.5);
+      g.fillText('DEMO', pw * 0.5, floatY);
       g.restore();
 
       // Grid lines
@@ -122,11 +180,11 @@
       }
 
       // Time grid
-      const step = Math.max(1, Math.ceil(95 / cw)); g.textAlign = 'center';
+      const step = Math.max(1, Math.ceil(105 / cw)); g.textAlign = 'center';
       for (let i = first; i <= last; i++) {
         if (Math.round(C[i].t / this.tf) % step === 0) {
           const x = Math.round(X(i)) + .5;
-          g.strokeStyle = gridStroke; g.beginPath(); g.moveTo(x, 14); g.lineTo(x, H - 28); g.stroke();
+          g.strokeStyle = gridStroke; g.beginPath(); g.moveTo(x, 18); g.lineTo(x, H - 28); g.stroke();
           g.fillStyle = this.textColor;
           g.fillText(new Date(C[i].t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), x, H - 14);
         }
@@ -142,59 +200,55 @@
         g.beginPath(); g.roundRect ? g.roundRect(x - bw / 2, y1, bw, h, r) : g.rect(x - bw / 2, y1, bw, h); g.fill();
       }
 
-      // Quotex Double Vertical Lines ("Beginning of trade" & "End of trade")
+      // Quotex Double Vertical Lines in Open Ground Space (Zero Overlap)
       const curX = X(C.length - 1);
-      const endOffsetPx = Math.min(pw - curX - 10, Math.max(45, (this.tradeDuration / this.tf) * cw));
+      const endOffsetPx = Math.min(pw - curX - 75, Math.max(55, (this.tradeDuration / this.tf) * cw));
       const endX = curX + endOffsetPx;
 
       if (curX > 0 && curX < pw) {
-        // Beginning of trade dashed vertical line
-        g.setLineDash([4, 4]); g.strokeStyle = 'rgba(232,235,244,0.45)'; g.lineWidth = 1;
-        g.beginPath(); g.moveTo(curX, 24); g.lineTo(curX, H - 28); g.stroke();
+        g.setLineDash([4, 4]); g.strokeStyle = 'rgba(143,149,173,0.45)'; g.lineWidth = 1;
+        g.beginPath(); g.moveTo(curX, 46); g.lineTo(curX, H - 28); g.stroke();
         g.setLineDash([]);
 
-        g.fillStyle = this.textColor; g.font = '11px system-ui,sans-serif'; g.textAlign = 'right';
-        g.fillText('Beginning of trade', curX - 8, 36);
+        g.fillStyle = this.textColor; g.font = '10px system-ui,sans-serif'; g.textAlign = 'right';
+        g.fillText('Beginning of trade', curX - 8, 56);
 
-        // End of trade solid vertical line
-        if (endX < pw) {
-          g.strokeStyle = 'rgba(232,235,244,0.22)';
-          g.beginPath(); g.moveTo(endX, 24); g.lineTo(endX, H - 28); g.stroke();
+        if (endX < pw - 10) {
+          g.strokeStyle = 'rgba(143,149,173,0.22)';
+          g.beginPath(); g.moveTo(endX, 46); g.lineTo(endX, H - 28); g.stroke();
           g.textAlign = 'left';
-          g.fillText('End of trade', endX + 8, 36);
-          g.fillText(String(Math.floor(this.tradeDuration/60)).padStart(2,'0') + ':' + String(this.tradeDuration%60).padStart(2,'0'), endX + 8, 50);
+          g.fillText('End of trade', endX + 8, 56);
+          g.fillText(String(Math.floor(this.tradeDuration/60)).padStart(2,'0') + ':' + String(this.tradeDuration%60).padStart(2,'0'), endX + 8, 70);
         }
       }
 
-      // Active Trade Marks (Quotex Entry Dot + Horizontal Line)
+      // Active Trade Marks (Clean Entry Dots & Lines)
       for (const m of this.marks) {
-        const y = Y(m.price), col = m.dir === 'buy' ? this.upColor : this.dnColor;
+        const y = Y(m.price), col = m.dir === 'buy' ? '#0faf59' : '#ef5d4e';
         let exX = curX;
         for (let i = first; i <= last; i++) { if (C[i].t * 1000 >= m.entryTime) { exX = X(i); break; } }
 
         g.strokeStyle = col; g.lineWidth = 1.5;
         g.beginPath(); g.moveTo(exX, y); g.lineTo(pw, y); g.stroke();
 
-        // Glowing Entry Circle
         g.fillStyle = col; g.beginPath(); g.arc(exX, y, 5, 0, Math.PI * 2); g.fill();
         g.fillStyle = '#fff'; g.beginPath(); g.arc(exX, y, 2, 0, Math.PI * 2); g.fill();
 
-        // Price/Amount Pill on Line
         g.fillStyle = col;
-        g.beginPath(); g.roundRect ? g.roundRect(exX - 74, y - 10, 68, 20, 4) : g.rect(exX - 74, y - 10, 68, 20); g.fill();
+        g.beginPath(); g.roundRect ? g.roundRect(exX - 66, y - 10, 58, 20, 4) : g.rect(exX - 66, y - 10, 58, 20); g.fill();
         g.fillStyle = '#fff'; g.textAlign = 'center'; g.font = 'bold 11px system-ui,sans-serif';
-        g.fillText((m.dir === 'buy' ? '▲ ' : '▼ ') + '$' + m.amt, exX - 40, y);
+        g.fillText((m.dir === 'buy' ? '+ ' : '- ') + '$' + m.amt, exX - 37, y);
       }
 
       // Live Price Horizontal Line, Candle Countdown & Blue Price Badge
       const py = Y(this.disp), left = Math.max(0, this.tf - (now / 1000) % this.tf);
       const tm = String(Math.floor(left / 60)).padStart(2, '0') + ':' + String(Math.floor(left % 60)).padStart(2, '0');
 
-      g.setLineDash([4, 4]); g.strokeStyle = 'rgba(232,235,244,0.6)'; g.lineWidth = 1;
+      g.setLineDash([4, 4]); g.strokeStyle = 'rgba(143,149,173,0.65)'; g.lineWidth = 1;
       g.beginPath(); g.moveTo(0, py); g.lineTo(pw, py); g.stroke(); g.setLineDash([]);
 
-      // Candle Timer Badge
-      const tmX = Math.min(pw - 56, curX + 10);
+      // Countdown badge positioned cleanly in open ground space right of current candle
+      const tmX = Math.min(pw - 54, Math.max(curX + 12, 12));
       g.fillStyle = '#262a3d';
       g.beginPath(); g.roundRect ? g.roundRect(tmX, py - 10, 46, 20, 4) : g.rect(tmX, py - 10, 46, 20); g.fill();
       g.fillStyle = '#e8ebf4'; g.textAlign = 'center'; g.font = 'bold 11px system-ui,sans-serif';
