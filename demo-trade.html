@@ -21,15 +21,23 @@ header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(-
 .sp{flex:1}
 .ib{background:var(--pn);border:1px solid var(--ln);color:var(--tx);border-radius:8px;padding:0 12px;height:36px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px}
 .ib img{width:16px;height:16px}
-.acc{background:var(--pn);padding:4px 10px;border-radius:8px;font-size:11px;color:var(--mu);line-height:1.3;border:1px solid var(--ln);min-width:80px}
+.acc{background:var(--pn);padding:5px 12px;border-radius:8px;font-size:11px;color:var(--mu);line-height:1.3;border:1px solid var(--ln);display:flex;align-items:center;gap:8px;cursor:pointer}
+.acc img{width:20px;height:20px}
 .acc b{display:block;font-size:14px;color:var(--tx)}
 .acc i{color:#ff8a00;font-style:normal;font-weight:700;margin-right:4px}
+.acc-text-mob{display:inline}
+.acc-text-full{display:none}
+@media(min-width:640px){.acc-text-mob{display:none}.acc-text-full{display:inline}}
 
 /* Top Bar */
 .bar{display:flex;align-items:center;gap:8px;padding:0 12px 8px;overflow-x:auto;scrollbar-width:none;z-index:10}
 .bar::-webkit-scrollbar{display:none}
-.pairbtn{flex:none;display:flex;gap:8px;align-items:center;background:var(--pn);border:1px solid var(--ln);color:var(--tx);padding:0 12px;height:38px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
-.pairbtn img.flag{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.pairbtn{flex:none;display:flex;gap:6px;align-items:center;background:var(--pn);border:1px solid var(--ln);color:var(--tx);padding:0 12px;height:38px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
+.pairbtn .flags{display:flex;align-items:center;position:relative;width:26px;height:18px}
+.pairbtn img.flag{width:16px;height:16px;border-radius:50%;object-fit:cover;position:absolute}
+.pairbtn img.flag:nth-child(1){left:0;z-index:2}
+.pairbtn img.flag:nth-child(2){left:10px;z-index:1}
+
 .tfs{display:flex;gap:4px}
 .tfs button{flex:none;background:var(--pn);border:1px solid var(--ln);color:var(--mu);min-width:38px;height:38px;border-radius:8px;cursor:pointer;font-size:12px;padding:0 8px}
 .tfs .on{background:var(--ac);border-color:var(--ac);color:#fff}
@@ -80,8 +88,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 #pl{overflow-y:auto;flex:1}
 .pi{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--ln);cursor:pointer;transition:background 0.2s}
 .pi:hover{background:var(--pn)}
-.pi div{display:flex;align-items:center;gap:10px}
-.pi img.flag{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.pi .pair-info{display:flex;align-items:center;gap:10px}
+.pi .flags{display:flex;align-items:center;position:relative;width:26px;height:18px}
+.pi img.flag{width:16px;height:16px;border-radius:50%;object-fit:cover;position:absolute}
+.pi img.flag:nth-child(1){left:0;z-index:2}
+.pi img.flag:nth-child(2){left:10px;z-index:1}
 .pi em{color:#ff8a00;font-style:normal;font-weight:bold}
 
 /* Trades List */
@@ -93,7 +104,6 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 .t .r{text-align:right;font-weight:700}
 .w{color:var(--up)} .l{color:var(--dn)} .n{color:var(--mu)}
 
-/* Desktop */
 @media (min-width: 768px) {
   .logo-desk{display:block}
   .body{display:grid;grid-template-columns:minmax(0, 1fr) 320px;grid-template-rows:minmax(0, 1fr)}
@@ -115,10 +125,16 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 </div>
 
 <header>
-  <img src="https://zeetex-dashboard.vercel.app/logo.svg" class="logo-desk" id="logo-btn" style="filter: brightness(0) invert(1);" alt="Logo">
+  <img src="https://zeetex-dashboard.vercel.app/profile/imgs/logo/white-full-logo.svg" class="logo-desk" id="logo-btn" style="filter: brightness(0) invert(1);" alt="Logo">
   <div class="sp"></div>
   <button class="ib" id="tb"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" style="filter: brightness(0) invert(1);" alt=""> Trades <span id="tn">0</span></button>
-  <div class="acc"><i>DEMO</i>Balance<b id="bal">$0.00</b></div>
+  <div class="acc" id="acc-btn">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo.svg" alt="Demo">
+    <div>
+      <span class="acc-text-mob"><i>DEMO</i><b id="bal-mob">$0.00</b></span>
+      <span class="acc-text-full"><i>DEMO ACCOUNT</i><b id="bal-desk">$0.00</b></span>
+    </div>
+  </div>
   <button class="ib" id="out" title="Logout">
     <img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/left.svg" style="transform: rotate(180deg); filter: brightness(0) invert(1);" alt="Out">
   </button>
@@ -126,7 +142,10 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 
 <div class="bar">
   <button class="pairbtn" id="pb">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag">
+    <div class="flags">
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag1">
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg" class="flag" id="pb-flag2">
+    </div>
     <span id="pb-txt">Loading...</span> ▾
   </button>
   <div class="tfs" id="tfs"></div>
@@ -159,8 +178,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
     </div>
     <div class="row"><span>Profit if win</span><b id="po">$0.00</b></div>
     <div class="go">
-      <button class="u" id="up"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" style="filter: brightness(0) invert(1);" alt="Up"> UP</button>
-      <button class="d" id="dn"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/down.svg" style="filter: brightness(0) invert(1);" alt="Down"> DOWN</button>
+      <button class="u" id="up"><img src="https://zeetex-dashboard.vercel.app/imgs/up.svg" style="filter: brightness(0) invert(1);" alt="Up"> UP</button>
+      <button class="d" id="dn"><img src="https://zeetex-dashboard.vercel.app/imgs/down.svg" style="filter: brightness(0) invert(1);" alt="Down"> DOWN</button>
     </div>
     <div id="tr">
       <h5>OPEN TRADES</h5><div id="ol"></div>
@@ -220,13 +239,14 @@ function toast(m, c) {
   clearTimeout(t.h); t.h = setTimeout(() => t.style.opacity = 0, 2800); 
 }
 
-function getFlagCode(name) {
+function getFlags(name) {
   const clean = name.replace('-OTC', '');
   if (clean.length >= 6) {
-    const quote = clean.slice(3, 6).toLowerCase();
-    return quote;
+    const b = clean.slice(0, 3).toLowerCase();
+    const q = clean.slice(3, 6).toLowerCase();
+    return [b, q];
   }
-  return 'us';
+  return ['us', 'pk'];
 }
 
 function getPairName(p) {
@@ -235,6 +255,12 @@ function getPairName(p) {
     return clean.slice(0,3) + '/' + clean.slice(3,6) + ' (OTC)';
   }
   return p;
+}
+
+function updateBalance(v) {
+  bal = v;
+  $('bal-mob').textContent = money(bal);
+  $('bal-desk').textContent = money(bal);
 }
 
 function na(msg) { 
@@ -249,11 +275,14 @@ async function loadPairs() {
   } catch(e) { pairs = FALLBACK; }
   
   $('pl').innerHTML = pairs.map(p => {
-    const flag = getFlagCode(p.name);
+    const [f1, f2] = getFlags(p.name);
     const name = getPairName(p.name);
     return `<div class="pi" data-p="${p.name}">
-      <div>
-        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg" class="flag" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg'" alt="flag">
+      <div class="pair-info">
+        <div class="flags">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f1}.svg" class="flag" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg'" alt="">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f2}.svg" class="flag" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg'" alt="">
+        </div>
         <b>${name}</b>
       </div>
       <span>Profit <em>${p.payout}%</em></span>
@@ -278,13 +307,14 @@ async function load() {
     
     na('');
     ctl = r.control; payout = r.payout; skew = r.serverTime - Date.now(); ch.skew = skew;
-    bal = r.stats.balance; $('bal').textContent = money(bal);
+    updateBalance(r.stats.balance);
     
     if (first) { trades = r.trades || []; first = false; }
     
     $('pb-txt').textContent = getPairName(pair);
-    const flag = getFlagCode(pair);
-    $('pb-flag').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg`;
+    const [f1, f2] = getFlags(pair);
+    $('pb-flag1').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f1}.svg`;
+    $('pb-flag2').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f2}.svg`;
     
     ch.setData(r.candle, priceAt(ctl, Date.now() + skew), TFS[tf], decOf(ctl.price));
     renderMarks();
@@ -335,7 +365,7 @@ $('av').oninput = upd;
 
 function renderMarks() {
   ch.marks = trades.filter(t => t.status === 'open' && t.pair === pair).map(t => ({
-    price: t.entryPrice, dir: t.direction, amt: t.amount, exp: t.expiryTime
+    price: t.entryPrice, dir: t.direction, amt: t.amount, exp: t.expiryTime, entryTime: t.entryTime
   }));
 }
 
@@ -346,7 +376,7 @@ async function trade(d) {
     if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
     if (!r.status) return toast(r.message || r.code || 'Trade failed', '#ef5d4e');
     
-    trades.unshift(r.trade); bal = r.newBalance; $('bal').textContent = money(bal);
+    trades.unshift(r.trade); updateBalance(r.newBalance);
     renderMarks(); list(); 
     toast((d === 'buy' ? 'UP' : 'DOWN') + ' trade placed @ ' + Number(r.trade.entryPrice).toFixed(ch.dec), '#2b99ff');
   } catch(e) { toast('Network error', '#ef5d4e'); }
@@ -360,7 +390,7 @@ async function settle(t) {
   try {
     const r = await post('/api/settle', {userId: S.id, tradeId: t.id});
     if (r.status && r.trade && r.trade.status === 'closed') {
-      Object.assign(t, r.trade); bal = r.newBalance; $('bal').textContent = money(bal);
+      Object.assign(t, r.trade); updateBalance(r.newBalance);
       renderMarks(); list();
       toast(t.result === 'win' ? 'WIN +' + money(t.pnl) : t.result === 'loss' ? 'LOSS −' + money(t.amount) : 'Tie — refunded', 
             t.result === 'win' ? '#0faf59' : t.result === 'loss' ? '#ef5d4e' : '#686f86');
