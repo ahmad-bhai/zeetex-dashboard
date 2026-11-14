@@ -1,89 +1,91 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="night"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#14161f"><title>Demo trading | Zeetex</title>
+<meta name="theme-color" content="#14161f"><title>Zeetex Trade</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root, [data-theme="night"]{
   --bg:#14161f;--pn:#1e2130;--pn2:#262a3d;--ln:#2a2e42;--tx:#e8ebf4;--mu:#8f95ad;
-  --up:#0faf59;--dn:#ef5d4e;--ac:#2b99ff;
-  --chart-bg:#14161f;--grid-rgb:255,255,255;--watermark:rgba(255,255,255,0.03);
-  --float-speed:2s;
+  --up:#0faf59;--dn:#ef5d4e;--ac:#2b99ff;--svg-filter:brightness(0) invert(1);
+  --chart-bg:#14161f;--grid-rgb:255,255,255;--watermark:rgba(255,255,255,0.035);
 }
 [data-theme="twilight"]{
   --bg:#1b2032;--pn:#232940;--pn2:#2c3450;--ln:#353e5e;--tx:#f0f4ff;--mu:#9ba5c4;
-  --up:#0faf59;--dn:#ef5d4e;--ac:#3898ff;
-  --chart-bg:#1b2032;--grid-rgb:180,200,255;--watermark:rgba(255,255,255,0.04);
+  --up:#0faf59;--dn:#ef5d4e;--ac:#3898ff;--svg-filter:brightness(0) invert(1);
+  --chart-bg:#1b2032;--grid-rgb:180,200,255;--watermark:rgba(255,255,255,0.045);
 }
 [data-theme="light"]{
   --bg:#f2f4f8;--pn:#ffffff;--pn2:#e8ecf2;--ln:#dce1eb;--tx:#181c29;--mu:#687089;
-  --up:#0faf59;--dn:#ef5d4e;--ac:#007aff;
+  --up:#0faf59;--dn:#ef5d4e;--ac:#007aff;--svg-filter:brightness(0) saturate(100%) invert(12%) sepia(15%) saturate(1200%) hue-rotate(190deg);
   --chart-bg:#f7f9fc;--grid-rgb:20,30,60;--watermark:rgba(0,0,0,0.04);
 }
 
 html,body{height:100%;overflow:hidden;background:var(--bg);transition:background .25s,color .25s}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",system-ui,Roboto,sans-serif;color:var(--tx);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);display:flex;flex-direction:column}
 img{pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
-button{font-family:inherit}
+.svg-icon{filter:var(--svg-filter);transition:filter .25s}
 
-/* Inline SVG icons (inherit text color) */
-.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
-.ic.sm{width:14px;height:14px}
-.ic.lg{width:22px;height:22px}
-
-/* Preloader: ONE spinner only */
-#preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .4s ease}
+/* Preloader (Single Clean SVG) */
+#preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.35s ease}
 #preloader.hide{opacity:0;pointer-events:none}
-.spinner{width:46px;height:46px;border-radius:50%;border:4px solid var(--ln);border-top-color:var(--ac);animation:spin .9s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+#preloader img{width:46px;height:46px;margin-bottom:12px}
 #preloader span{font-size:12px;letter-spacing:1.5px;color:var(--mu);font-weight:700}
 
 /* Header */
 header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);z-index:10;border-bottom:1px solid var(--ln)}
 .logo-desk{display:none;cursor:pointer;height:24px}
 .sp{flex:1}
-.clock{display:flex;flex-direction:column;font-size:10px;color:var(--mu);line-height:1.25;text-align:right}
-.clock b{color:var(--tx);font-size:12px;display:flex;align-items:center;gap:5px;justify-content:flex-end;font-variant-numeric:tabular-nums}
-.clock b::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--up)}
 .acc{background:var(--pn);padding:5px 12px;border-radius:10px;font-size:11px;color:var(--mu);line-height:1.25;border:1px solid var(--ln);display:flex;align-items:center;gap:8px;cursor:pointer}
-.acc .ic{color:#ff8a00}
+.acc img{width:20px;height:20px}
 .acc b{display:block;font-size:14px;color:var(--tx)}
-.acc i{color:#ff8a00;font-style:normal;font-weight:800;margin-right:4px;font-size:11px;display:inline-block;animation:bob var(--float-speed) ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(2px)}}
+.acc i{color:#ff8a00;font-style:normal;font-weight:800;margin-right:4px;font-size:11px}
 .acc-text-mob{display:inline}
 .acc-text-full{display:none}
 @media(min-width:640px){.acc-text-mob{display:none}.acc-text-full{display:inline}}
 
 .ib{background:var(--pn);border:1px solid var(--ln);color:var(--tx);border-radius:10px;padding:0 12px;height:38px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.ib img{width:16px;height:16px}
 .badge-cnt{background:var(--ac);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:700}
 
-/* Workspace */
+/* Workspace Layout */
 .workspace{display:flex;flex:1;min-height:0;overflow:hidden}
+
+/* Desktop Left Rail */
 .left-rail{display:none;flex-direction:column;align-items:center;width:64px;background:var(--pn);border-right:1px solid var(--ln);padding:12px 0;gap:12px;z-index:12}
 .rail-btn{width:46px;height:46px;border-radius:12px;background:transparent;border:none;color:var(--mu);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;font-weight:600;cursor:pointer;transition:background .2s,color .2s}
 .rail-btn:hover,.rail-btn.active{background:var(--pn2);color:var(--tx)}
+.rail-btn img{width:20px;height:20px}
+
+/* Main Content */
 .main-col{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0}
 
-/* Top bar (pair, timeframes, chart tools) */
+/* Top Bar */
 .bar{display:flex;align-items:center;gap:8px;padding:8px 12px;overflow-x:auto;scrollbar-width:none;z-index:10;background:var(--bg)}
 .bar::-webkit-scrollbar{display:none}
-.pairbtn{flex:none;display:flex;gap:8px;align-items:center;background:var(--pn);border:1px solid var(--ln);color:var(--tx);padding:0 12px;height:38px;border-radius:10px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
-.flags{display:flex;align-items:center;position:relative;width:28px;height:18px}
-.flags img.flag{width:17px;height:17px;border-radius:50%;object-fit:cover;position:absolute;border:1px solid var(--bg)}
-.flags img.flag:nth-child(1){left:0;z-index:2}
-.flags img.flag:nth-child(2){left:11px;z-index:1}
+.pairbtn{flex:none;display:flex;gap:8px;align-items:center;background:var(--pn);border:1px solid var(--ln);color:var(--tx);padding:0 14px;height:38px;border-radius:10px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
+.pairbtn .flags{display:flex;align-items:center;position:relative;width:28px;height:18px}
+.pairbtn img.flag{width:17px;height:17px;border-radius:50%;object-fit:cover;position:absolute;border:1px solid var(--bg)}
+.pairbtn img.flag:nth-child(1){left:0;z-index:2}
+.pairbtn img.flag:nth-child(2){left:11px;z-index:1}
+
 .tfs{display:flex;gap:4px}
 .tfs button{flex:none;background:var(--pn);border:1px solid var(--ln);color:var(--mu);min-width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:12px;padding:0 8px;font-weight:600}
 .tfs .on{background:var(--ac);border-color:var(--ac);color:#fff}
-.tools{display:flex;gap:4px;flex:none;padding-left:8px;border-left:1px solid var(--ln)}
-.tbtn{width:38px;height:38px;border-radius:10px;background:var(--pn);border:1px solid var(--ln);color:var(--tx);display:grid;place-items:center;cursor:pointer}
-.tbtn.on{background:var(--ac);border-color:var(--ac);color:#fff}
 
-/* Chart: fully open, nothing floats on top */
+/* Chart + Right Panel */
 .body{display:flex;flex-direction:column;flex:1;min-height:0}
 .chart-area{position:relative;flex:1;min-height:180px;display:flex;flex-direction:column}
 .canvas-wrap{position:relative;flex:1;min-height:0;overflow:hidden;background:var(--chart-bg)}
 canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+
+/* Floating Chart Overlay Controls */
+.qx-float-tools{position:absolute;top:10px;left:12px;display:flex;flex-direction:column;gap:8px;z-index:5}
+.qx-dot-btn{width:36px;height:36px;border-radius:10px;background:var(--pn);border:1px solid var(--ln);display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.qx-dot-btn img{width:17px;height:17px}
+.qx-server-time{position:absolute;top:10px;left:56px;font-size:11px;color:var(--mu);pointer-events:none;z-index:4;line-height:1.35}
+.qx-server-time b{color:var(--tx);display:flex;align-items:center;gap:5px}
+.qx-server-time b::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--up);display:inline-block}
+
 #na{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:15px;color:var(--mu);background:var(--chart-bg);z-index:6}
 #na span{font-weight:700;color:var(--tx)}
 
@@ -94,12 +96,14 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 .fldrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .fld{border:1px solid var(--ln);border-radius:10px;padding:4px 10px;position:relative;background:var(--bg)}
 .fld small{position:absolute;top:-7px;left:10px;background:var(--pn);padding:0 4px;color:var(--mu);font-size:10px;font-weight:600}
-.fld>div{display:flex;align-items:center;gap:6px;min-height:34px}
+.fld div{display:flex;align-items:center;gap:6px;min-height:34px}
 .fld input{flex:1;min-width:0;width:100%;background:none;border:0;color:var(--tx);font-size:15px;outline:0;font-weight:700;text-align:center}
-.fld .sq{flex:none;width:28px;height:28px;border-radius:8px;border:0;background:var(--pn);color:var(--tx);cursor:pointer;display:grid;place-items:center}
-.timer-trigger{width:100%;background:none;border:0;color:var(--tx);font-size:15px;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0}
+.fld button{flex:none;width:28px;height:28px;border-radius:8px;border:0;background:var(--pn);color:var(--tx);cursor:pointer;display:grid;place-items:center}
+.fld button img{width:13px;height:13px}
 
-.qx-timer-popup{position:fixed;bottom:140px;left:12px;width:260px;background:var(--pn);border:1px solid var(--ln);border-radius:14px;padding:12px;z-index:60;box-shadow:0 12px 35px rgba(0,0,0,0.45);display:none}
+/* Quotex Grid Timer Popup */
+.timer-trigger{width:100%;background:none;border:0;color:var(--tx);font-size:15px;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0}
+.qx-timer-popup{position:fixed;bottom:145px;left:12px;width:260px;background:var(--pn);border:1px solid var(--ln);border-radius:14px;padding:12px;z-index:60;box-shadow:0 12px 35px rgba(0,0,0,0.45);display:none}
 .qx-timer-popup.open{display:block}
 .qx-timer-tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:8px;padding:3px;margin-bottom:10px}
 .qx-timer-tabs span{text-align:center;font-size:11px;font-weight:700;padding:6px;border-radius:6px;color:var(--mu)}
@@ -114,63 +118,71 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 .go button{display:flex;justify-content:space-between;align-items:center;padding:0 16px;border:0;border-radius:10px;height:46px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s}
 .go button:active{transform:scale(0.98)}
 .go .u{background:#0faf59} .go .d{background:#ef5d4e}
-.go .ic-circle{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.2);display:grid;place-items:center}
+.go button .ic-circle{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.2);display:grid;place-items:center}
+.go button img{width:13px;height:13px;filter:brightness(0) invert(1)}
 
-/* Mobile bottom nav */
+/* Mobile Bottom Nav Bar */
 .mob-nav{display:flex;align-items:center;justify-content:space-around;background:var(--pn);border-top:1px solid var(--ln);height:50px;padding-bottom:env(safe-area-inset-bottom);z-index:20}
 .mob-nav button{background:none;border:none;color:var(--mu);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:600;cursor:pointer;position:relative;padding:4px 12px}
 .mob-nav button.active{color:var(--ac)}
-.mob-nav .dot-badge{position:absolute;top:0;right:4px;background:var(--ac);color:#fff;font-size:9px;min-width:15px;height:15px;border-radius:8px;display:grid;place-items:center;font-weight:700}
+.mob-nav button img{width:20px;height:20px}
+.mob-nav .dot-badge{position:absolute;top:2px;right:8px;background:var(--ac);color:#fff;font-size:9px;min-width:15px;height:15px;border-radius:8px;display:grid;place-items:center;font-weight:700}
 
-/* Drawers */
+/* Drawers / Side Panels */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:70;display:none;backdrop-filter:blur(2px)}
 .drawer-overlay.open{display:flex}
 .drawer-sheet{background:var(--pn);width:100%;max-width:380px;height:100%;display:flex;flex-direction:column;border-right:1px solid var(--ln);animation:slideIn .22s ease-out}
 @keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--ln);font-size:17px;font-weight:700}
-.drawer-close{background:none;border:none;cursor:pointer;padding:4px;color:var(--tx);display:grid;place-items:center}
+.drawer-close{background:none;border:none;cursor:pointer;padding:4px}
+.drawer-close img{width:18px;height:18px}
 .drawer-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
 
+/* More Menu Items */
 .more-card{background:var(--pn2);border:1px solid var(--ln);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:600;font-size:14px}
 .more-card-left{display:flex;align-items:center;gap:12px}
+.more-card-left img{width:20px;height:20px}
 .more-link{padding:12px 6px;font-size:14px;font-weight:600;color:var(--tx);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
 .more-footer{margin-top:auto;padding-top:14px;border-top:1px solid var(--ln);display:flex;justify-content:space-between;align-items:center}
 .btn-settings{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--ac);font-size:14px;font-weight:700;cursor:pointer}
+.btn-settings img{width:18px;height:18px}
 .btn-logout{display:flex;align-items:center;gap:8px;background:rgba(239,93,78,0.12);border:1px solid rgba(239,93,78,0.3);color:#ef5d4e;padding:8px 14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
+.btn-logout img{width:16px;height:16px;filter:brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(334deg) brightness(98%) contrast(92%)}
 
-/* Settings */
+/* Settings UI (No Emojis, Built-in Color Swatches) */
 .set-label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-top:8px}
 .theme-opt{background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:700;font-size:14px}
-.theme-opt .tl{display:flex;align-items:center;gap:10px}
-.theme-opt.active{border-color:var(--ac);background:var(--pn2)}
+.theme-opt-left{display:flex;align-items:center;gap:10px}
+.theme-dot{width:14px;height:14px;border-radius:50%;border:1px solid var(--ln)}
+.theme-opt.active{background:#ffffff;color:#14161f;border-color:var(--ac)}
 .theme-opt .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--mu);display:grid;place-items:center}
 .theme-opt.active .radio{border-color:var(--ac)}
 .theme-opt.active .radio::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--ac)}
+
 .opacity-box{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:8px 12px}
-.opacity-box button{width:30px;height:30px;border-radius:8px;border:0;background:var(--pn2);color:var(--tx);cursor:pointer;display:grid;place-items:center}
+.opacity-box button{width:30px;height:30px;border-radius:8px;border:0;background:var(--pn2);color:var(--tx);font-weight:700;cursor:pointer}
 .chk-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;cursor:pointer}
 .chk-row input{width:18px;height:18px;accent-color:var(--ac);margin-top:2px}
 .chk-row b{display:block;font-size:13px}
 .chk-row small{color:var(--mu);font-size:11px}
 
-/* Custom candle colour picker (own palette, no browser picker) */
-.col-box{background:var(--bg);border:1px solid var(--ln);padding:10px 12px;border-radius:10px;display:flex;flex-direction:column;gap:10px}
-.col-box>span{font-size:13px;font-weight:600}
-.swatches{display:flex;flex-wrap:wrap;gap:8px}
-.sw{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;display:grid;place-items:center;color:#fff}
-.sw .ic{width:14px;height:14px;opacity:0;stroke-width:3}
-.sw.sel{border-color:var(--tx)}
-.sw.sel .ic{opacity:1}
+/* Custom Built-in Candle Color Swatches */
+.swatch-card{background:var(--bg);border:1px solid var(--ln);padding:10px 12px;border-radius:10px;display:flex;flex-direction:column;gap:8px}
+.swatch-card span{font-size:13px;font-weight:600}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.swatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s}
+.swatch.active{border-color:#fff;transform:scale(1.15);box-shadow:0 0 0 2px var(--ac)}
 
-/* Trades list */
+/* Trades List */
 .t{display:grid;grid-template-columns:1fr auto;padding:10px 0;border-bottom:1px solid var(--ln);font-size:13px}
 .t small{color:var(--mu)}
 .t .r{text-align:right;font-weight:700}
-.t .dirl{display:inline-flex;align-items:center;gap:2px;font-weight:700}
-.w{color:var(--up)} .l{color:var(--dn)} .n{color:var(--mu)}
-.w{color:#0faf59} .l{color:#ef5d4e}
+.w{color:#0faf59} .l{color:#ef5d4e} .n{color:var(--mu)}
+.dir-ic{width:11px;height:11px;vertical-align:middle;margin-right:2px}
+.dir-up{filter:brightness(0) saturate(100%) invert(52%) sepia(83%) saturate(445%) hue-rotate(96deg) brightness(93%) contrast(92%)}
+.dir-dn{filter:brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(334deg) brightness(98%) contrast(92%)}
 
-/* Pair modal */
+/* Pair Modal */
 #modal{position:fixed;inset:0;background:rgba(10,11,18,0.85);display:none;z-index:80;padding:20px;align-items:center;justify-content:center}
 #modal.on{display:flex}
 #modal .in{width:100%;max-width:400px;background:var(--pn);border-radius:16px;max-height:80vh;display:flex;flex-direction:column;border:1px solid var(--ln);overflow:hidden}
@@ -178,6 +190,10 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 .pi{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--ln);cursor:pointer}
 .pi:hover{background:var(--pn2)}
 .pi .pair-info{display:flex;align-items:center;gap:12px}
+.pi .flags{display:flex;align-items:center;position:relative;width:28px;height:18px}
+.pi img.flag{width:17px;height:17px;border-radius:50%;object-fit:cover;position:absolute;border:1px solid var(--bg)}
+.pi img.flag:nth-child(1){left:0;z-index:2}
+.pi img.flag:nth-child(2){left:11px;z-index:1}
 .pi em{color:#ff8a00;font-style:normal;font-weight:bold}
 
 @media (min-width: 768px) {
@@ -199,50 +215,21 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 </head>
 <body>
 
-<!-- SVG icon sprite -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></symbol>
-    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
-    <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
-    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
-    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
-    <symbol id="i-sunset" viewBox="0 0 24 24"><path d="M17 18a5 5 0 0 0-10 0"/><path d="M12 9V2M4.2 10.2l1.4 1.4M1 18h2M21 18h2M18.4 11.6l1.4-1.4M23 22H1M8 6l4-4 4 4"/></symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></symbol>
-    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
-    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
-    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
-    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
-    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
-    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
-    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7H5a2 2 0 0 1 0-4h13v4"/><path d="M3 5v14a2 2 0 0 0 2 2h15V7"/><path d="M16 14h.01"/></symbol>
-    <symbol id="i-trade" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></symbol>
-    <symbol id="i-zin" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></symbol>
-    <symbol id="i-zout" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M8 11h6"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
-    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol>
-  </defs>
-</svg>
-
 <div id="preloader">
-  <div class="spinner"></div>
+  <img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg" alt="Loading">
   <span>LOADING</span>
 </div>
 
 <header>
-  <img src="https://zeetex-dashboard.vercel.app/profile/imgs/logo/white-full-logo.svg" class="logo-desk" id="logo-btn" alt="Logo" style="filter:var(--logo-filter,brightness(0) invert(1))">
+  <img src="https://zeetex-dashboard.vercel.app/profile/imgs/logo/white-full-logo.svg" class="logo-desk svg-icon" id="logo-btn" alt="Logo">
   <div class="sp"></div>
-  <div class="clock"><b id="srv-clock">00:00:00</b><span id="ttl">USD/PKR (OTC)</span></div>
   <button class="ib" id="hdr-trades-btn">
-    <svg class="ic"><use href="#i-list"/></svg>
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
     <span>Trades</span>
     <span class="badge-cnt" id="tn">0</span>
   </button>
   <div class="acc" id="acc-btn">
-    <svg class="ic lg"><use href="#i-wallet"/></svg>
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo.svg" alt="Demo">
     <div>
       <span class="acc-text-mob"><i>DEMO</i><b id="bal-mob">$0.00</b></span>
       <span class="acc-text-full"><i>DEMO ACCOUNT</i><b id="bal-desk">$0.00</b></span>
@@ -251,19 +238,24 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 </header>
 
 <div class="workspace">
+  <!-- Desktop Left Sidebar Rail -->
   <nav class="left-rail">
     <button class="rail-btn active" onclick="closeAllDrawers()">
-      <svg class="ic"><use href="#i-trade"/></svg><span>Trade</span>
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" class="svg-icon" alt="">
+      <span>Trade</span>
     </button>
     <button class="rail-btn" onclick="openDrawer('tradesDrawer')">
-      <svg class="ic"><use href="#i-list"/></svg><span>Trades</span>
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+      <span>Trades</span>
     </button>
     <button class="rail-btn" onclick="openDrawer('settingsDrawer')">
-      <svg class="ic"><use href="#i-gear"/></svg><span>Settings</span>
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+      <span>Settings</span>
     </button>
     <div class="sp"></div>
-    <button class="rail-btn" onclick="openDrawer('moreDrawer')">
-      <svg class="ic"><use href="#i-dots"/></svg><span>More</span>
+    <button class="rail-btn" onclick="openDrawer('moreDrawer')" title="More & Logout">
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+      <span>More</span>
     </button>
   </nav>
 
@@ -271,25 +263,38 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
     <div class="bar">
       <button class="pairbtn" id="pb">
         <div class="flags">
-          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag1" alt="">
-          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg" class="flag" id="pb-flag2" alt="">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag1">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg" class="flag" id="pb-flag2">
         </div>
         <span id="pb-txt">USD/PKR (OTC)</span>
-        <svg class="ic sm"><use href="#i-chev"/></svg>
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/down.svg" class="svg-icon" style="width:11px;height:11px" alt="">
       </button>
       <div class="tfs" id="tfs"></div>
-      <div class="tools">
-        <button class="tbtn" id="tool-zin" title="Zoom in"><svg class="ic"><use href="#i-zin"/></svg></button>
-        <button class="tbtn" id="tool-zout" title="Zoom out"><svg class="ic"><use href="#i-zout"/></svg></button>
-        <button class="tbtn" id="tool-pen" title="Draw line"><svg class="ic"><use href="#i-pencil"/></svg></button>
-        <button class="tbtn" id="tool-clear" title="Clear drawings" style="display:none"><svg class="ic"><use href="#i-trash"/></svg></button>
-      </div>
     </div>
 
     <div class="body">
       <div class="chart-area">
         <div class="canvas-wrap">
           <canvas id="cv"></canvas>
+          
+          <!-- Quotex Floating Tools -->
+          <div class="qx-float-tools">
+            <button class="qx-dot-btn" onclick="openDrawer('moreDrawer')" title="Menu">
+              <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="...">
+            </button>
+            <button class="qx-dot-btn" id="tool-pen" title="Draw Line">
+              <img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" class="svg-icon" alt="Draw">
+            </button>
+            <button class="qx-dot-btn" id="tool-clear" title="Clear Drawings" style="display:none">
+              <img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" class="svg-icon" alt="Clear">
+            </button>
+          </div>
+          
+          <div class="qx-server-time">
+            <b id="srv-clock">00:00:00</b>
+            <span id="ttl">USD/PKR (OTC)</span>
+          </div>
+
           <h2 id="na"></h2>
         </div>
       </div>
@@ -302,23 +307,23 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
             <div>
               <button class="timer-trigger" id="timerBtn" type="button">
                 <span id="timerVal">00:01:00</span>
-                <svg class="ic sm"><use href="#i-chev"/></svg>
+                <img src="https://zeetex-dashboard.vercel.app/profile/imgs/down.svg" class="svg-icon" style="width:11px;height:11px" alt="">
               </button>
             </div>
           </div>
           <div class="fld">
             <small>Investment</small>
             <div>
-              <button class="sq" id="am"><svg class="ic sm"><use href="#i-minus"/></svg></button>
+              <button id="am"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/minus.svg" class="svg-icon" alt="-"></button>
               <input id="av" type="number" inputmode="decimal" min="1" value="10">
-              <button class="sq" id="ap"><svg class="ic sm"><use href="#i-plus"/></svg></button>
+              <button id="ap"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/plus.svg" class="svg-icon" alt="+"></button>
             </div>
           </div>
         </div>
         <div class="row"><span>Payout</span><b id="po">$18.50</b></div>
         <div class="go">
-          <button class="u" id="up"><span>Buy</span><span class="ic-circle"><svg class="ic sm"><use href="#i-up"/></svg></span></button>
-          <button class="d" id="dn"><span>Sell</span><span class="ic-circle"><svg class="ic sm"><use href="#i-down"/></svg></span></button>
+          <button class="u" id="up"><span>Buy</span><span class="ic-circle"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" alt="Up"></span></button>
+          <button class="d" id="dn"><span>Sell</span><span class="ic-circle"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/down.svg" alt="Down"></span></button>
         </div>
 
         <div id="desk-trades-box">
@@ -332,94 +337,141 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
   </div>
 </div>
 
+<!-- Quotex Timer Grid Popup -->
 <div class="qx-timer-popup" id="timerPopup">
-  <div class="qx-timer-tabs"><span class="active">TIMER</span><span>DURATION</span></div>
+  <div class="qx-timer-tabs">
+    <span class="active">TIMER</span>
+    <span>DURATION</span>
+  </div>
   <div class="qx-timer-grid" id="timerGrid"></div>
 </div>
 
+<!-- Mobile Bottom Bar with 3 Dots -->
 <nav class="mob-nav">
-  <button class="active" onclick="closeAllDrawers()"><svg class="ic lg"><use href="#i-trade"/></svg></button>
-  <button onclick="openDrawer('tradesDrawer')"><svg class="ic lg"><use href="#i-list"/></svg><span class="dot-badge" id="mob-tn">0</span></button>
-  <button onclick="openDrawer('settingsDrawer')"><svg class="ic lg"><use href="#i-gear"/></svg></button>
-  <button onclick="openDrawer('moreDrawer')"><svg class="ic lg"><use href="#i-dots"/></svg></button>
+  <button class="active" onclick="closeAllDrawers()">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" class="svg-icon" alt="">
+  </button>
+  <button onclick="openDrawer('tradesDrawer')">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+    <span class="dot-badge" id="mob-tn">0</span>
+  </button>
+  <button onclick="openDrawer('settingsDrawer')">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo.svg" alt="">
+  </button>
+  <button onclick="openDrawer('moreDrawer')">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="...">
+  </button>
 </nav>
 
-<!-- MORE -->
+<!-- MORE SIDE DRAWER -->
 <div class="drawer-overlay" id="moreDrawer" onclick="if(event.target===this)closeAllDrawers()">
   <div class="drawer-sheet">
-    <div class="drawer-head"><span>More</span>
-      <button class="drawer-close" onclick="closeAllDrawers()"><svg class="ic"><use href="#i-close"/></svg></button>
+    <div class="drawer-head">
+      <span>More</span>
+      <button class="drawer-close" onclick="closeAllDrawers()"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" class="svg-icon"></button>
     </div>
     <div class="drawer-body">
       <div class="more-card" onclick="openDrawer('tradesDrawer')">
-        <div class="more-card-left"><svg class="ic"><use href="#i-list"/></svg><span>Trades History</span></div>
-        <svg class="ic sm"><use href="#i-right"/></svg>
+        <div class="more-card-left"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon"><span>Trades History</span></div>
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" class="svg-icon" style="width:12px;height:12px;transform:rotate(90deg)">
       </div>
-      <div class="more-card" onclick="document.getElementById('modal').classList.add('on');closeAllDrawers()">
-        <div class="more-card-left"><svg class="ic"><use href="#i-trade"/></svg><span>Select Asset Pair</span></div>
-        <svg class="ic sm"><use href="#i-right"/></svg>
+      <div class="more-card" onclick="$('modal').classList.add('on');closeAllDrawers()">
+        <div class="more-card-left"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo.svg"><span>Select Asset Pair</span></div>
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" class="svg-icon" style="width:12px;height:12px;transform:rotate(90deg)">
       </div>
-      <div class="more-link" onclick="openDrawer('settingsDrawer')"><span>Platform Settings</span><svg class="ic sm"><use href="#i-right"/></svg></div>
-      <div class="more-link" onclick="load()"><span>Reload Market Feed</span><svg class="ic sm"><use href="#i-refresh"/></svg></div>
+      <div class="more-link" onclick="openDrawer('settingsDrawer')">
+        <span>Platform Settings</span>
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" class="svg-icon" style="width:12px;height:12px;transform:rotate(90deg)">
+      </div>
+      <div class="more-link" onclick="load();closeAllDrawers()">
+        <span>Reload Market Feed</span>
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg" class="svg-icon" style="width:14px;height:14px">
+      </div>
+      
       <div class="more-footer">
-        <button class="btn-settings" onclick="openDrawer('settingsDrawer')"><svg class="ic"><use href="#i-gear"/></svg> Settings</button>
-        <button class="btn-logout" id="out"><svg class="ic sm"><use href="#i-logout"/></svg> Logout</button>
+        <button class="btn-settings" onclick="openDrawer('settingsDrawer')">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon"> Settings
+        </button>
+        <button class="btn-logout" id="out">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/logout.svg" alt=""> Logout
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SETTINGS -->
+<!-- SETTINGS DRAWER (No Emojis, Built-in Color Swatches for Candles Only) -->
 <div class="drawer-overlay" id="settingsDrawer" onclick="if(event.target===this)closeAllDrawers()">
   <div class="drawer-sheet">
-    <div class="drawer-head"><span>Settings</span>
-      <button class="drawer-close" onclick="closeAllDrawers()"><svg class="ic"><use href="#i-close"/></svg></button>
+    <div class="drawer-head">
+      <span>Settings</span>
+      <button class="drawer-close" onclick="closeAllDrawers()"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" class="svg-icon"></button>
     </div>
     <div class="drawer-body">
-      <span class="set-label">Template / Theme</span>
-      <div class="theme-opt" data-th="light" onclick="setTheme('light')"><span class="tl"><svg class="ic"><use href="#i-sun"/></svg>Light Mode</span><span class="radio"></span></div>
-      <div class="theme-opt" data-th="twilight" onclick="setTheme('twilight')"><span class="tl"><svg class="ic"><use href="#i-sunset"/></svg>Twilight</span><span class="radio"></span></div>
-      <div class="theme-opt active" data-th="night" onclick="setTheme('night')"><span class="tl"><svg class="ic"><use href="#i-moon"/></svg>Full Night</span><span class="radio"></span></div>
+      <span class="set-label">TEMPLATE / THEME</span>
+      <div class="theme-opt" data-th="light" onclick="setTheme('light')">
+        <div class="theme-opt-left"><span class="theme-dot" style="background:#f2f4f8"></span><span>Light Mode</span></div>
+        <span class="radio"></span>
+      </div>
+      <div class="theme-opt" data-th="twilight" onclick="setTheme('twilight')">
+        <div class="theme-opt-left"><span class="theme-dot" style="background:#1b2032"></span><span>Twilight</span></div>
+        <span class="radio"></span>
+      </div>
+      <div class="theme-opt active" data-th="night" onclick="setTheme('night')">
+        <div class="theme-opt-left"><span class="theme-dot" style="background:#14161f"></span><span>Full Night</span></div>
+        <span class="radio"></span>
+      </div>
 
-      <span class="set-label">Platform</span>
+      <span class="set-label">PLATFORM</span>
       <div class="opacity-box">
         <span style="font-size:13px;font-weight:600">Grid's opacity</span>
         <div style="display:flex;align-items:center;gap:12px">
-          <button onclick="changeGridOp(-1)"><svg class="ic sm"><use href="#i-minus"/></svg></button>
+          <button onclick="changeGridOp(-1)"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/minus.svg" class="svg-icon" style="width:12px;height:12px"></button>
           <b id="gridOpVal">8</b>
-          <button onclick="changeGridOp(1)"><svg class="ic sm"><use href="#i-plus"/></svg></button>
+          <button onclick="changeGridOp(1)"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/plus.svg" class="svg-icon" style="width:12px;height:12px"></button>
         </div>
       </div>
+
       <label class="chk-row">
         <input type="checkbox" id="chkAutoScroll" checked onchange="ch.autoScroll=this.checked">
         <div><b>Auto-scrolling</b><small>Automatic graphic scrolling</small></div>
       </label>
 
-      <span class="set-label">Candle colors (candles only)</span>
-      <div class="col-box"><span>Up trend candle</span><div class="swatches" id="swUp"></div></div>
-      <div class="col-box"><span>Down trend candle</span><div class="swatches" id="swDn"></div></div>
+      <span class="set-label">CANDLE COLORS</span>
+      <div class="swatch-card">
+        <span>Up Trend Candle</span>
+        <div class="swatches" id="upSwatches"></div>
+      </div>
+      <div class="swatch-card">
+        <span>Down Trend Candle</span>
+        <div class="swatches" id="dnSwatches"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- TRADES -->
+<!-- TRADES DRAWER -->
 <div class="drawer-overlay" id="tradesDrawer" onclick="if(event.target===this)closeAllDrawers()">
   <div class="drawer-sheet">
-    <div class="drawer-head"><span>Trades</span>
-      <button class="drawer-close" onclick="closeAllDrawers()"><svg class="ic"><use href="#i-close"/></svg></button>
+    <div class="drawer-head">
+      <span>Trades</span>
+      <button class="drawer-close" onclick="closeAllDrawers()"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" class="svg-icon"></button>
     </div>
     <div class="drawer-body">
-      <span class="set-label">Open trades</span><div id="ol-mob"></div>
-      <span class="set-label">Closed trades</span><div id="cl-mob"></div>
+      <span class="set-label">OPEN TRADES</span>
+      <div id="ol-mob"></div>
+      <span class="set-label">CLOSED TRADES</span>
+      <div id="cl-mob"></div>
     </div>
   </div>
 </div>
 
-<!-- PAIR MODAL -->
+<!-- PAIR SELECTOR MODAL -->
 <div id="modal">
   <div class="in">
-    <div class="drawer-head"><b>Select trade pair</b>
-      <button class="drawer-close" id="mc"><svg class="ic"><use href="#i-close"/></svg></button>
+    <div class="drawer-head">
+      <b>Select trade pair</b>
+      <button class="drawer-close" id="mc"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" class="svg-icon"></button>
     </div>
     <div id="pl"></div>
   </div>
@@ -434,7 +486,6 @@ const S = JSON.parse(localStorage.getItem('zt_session') || 'null');
 if (!S) location.href = 'sign-in.html';
 
 const $ = id => document.getElementById(id);
-const ICON = (n, c) => `<svg class="ic ${c||'sm'}"><use href="#i-${n}"/></svg>`;
 const TFS = {'5s':5, '10s':10, '15s':15, '30s':30, '1m':60, '2m':120, '3m':180, '5m':300, '10m':600, '15m':900, '30m':1800, '1h':3600, '4h':14400, '1d':86400};
 const DUR = [
   {s:5, l:'00:05'}, {s:10, l:'00:10'}, {s:15, l:'00:15'},
@@ -443,8 +494,11 @@ const DUR = [
   {s:1800, l:'30:00'}, {s:3600, l:'01:00:00'}, {s:7200, l:'02:00:00'}
 ];
 
+const UP_PALETTE = ['#0faf59', '#00e676', '#2b99ff', '#00bcd4', '#ffd600', '#ffffff'];
+const DN_PALETTE = ['#ef5d4e', '#ff1744', '#ff9100', '#e040fb', '#7c4dff', '#90a4ae'];
+
 const FALLBACK = [
-  {name: 'USDPKR-OTC', payout: 85}, {name: 'USDINR-OTC', payout: 88},
+  {name: 'USDPKR-OTC', payout: 85}, {name: 'USDINR-OTC', payout: 88}, 
   {name: 'USDBDT-OTC', payout: 84}, {name: 'USDARS-OTC', payout: 91},
   {name: 'USDMXN-OTC', payout: 87}, {name: 'USDBRL-OTC', payout: 89},
   {name: 'USDNGN-OTC', payout: 82}, {name: 'NZDCAD-OTC', payout: 95},
@@ -454,17 +508,21 @@ const FALLBACK = [
 let pair = localStorage.getItem('zt_pair') || 'USDPKR-OTC', pairs = [], tf = localStorage.getItem('zt_tf') || '1m', di = Number(localStorage.getItem('zt_di') || 4), ctl = null, skew = 0, payout = 85, bal = 0, trades = [], seq = 0, first = true;
 
 const currencyMap = {
-  'USD': 'us', 'PKR': 'pk', 'INR': 'in', 'BDT': 'bd', 'ARS': 'ar',
-  'MXN': 'mx', 'BRL': 'br', 'NGN': 'ng', 'NZD': 'nz', 'CAD': 'ca',
+  'USD': 'us', 'PKR': 'pk', 'INR': 'in', 'BDT': 'bd', 'ARS': 'ar', 
+  'MXN': 'mx', 'BRL': 'br', 'NGN': 'ng', 'NZD': 'nz', 'CAD': 'ca', 
   'COP': 'co', 'EGP': 'eg', 'EUR': 'eu', 'GBP': 'gb', 'AUD': 'au', 'JPY': 'jp'
 };
+
 function getFlags(name) {
   const clean = name.replace('-OTC', '');
   if (clean.length >= 6) {
-    return [currencyMap[clean.slice(0,3).toUpperCase()] || 'us', currencyMap[clean.slice(3,6).toUpperCase()] || 'pk'];
+    const b = clean.slice(0, 3).toUpperCase();
+    const q = clean.slice(3, 6).toUpperCase();
+    return [currencyMap[b] || 'us', currencyMap[q] || 'pk'];
   }
   return ['us', 'pk'];
 }
+
 function getPairName(p) {
   const clean = p.replace('-OTC', '');
   return clean.length >= 6 ? clean.slice(0,3) + '/' + clean.slice(3,6) + ' (OTC)' : p;
@@ -472,18 +530,22 @@ function getPairName(p) {
 
 const ch = new CandleChart($('cv'));
 const money = v => '$' + Number(v || 0).toFixed(2);
-const fmtT = s => { s = Math.max(0, s); const h = Math.floor(s/3600), m = Math.floor(s%3600/60); return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(Math.floor(s%60)).padStart(2,'0'); };
+const fmtT = s => { s = Math.max(0, s); const h = Math.floor(s/3600), m = Math.floor(s%3600/60); return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(Math.floor(s%60)).padStart(2, '0'); };
 
-/* Drawers & themes */
-function openDrawer(id) { closeAllDrawers(); $(id).classList.add('open'); }
-function closeAllDrawers() { document.querySelectorAll('.drawer-overlay').forEach(el => el.classList.remove('open')); }
+/* Drawer & Theme Systems */
+function openDrawer(id) {
+  closeAllDrawers();
+  $(id).classList.add('open');
+}
+function closeAllDrawers() {
+  document.querySelectorAll('.drawer-overlay').forEach(el => el.classList.remove('open'));
+}
 
 function setTheme(th) {
   document.documentElement.setAttribute('data-theme', th);
   localStorage.setItem('zt_theme', th);
   document.querySelectorAll('.theme-opt').forEach(el => el.classList.toggle('active', el.dataset.th === th));
-  document.querySelector('.logo-desk').style.filter = th === 'light' ? 'brightness(0)' : 'brightness(0) invert(1)';
-  if (ch.updateThemeColors) ch.updateThemeColors();
+  ch.updateThemeColors();
 }
 
 let gridOp = Number(localStorage.getItem('zt_gridop') || 8);
@@ -494,47 +556,61 @@ function changeGridOp(delta) {
   ch.gridOpacity = gridOp / 100;
 }
 
-/* Candle colours: ONLY the candles change (buy/sell buttons & UI stay fixed) */
-const UP_COLS = ['#0faf59','#00c896','#26a69a','#2b99ff','#7c5cff','#f5c518','#ff8a00','#e8ebf4'];
-const DN_COLS = ['#ef5d4e','#ff3b6b','#ff8a00','#f5c518','#d946ef','#7c5cff','#2b99ff','#8f95ad'];
-let colUp = localStorage.getItem('zt_col_up') || UP_COLS[0];
-let colDn = localStorage.getItem('zt_col_dn') || DN_COLS[0];
-function drawSwatches() {
-  const mk = (arr, cur, key) => arr.map(c => `<div class="sw ${c === cur ? 'sel' : ''}" style="background:${c}" data-k="${key}" data-c="${c}">${ICON('check')}</div>`).join('');
-  $('swUp').innerHTML = mk(UP_COLS, colUp, 'up');
-  $('swDn').innerHTML = mk(DN_COLS, colDn, 'dn');
-}
-function updateCandleColors() {
-  localStorage.setItem('zt_col_up', colUp);
-  localStorage.setItem('zt_col_dn', colDn);
-  ch.upColor = colUp; ch.dnColor = colDn;
-  drawSwatches();
-}
-document.addEventListener('click', e => {
-  const s = e.target.closest('.sw'); if (!s) return;
-  if (s.dataset.k === 'up') colUp = s.dataset.c; else colDn = s.dataset.c;
-  updateCandleColors();
-});
+function initCandleSwatches() {
+  let savedUp = localStorage.getItem('zt_col_up') || '#0faf59';
+  let savedDn = localStorage.getItem('zt_col_dn') || '#ef5d4e';
+  ch.upColor = savedUp;
+  ch.dnColor = savedDn;
 
-/* API */
-const j = async (p, o) => {
+  $('upSwatches').innerHTML = UP_PALETTE.map(c => `<div class="swatch ${c === savedUp ? 'active' : ''}" style="background:${c}" data-c="${c}"></div>`).join('');
+  $('dnSwatches').innerHTML = DN_PALETTE.map(c => `<div class="swatch ${c === savedDn ? 'active' : ''}" style="background:${c}" data-c="${c}"></div>`).join('');
+
+  $('upSwatches').onclick = e => {
+    const s = e.target.closest('.swatch');
+    if (s) {
+      ch.upColor = s.dataset.c;
+      localStorage.setItem('zt_col_up', ch.upColor);
+      [...$('upSwatches').children].forEach(el => el.classList.toggle('active', el === s));
+    }
+  };
+  $('dnSwatches').onclick = e => {
+    const s = e.target.closest('.swatch');
+    if (s) {
+      ch.dnColor = s.dataset.c;
+      localStorage.setItem('zt_col_dn', ch.dnColor);
+      [...$('dnSwatches').children].forEach(el => el.classList.toggle('active', el === s));
+    }
+  };
+}
+
+/* API & Helpers */
+const j = async (p, o) => { 
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), 7000);
   try {
     const r = await fetch(API + p, {...o, signal: controller.signal});
     clearTimeout(id);
     return await r.json();
-  } catch(e) { clearTimeout(id); return {status: false, code: 'TIMEOUT'}; }
+  } catch(e) {
+    clearTimeout(id);
+    return {status: false, code: 'TIMEOUT'};
+  }
 };
 const post = (p, b) => j(p, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(b)});
 const logout = () => { localStorage.removeItem('zt_session'); location.href = 'sign-in.html'; };
 
-function toast(m, c) {
-  const t = $('toast'); t.textContent = m; t.style.background = c || '#2b99ff'; t.style.opacity = 1;
-  clearTimeout(t.h); t.h = setTimeout(() => t.style.opacity = 0, 2800);
+function toast(m, c) { 
+  const t = $('toast'); t.textContent = m; t.style.background = c || '#2b99ff'; t.style.opacity = 1; 
+  clearTimeout(t.h); t.h = setTimeout(() => t.style.opacity = 0, 2800); 
 }
-function updateBalance(v) { bal = v; $('bal-mob').textContent = money(bal); $('bal-desk').textContent = money(bal); }
-function na(msg) {
+
+function updateBalance(v) {
+  bal = v;
+  $('bal-mob').textContent = money(bal);
+  $('bal-desk').textContent = money(bal);
+}
+
+function na(msg) { 
   if (msg) { $('na').style.display = 'flex'; $('na').innerHTML = `<span>${msg}</span>`; }
   else { $('na').style.display = 'none'; }
 }
@@ -542,52 +618,66 @@ function na(msg) {
 async function loadPairs() {
   const r = await j('/api/live');
   pairs = (r.status && r.pairs && r.pairs.length) ? r.pairs : FALLBACK;
+  
   $('pl').innerHTML = pairs.map(p => {
     const [f1, f2] = getFlags(p.name);
+    const name = getPairName(p.name);
     return `<div class="pi" data-p="${p.name}">
       <div class="pair-info">
         <div class="flags">
-          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f1}.svg" class="flag" alt="" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg'">
-          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f2}.svg" class="flag" alt="" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg'">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f1}.svg" class="flag" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg'">
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f2}.svg" class="flag" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg'">
         </div>
-        <b>${getPairName(p.name)}</b>
+        <b>${name}</b>
       </div>
       <span>Profit <em>${p.payout}%</em></span>
     </div>`;
   }).join('');
 }
 
-function setPairUI(p) {
-  const [f1, f2] = getFlags(p);
-  $('pn').textContent = getPairName(p);
-  $('pb-txt').textContent = getPairName(p);
-  $('pb-flag1').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f1}.svg`;
-  $('pb-flag2').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f2}.svg`;
-}
-
 async function load(retryCount = 0) {
   const my = ++seq;
   if (retryCount === 0 && !ch.C.length) na('Loading market feed...');
+  
   const r = await j(`/api/chart/${pair}?id=${S.id}&tf=${tf}&dur=${DUR[di].s}`);
   if (my !== seq) return;
+  
   if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
+  
   if (!r.status || !r.candle || !r.candle.length) {
-    if (retryCount < 2) { setTimeout(() => load(retryCount + 1), 1000); return; }
+    if (retryCount < 2) {
+      setTimeout(() => load(retryCount + 1), 1000);
+      return;
+    }
     return na(`${getPairName(pair)} chart is not available at the moment`);
   }
+  
   na('');
   ctl = r.control; payout = r.payout; skew = r.serverTime - Date.now(); ch.skew = skew;
   updateBalance(r.stats.balance);
+  
   if (first) { trades = r.trades || []; first = false; }
-  setPairUI(pair);
+  
+  $('pb-txt').textContent = getPairName(pair);
+  $('pn').textContent = getPairName(pair);
+  const [f1, f2] = getFlags(pair);
+  $('pb-flag1').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f1}.svg`;
+  $('pb-flag2').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f2}.svg`;
+  
   ch.setData(r.candle, priceAt(ctl, Date.now() + skew), TFS[tf], decOf(ctl.price));
-  renderMarks(); list(); upd();
+  renderMarks();
+  list();
+  upd();
 }
 
 function select(p) {
   pair = p; localStorage.setItem('zt_pair', p);
   ctl = null; ch.marks = []; ch.C = [];
-  setPairUI(p);
+  $('pn').textContent = getPairName(p);
+  $('pb-txt').textContent = getPairName(p);
+  const [f1, f2] = getFlags(p);
+  $('pb-flag1').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f1}.svg`;
+  $('pb-flag2').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${f2}.svg`;
   load();
 }
 
@@ -596,7 +686,8 @@ setInterval(async () => {
   const r = await j('/api/live?pair=' + pair + '&tf=' + tf + '&dur=' + DUR[di].s);
   if (r.status && r.control && r.pair === pair) {
     payout = r.payout; skew = r.serverTime - Date.now(); ch.skew = skew;
-    if (r.control.since !== ctl.since) load(); else upd();
+    if (r.control.since !== ctl.since) load();
+    else upd();
   }
 }, 2500);
 
@@ -616,17 +707,20 @@ function upd() {
   $('pp').textContent = payout + '%';
 }
 
-/* Timer grid */
+/* Quotex Grid Timer Init */
 function initTimerGrid() {
   const btn = $('timerBtn'), pop = $('timerPopup'), grid = $('timerGrid'), val = $('timerVal');
   val.textContent = fmtT(DUR[di].s);
   grid.innerHTML = DUR.map((d, i) => `<button class="${i === di ? 'selected' : ''}" data-i="${i}">${d.l}</button>`).join('');
+  
   btn.onclick = e => { e.stopPropagation(); pop.classList.toggle('open'); };
   document.addEventListener('click', e => { if (!pop.contains(e.target)) pop.classList.remove('open'); });
+  
   grid.onclick = e => {
     const b = e.target.closest('button');
     if (b) {
-      di = +b.dataset.i; localStorage.setItem('zt_di', di);
+      di = +b.dataset.i;
+      localStorage.setItem('zt_di', di);
       val.textContent = fmtT(DUR[di].s);
       [...grid.children].forEach(c => c.classList.toggle('selected', c === b));
       pop.classList.remove('open');
@@ -651,10 +745,12 @@ async function trade(d) {
   const r = await post('/api/trade', {userId: S.id, pair, direction: d, amount: +$('av').value, duration: DUR[di].s});
   if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
   if (!r.status) return toast(r.message || r.code || 'Trade failed', '#ef5d4e');
+  
   trades.unshift(r.trade); updateBalance(r.newBalance);
-  renderMarks(); list();
+  renderMarks(); list(); 
   toast((d === 'buy' ? 'BUY' : 'SELL') + ' @ ' + Number(r.trade.entryPrice).toFixed(ch.dec), d === 'buy' ? '#0faf59' : '#ef5d4e');
 }
+
 $('up').onclick = () => trade('buy');
 $('dn').onclick = () => trade('sell');
 
@@ -664,20 +760,21 @@ async function settle(t) {
   if (r.status && r.trade && r.trade.status === 'closed') {
     Object.assign(t, r.trade); updateBalance(r.newBalance);
     renderMarks(); list();
-    toast(t.result === 'win' ? 'WIN +' + money(t.pnl) : t.result === 'loss' ? 'LOSS −' + money(t.amount) : 'Tie — refunded',
+    toast(t.result === 'win' ? 'WIN +' + money(t.pnl) : t.result === 'loss' ? 'LOSS −' + money(t.amount) : 'Tie — refunded', 
           t.result === 'win' ? '#0faf59' : t.result === 'loss' ? '#ef5d4e' : '#686f86');
   } else { setTimeout(() => t.busy = 0, 1500); }
 }
+
 setInterval(() => trades.forEach(t => { if (t.status === 'open' && Date.now() + skew >= t.expiryTime + 100) settle(t); }), 500);
 
 function row(t) {
   const left = Math.ceil((t.expiryTime - Date.now() - skew) / 1000);
   const o = t.status === 'open' || t.status === 'settling';
   const c = t.result === 'win' ? 'w' : t.result === 'loss' ? 'l' : 'n';
-  const buy = t.direction === 'buy';
+  const icUrl = t.direction === 'buy' ? 'https://zeetex-dashboard.vercel.app/profile/imgs/up.svg' : 'https://zeetex-dashboard.vercel.app/profile/imgs/down.svg';
   return `<div class="t">
     <div>
-      <b>${getPairName(t.pair)}</b> <span class="dirl ${buy ? 'w' : 'l'}">${ICON(buy ? 'up' : 'down')}${buy ? 'BUY' : 'SELL'}</span> <small>${DUR.find(x=>x.s===t.duration)?.l || t.duration+'s'}</small><br>
+      <b>${getPairName(t.pair)}</b> <span class="${t.direction === 'buy' ? 'w' : 'l'}"><img src="${icUrl}" class="dir-ic ${t.direction === 'buy' ? 'dir-up' : 'dir-dn'}">${t.direction === 'buy' ? 'BUY' : 'SELL'}</span> <small>${DUR.find(x=>x.s===t.duration)?.l || t.duration+'s'}</small><br>
       <small>${money(t.amount)} · ${Number(t.entryPrice).toFixed(ch.dec)}${o ? '' : ' → ' + Number(t.closePrice).toFixed(ch.dec)}</small>
     </div>
     <div class="r ${o ? '' : c}">
@@ -685,6 +782,7 @@ function row(t) {
     </div>
   </div>`;
 }
+
 function list() {
   const o = trades.filter(t => t.status === 'open' || t.status === 'settling');
   const c = trades.filter(t => t.status === 'closed').slice(0, 30);
@@ -694,6 +792,7 @@ function list() {
   $('cl-mob').innerHTML = $('cl-desk').innerHTML = cHtml;
   $('tn').textContent = $('mob-tn').textContent = o.length;
 }
+
 setInterval(() => document.querySelectorAll('[data-e]').forEach(e => e.textContent = fmtT(Math.ceil((+e.dataset.e - Date.now() - skew) / 1000))), 500);
 
 $('tfs').innerHTML = Object.keys(TFS).map(t => `<button data-t="${t}" class="${t === tf ? 'on' : ''}">${t}</button>`).join('');
@@ -711,58 +810,36 @@ $('pl').onclick = e => {
   const p = e.target.closest('.pi');
   if (p) { $('modal').classList.remove('on'); select(p.dataset.p); }
 };
+
 $('hdr-trades-btn').onclick = () => openDrawer('tradesDrawer');
 $('out').onclick = logout;
-$('logo-btn').onclick = () => { if (pair) load(); };
+$('logo-btn').onclick = () => { if(pair) load(); };
 
-/* Drawing tool */
 let drawingActive = false;
 $('tool-pen').onclick = () => {
   drawingActive = !drawingActive;
-  $('tool-pen').classList.toggle('on', drawingActive);
+  $('tool-pen').style.background = drawingActive ? 'var(--ac)' : 'var(--pn)';
   $('tool-clear').style.display = drawingActive ? 'grid' : 'none';
   ch.setDrawingMode(drawingActive);
 };
 $('tool-clear').onclick = () => ch.clearDrawings();
 
-/* Zoom: wheel, pinch and buttons.
-   Calls ch.zoomBy(factor) — this method must exist in chart.js (see notes). */
-function zoom(f) {
-  if (typeof ch.zoomBy === 'function') ch.zoomBy(f);
-  else toast('Zoom needs updated chart.js', '#ef5d4e');
-}
-$('tool-zin').onclick = () => zoom(1.25);
-$('tool-zout').onclick = () => zoom(0.8);
-const cvEl = $('cv');
-cvEl.addEventListener('wheel', e => {
-  if (drawingActive) return;
-  e.preventDefault();
-  zoom(e.deltaY < 0 ? 1.1 : 0.9);
-}, {passive: false});
-let pinchD = 0;
-const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
-cvEl.addEventListener('touchstart', e => { if (e.touches.length === 2) pinchD = dist(e.touches); }, {passive: true});
-cvEl.addEventListener('touchmove', e => {
-  if (e.touches.length === 2 && pinchD) {
-    const d = dist(e.touches);
-    zoom(d / pinchD);
-    pinchD = d;
-  }
-}, {passive: true});
-cvEl.addEventListener('touchend', () => { pinchD = 0; });
-
 (async () => {
-  setTheme(localStorage.getItem('zt_theme') || 'night');
+  const savedTheme = localStorage.getItem('zt_theme') || 'night';
+  setTheme(savedTheme);
   $('gridOpVal').textContent = gridOp;
   ch.gridOpacity = gridOp / 100;
-  updateCandleColors();
+  initCandleSwatches();
   ch.tradeDuration = DUR[di].s;
+
   initTimerGrid();
   setTimeout(async () => {
     $('preloader').classList.add('hide');
     await loadPairs();
-    upd(); list(); select(pair);
-  }, 600);
+    upd();
+    list();
+    select(pair);
+  }, 500);
 })();
 </script>
 </body>
