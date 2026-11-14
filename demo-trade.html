@@ -25,17 +25,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display"
 img{pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
 .svg-icon{filter:var(--svg-filter);transition:filter .25s}
 
-/* Preloader (Single Clean SVG) */
+/* Preloader */
 #preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.35s ease}
 #preloader.hide{opacity:0;pointer-events:none}
 #preloader img{width:46px;height:46px;margin-bottom:12px}
 #preloader span{font-size:12px;letter-spacing:1.5px;color:var(--mu);font-weight:700}
 
 /* Header */
-header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);z-index:10;border-bottom:1px solid var(--ln)}
+header{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg);z-index:10;border-bottom:1px solid var(--ln)}
 .logo-desk{display:none;cursor:pointer;height:24px}
 .sp{flex:1}
-.acc{background:var(--pn);padding:5px 12px;border-radius:10px;font-size:11px;color:var(--mu);line-height:1.25;border:1px solid var(--ln);display:flex;align-items:center;gap:8px;cursor:pointer}
+
+/* Quotex Deposit Button */
+.deposit-btn{background:#0faf59;color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:opacity .2s}
+.deposit-btn:hover{opacity:0.9}
+
+/* Header Account Badge */
+.acc{background:var(--pn);padding:5px 12px;border-radius:10px;font-size:11px;color:var(--mu);line-height:1.25;border:1px solid var(--ln);display:flex;align-items:center;gap:8px;cursor:pointer;position:relative}
 .acc img{width:20px;height:20px}
 .acc b{display:block;font-size:14px;color:var(--tx)}
 .acc i{color:#ff8a00;font-style:normal;font-weight:800;margin-right:4px;font-size:11px}
@@ -43,9 +49,28 @@ header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(-
 .acc-text-full{display:none}
 @media(min-width:640px){.acc-text-mob{display:none}.acc-text-full{display:inline}}
 
-.ib{background:var(--pn);border:1px solid var(--ln);color:var(--tx);border-radius:10px;padding:0 12px;height:38px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
-.ib img{width:16px;height:16px}
-.badge-cnt{background:var(--ac);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:700}
+/* Quotex Account Dropdown Menu */
+.acc-dropdown{position:absolute;top:calc(100% + 8px);right:0;width:310px;background:var(--pn);border:1px solid var(--ln);border-radius:14px;box-shadow:0 15px 40px rgba(0,0,0,0.5);display:none;z-index:90;padding:14px;text-align:left}
+.acc-dropdown.open{display:block}
+.acc-drop-top{display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:8px 12px;border-radius:8px;font-size:11px;font-weight:700;color:var(--mu);margin-bottom:10px}
+.acc-drop-top button{background:none;border:none;cursor:pointer;padding:2px}
+.acc-drop-top img{width:16px;height:16px}
+.user-email{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis}
+.user-uid{font-size:11px;color:var(--mu);margin-bottom:10px}
+.curr-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mu);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--ln)}
+.curr-row button{background:var(--ac);color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer}
+.acc-option{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:8px;cursor:pointer;transition:background .2s}
+.acc-option:hover{background:var(--pn2)}
+.acc-option input[type="radio"]{accent-color:var(--ac);margin-top:3px}
+.acc-option-info{flex:1;min-width:0}
+.acc-option-info b{font-size:13px;color:var(--tx);display:block}
+.acc-option-info span{font-size:14px;font-weight:700;color:var(--up)}
+.acc-actions{display:flex;gap:6px;align-items:center}
+.acc-actions button{background:none;border:none;cursor:pointer;padding:4px}
+.acc-actions img{width:15px;height:15px}
+.edit-bal-box{margin-top:6px;display:flex;gap:6px}
+.edit-bal-box input{flex:1;background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:4px 8px;color:var(--tx);font-size:13px;font-weight:700;outline:none}
+.edit-bal-box button{background:var(--ac);color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer}
 
 /* Workspace Layout */
 .workspace{display:flex;flex:1;min-height:0;overflow:hidden}
@@ -149,7 +174,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 .btn-logout{display:flex;align-items:center;gap:8px;background:rgba(239,93,78,0.12);border:1px solid rgba(239,93,78,0.3);color:#ef5d4e;padding:8px 14px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
 .btn-logout img{width:16px;height:16px;filter:brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(334deg) brightness(98%) contrast(92%)}
 
-/* Settings UI (No Emojis, Built-in Color Swatches) */
+/* Settings UI */
 .set-label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-top:8px}
 .theme-opt{background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-weight:700;font-size:14px}
 .theme-opt-left{display:flex;align-items:center;gap:10px}
@@ -166,7 +191,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 .chk-row b{display:block;font-size:13px}
 .chk-row small{color:var(--mu);font-size:11px}
 
-/* Custom Built-in Candle Color Swatches */
+/* Candle Color Swatches */
 .swatch-card{background:var(--bg);border:1px solid var(--ln);padding:10px 12px;border-radius:10px;display:flex;flex-direction:column;gap:8px}
 .swatch-card span{font-size:13px;font-weight:600}
 .swatches{display:flex;gap:8px;flex-wrap:wrap}
@@ -222,17 +247,62 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
 
 <header>
   <img src="https://zeetex-dashboard.vercel.app/profile/imgs/logo/white-full-logo.svg" class="logo-desk svg-icon" id="logo-btn" alt="Logo">
+  <button class="deposit-btn" onclick="location.href='deposit.html'">Deposit</button>
   <div class="sp"></div>
   <button class="ib" id="hdr-trades-btn">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="">
     <span>Trades</span>
     <span class="badge-cnt" id="tn">0</span>
   </button>
-  <div class="acc" id="acc-btn">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo.svg" alt="Demo">
+  
+  <!-- Quotex Account Badge & Dropdown -->
+  <div class="acc" id="accBtn">
+    <img id="hdrDemoIcon" src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo-white.svg" alt="Account">
     <div>
-      <span class="acc-text-mob"><i>DEMO</i><b id="bal-mob">$0.00</b></span>
-      <span class="acc-text-full"><i>DEMO ACCOUNT</i><b id="bal-desk">$0.00</b></span>
+      <span class="acc-text-mob"><i id="lblTypeMob">DEMO</i><b id="bal-mob">$0.00</b></span>
+      <span class="acc-text-full"><i id="lblTypeDesk">DEMO ACCOUNT</i><b id="bal-desk">$0.00</b></span>
+    </div>
+    
+    <!-- Quotex Style Account Switcher Dropdown -->
+    <div class="acc-dropdown" id="accDropdown" onclick="event.stopPropagation()">
+      <div class="acc-drop-top">
+        <span>STANDARD: +0% profit</span>
+        <button id="toggleHideBtn" title="Hide/Show balance"><img id="hideShowIcon" src="https://zeetex-dashboard.vercel.app/profile/imgs/show.svg" class="svg-icon"></button>
+      </div>
+      <div class="user-email" id="userEmailDisp">user@gmail.com</div>
+      <div class="user-uid" id="userUidDisp">ID: 12345678901234567890</div>
+      
+      <div class="curr-row">
+        <span>Currency: <b>USD</b></span>
+        <button onclick="toast('Default Currency USD', '#2b99ff')">CHANGE</button>
+      </div>
+
+      <!-- Live Account Option -->
+      <label class="acc-option" onclick="switchAccount('live')">
+        <input type="radio" name="accType" id="radioLive">
+        <div class="acc-option-info">
+          <b>Live Account</b>
+          <span id="liveBalDisp">$0.00</span>
+          <small style="color:var(--mu);font-size:10px">The daily limit is not set</small>
+        </div>
+      </label>
+
+      <!-- Demo Account Option -->
+      <label class="acc-option" onclick="switchAccount('demo')" style="margin-top:6px">
+        <input type="radio" name="accType" id="radioDemo" checked>
+        <div class="acc-option-info">
+          <b>Demo Account</b>
+          <span id="demoBalDisp">$10,000.00</span>
+          <div class="acc-actions" id="demoActions">
+            <button onclick="event.preventDefault();toggleEditDemo(event)" title="Edit balance"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" class="svg-icon"></button>
+            <button onclick="event.preventDefault();resetDemoBal(event)" title="Reset balance to $10000"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg" class="svg-icon" style="transform:rotate(90deg)"></button>
+          </div>
+          <div class="edit-bal-box" id="editBalBox" style="display:none">
+            <input type="number" id="newDemoInput" step="100" min="0">
+            <button onclick="event.preventDefault();confirmEditDemo(event)">Confirm</button>
+          </div>
+        </div>
+      </label>
     </div>
   </div>
 </header>
@@ -245,16 +315,16 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
       <span>Trade</span>
     </button>
     <button class="rail-btn" onclick="openDrawer('tradesDrawer')">
-      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="">
       <span>Trades</span>
     </button>
     <button class="rail-btn" onclick="openDrawer('settingsDrawer')">
-      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="">
       <span>Settings</span>
     </button>
     <div class="sp"></div>
     <button class="rail-btn" onclick="openDrawer('moreDrawer')" title="More & Logout">
-      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+      <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="">
       <span>More</span>
     </button>
   </nav>
@@ -280,7 +350,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
           <!-- Quotex Floating Tools -->
           <div class="qx-float-tools">
             <button class="qx-dot-btn" onclick="openDrawer('moreDrawer')" title="Menu">
-              <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="...">
+              <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="...">
             </button>
             <button class="qx-dot-btn" id="tool-pen" title="Draw Line">
               <img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" class="svg-icon" alt="Draw">
@@ -346,20 +416,20 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
   <div class="qx-timer-grid" id="timerGrid"></div>
 </div>
 
-<!-- Mobile Bottom Bar with 3 Dots -->
+<!-- Mobile Bottom Bar -->
 <nav class="mob-nav">
   <button class="active" onclick="closeAllDrawers()">
     <img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" class="svg-icon" alt="">
   </button>
   <button onclick="openDrawer('tradesDrawer')">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="">
     <span class="dot-badge" id="mob-tn">0</span>
   </button>
   <button onclick="openDrawer('settingsDrawer')">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo.svg" alt="">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="">
   </button>
   <button onclick="openDrawer('moreDrawer')">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon" alt="...">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon" alt="...">
   </button>
 </nav>
 
@@ -372,11 +442,11 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
     </div>
     <div class="drawer-body">
       <div class="more-card" onclick="openDrawer('tradesDrawer')">
-        <div class="more-card-left"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon"><span>Trades History</span></div>
+        <div class="more-card-left"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon"><span>Trades History</span></div>
         <img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" class="svg-icon" style="width:12px;height:12px;transform:rotate(90deg)">
       </div>
       <div class="more-card" onclick="$('modal').classList.add('on');closeAllDrawers()">
-        <div class="more-card-left"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo.svg"><span>Select Asset Pair</span></div>
+        <div class="more-card-left"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/level/demo-white.svg" class="svg-icon"><span>Select Asset Pair</span></div>
         <img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" class="svg-icon" style="width:12px;height:12px;transform:rotate(90deg)">
       </div>
       <div class="more-link" onclick="openDrawer('settingsDrawer')">
@@ -390,7 +460,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
       
       <div class="more-footer">
         <button class="btn-settings" onclick="openDrawer('settingsDrawer')">
-          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" class="svg-icon"> Settings
+          <img src="https://zeetex-dashboard.vercel.app/profile/imgs/setting.svg" class="svg-icon"> Settings
         </button>
         <button class="btn-logout" id="out">
           <img src="https://zeetex-dashboard.vercel.app/profile/imgs/logout.svg" alt=""> Logout
@@ -400,7 +470,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;displa
   </div>
 </div>
 
-<!-- SETTINGS DRAWER (No Emojis, Built-in Color Swatches for Candles Only) -->
+<!-- SETTINGS DRAWER -->
 <div class="drawer-overlay" id="settingsDrawer" onclick="if(event.target===this)closeAllDrawers()">
   <div class="drawer-sheet">
     <div class="drawer-head">
@@ -485,6 +555,13 @@ const API = 'https://zeetex-chart.vercel.app';
 const S = JSON.parse(localStorage.getItem('zt_session') || 'null');
 if (!S) location.href = 'sign-in.html';
 
+// 20-digit Unique ID persistent rule
+let userUid = localStorage.getItem('zt_uid');
+if (!userUid || userUid.length !== 20) {
+  userUid = Array.from({length: 20}, () => Math.floor(Math.random() * 10)).join('');
+  localStorage.setItem('zt_uid', userUid);
+}
+
 const $ = id => document.getElementById(id);
 const TFS = {'5s':5, '10s':10, '15s':15, '30s':30, '1m':60, '2m':120, '3m':180, '5m':300, '10m':600, '15m':900, '30m':1800, '1h':3600, '4h':14400, '1d':86400};
 const DUR = [
@@ -505,7 +582,13 @@ const FALLBACK = [
   {name: 'USDCOP-OTC', payout: 86}, {name: 'USDEGP-OTC', payout: 85}
 ];
 
-let pair = localStorage.getItem('zt_pair') || 'USDPKR-OTC', pairs = [], tf = localStorage.getItem('zt_tf') || '1m', di = Number(localStorage.getItem('zt_di') || 4), ctl = null, skew = 0, payout = 85, bal = 0, trades = [], seq = 0, first = true;
+let pair = localStorage.getItem('zt_pair') || 'USDPKR-OTC', pairs = [], tf = localStorage.getItem('zt_tf') || '1m', di = Number(localStorage.getItem('zt_di') || 4), ctl = null, skew = 0, payout = 85, trades = [], seq = 0, first = true;
+
+// Account & Balance States
+let accType = localStorage.getItem('zt_acc_type') || 'demo';
+let demoBal = Number(localStorage.getItem('zt_demo_bal') || 10000);
+let liveBal = Number(localStorage.getItem('zt_live_bal') || 0);
+let isHidden = false;
 
 const currencyMap = {
   'USD': 'us', 'PKR': 'pk', 'INR': 'in', 'BDT': 'bd', 'ARS': 'ar', 
@@ -529,8 +612,82 @@ function getPairName(p) {
 }
 
 const ch = new CandleChart($('cv'));
-const money = v => '$' + Number(v || 0).toFixed(2);
+const money = v => isHidden ? '$••••••' : '$' + Number(v || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 const fmtT = s => { s = Math.max(0, s); const h = Math.floor(s/3600), m = Math.floor(s%3600/60); return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(Math.floor(s%60)).padStart(2, '0'); };
+
+/* Account Dropdown & Switcher */
+function initAccountDropdown() {
+  $('userEmailDisp').textContent = S.email || 'user@zeetex.trade';
+  $('userUidDisp').textContent = 'ID: ' + userUid;
+  
+  $('accBtn').onclick = e => {
+    e.stopPropagation();
+    $('accDropdown').classList.toggle('open');
+  };
+  document.addEventListener('click', () => $('accDropdown').classList.remove('open'));
+
+  $('toggleHideBtn').onclick = e => {
+    e.stopPropagation();
+    isHidden = !isHidden;
+    $('hideShowIcon').src = isHidden ? 'https://zeetex-dashboard.vercel.app/profile/imgs/hide.svg' : 'https://zeetex-dashboard.vercel.app/profile/imgs/show.svg';
+    updateAccountUI();
+  };
+
+  updateAccountUI();
+}
+
+function updateAccountUI() {
+  const curBal = accType === 'demo' ? demoBal : liveBal;
+  $('bal-mob').textContent = money(curBal);
+  $('bal-desk').textContent = money(curBal);
+  $('lblTypeMob').textContent = accType === 'demo' ? 'DEMO' : 'LIVE';
+  $('lblTypeDesk').textContent = accType === 'demo' ? 'DEMO ACCOUNT' : 'LIVE ACCOUNT';
+
+  $('demoBalDisp').textContent = money(demoBal);
+  $('liveBalDisp').textContent = money(liveBal);
+
+  $('radioDemo').checked = (accType === 'demo');
+  $('radioLive').checked = (accType === 'live');
+}
+
+function switchAccount(type) {
+  accType = type;
+  localStorage.setItem('zt_acc_type', accType);
+  updateAccountUI();
+}
+
+function toggleEditDemo(e) {
+  e.stopPropagation();
+  const box = $('editBalBox');
+  const input = $('newDemoInput');
+  if (box.style.display === 'none') {
+    box.style.display = 'flex';
+    input.value = demoBal;
+    input.focus();
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+function confirmEditDemo(e) {
+  e.stopPropagation();
+  const val = parseFloat($('newDemoInput').value);
+  if (!isNaN(val) && val >= 0) {
+    demoBal = val;
+    localStorage.setItem('zt_demo_bal', demoBal);
+    updateAccountUI();
+    toast('Demo balance updated', '#0faf59');
+  }
+  $('editBalBox').style.display = 'none';
+}
+
+function resetDemoBal(e) {
+  e.stopPropagation();
+  demoBal = 10000;
+  localStorage.setItem('zt_demo_bal', demoBal);
+  updateAccountUI();
+  toast('Demo balance reset to $10,000.00', '#2b99ff');
+}
 
 /* Drawer & Theme Systems */
 function openDrawer(id) {
@@ -545,6 +702,14 @@ function setTheme(th) {
   document.documentElement.setAttribute('data-theme', th);
   localStorage.setItem('zt_theme', th);
   document.querySelectorAll('.theme-opt').forEach(el => el.classList.toggle('active', el.dataset.th === th));
+  
+  // Theme based Demo Icon swap
+  const demoIcon = $('hdrDemoIcon');
+  if (demoIcon) {
+    demoIcon.src = th === 'light' 
+      ? 'https://zeetex-dashboard.vercel.app/profile/imgs/level/demo-black.svg' 
+      : 'https://zeetex-dashboard.vercel.app/profile/imgs/level/demo-white.svg';
+  }
   ch.updateThemeColors();
 }
 
@@ -605,9 +770,14 @@ function toast(m, c) {
 }
 
 function updateBalance(v) {
-  bal = v;
-  $('bal-mob').textContent = money(bal);
-  $('bal-desk').textContent = money(bal);
+  if (accType === 'demo') {
+    demoBal = v;
+    localStorage.setItem('zt_demo_bal', demoBal);
+  } else {
+    liveBal = v;
+    localStorage.setItem('zt_live_bal', liveBal);
+  }
+  updateAccountUI();
 }
 
 function na(msg) { 
@@ -654,7 +824,11 @@ async function load(retryCount = 0) {
   
   na('');
   ctl = r.control; payout = r.payout; skew = r.serverTime - Date.now(); ch.skew = skew;
-  updateBalance(r.stats.balance);
+  if (r.stats && r.stats.balance !== undefined) {
+    if (accType === 'demo') demoBal = r.stats.balance;
+    else liveBal = r.stats.balance;
+  }
+  updateAccountUI();
   
   if (first) { trades = r.trades || []; first = false; }
   
@@ -742,7 +916,11 @@ function renderMarks() {
 
 async function trade(d) {
   if (!ctl || $('na').style.display === 'flex') return toast('Chart not available', '#ef5d4e');
-  const r = await post('/api/trade', {userId: S.id, pair, direction: d, amount: +$('av').value, duration: DUR[di].s});
+  const curBal = accType === 'demo' ? demoBal : liveBal;
+  const amt = +$('av').value;
+  if (amt > curBal) return toast('Insufficient balance', '#ef5d4e');
+
+  const r = await post('/api/trade', {userId: S.id, pair, direction: d, amount: amt, duration: DUR[di].s});
   if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
   if (!r.status) return toast(r.message || r.code || 'Trade failed', '#ef5d4e');
   
@@ -830,6 +1008,7 @@ $('tool-clear').onclick = () => ch.clearDrawings();
   $('gridOpVal').textContent = gridOp;
   ch.gridOpacity = gridOp / 100;
   initCandleSwatches();
+  initAccountDropdown();
   ch.tradeDuration = DUR[di].s;
 
   initTimerGrid();
