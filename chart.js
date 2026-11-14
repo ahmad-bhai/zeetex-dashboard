@@ -3,8 +3,8 @@
   const nz = s => { const x = Math.sin(s * 12.9898) * 43758.5453; return x - Math.floor(x); };
   window.priceAt = (c, t = Date.now()) => {
     if (!c) return null; if (c.dir === 'flat') return c.price;
-    const s = (t - c.since) / 1000, d = c.dir === 'up' ? 1 : -1;
-    return c.price + d * c.speed * c.vol * s * 0.05 + (nz(Math.floor(t / 500) + c.since % 97) - 0.5) * c.vol * 0.6 * c.speed * Math.min(1, s / 2);
+    const s = Math.max(0, (t - c.since) / 1000), d = c.dir === 'up' ? 1 : -1, sp = Number(c.speed) || 1, v = Number(c.vol) || 0.1;
+    return Number(c.price) + d * sp * v * s * 0.05 + (nz(Math.floor(t / 500) + c.since % 97) - 0.5) * v * 0.2 * sp * Math.min(1, s / 2);
   };
   window.decOf = p => p >= 500 ? 2 : p >= 50 ? 3 : p >= 5 ? 4 : 5;
   window.CandleChart = class {
@@ -23,7 +23,7 @@
     size() { const r = this.cv.getBoundingClientRect(), p = devicePixelRatio || 1; this.W = r.width; this.H = r.height; this.cv.width = r.width * p; this.cv.height = r.height * p; this.g.setTransform(p, 0, 0, p, 0, 0); }
     // candles: [{time,open,high,low,close}] ; shifted so the last close equals the live price
     setData(c, price, tf, dec) {
-      const sh = price - c[c.length - 1].close;
+      const sh = 0; // server candles are already the exact series
       this.C = c.map(k => ({ t: k.time, o: k.open + sh, h: k.high + sh, l: k.low + sh, c: k.close + sh }));
       this.tf = tf; this.dec = dec; this.price = this.disp = price; this.off = 0; this.lo = price * .999; this.hi = price * 1.001;
     }
@@ -61,4 +61,3 @@
     }
   };
 })();
-    
