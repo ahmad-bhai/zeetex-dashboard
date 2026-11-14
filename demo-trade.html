@@ -1,187 +1,670 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#14161f"><title>Zeetex Trade</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#14161f">
+<title>Zeetex Trade</title>
 <style>
-*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
-:root{--bg:#1c1e2b;--pn:#282b3b;--ln:#343850;--tx:#e8ebf4;--mu:#8f95ad;--up:#0faf59;--dn:#ef5d4e;--ac:#2b99ff}
-html,body{height:100%;overflow:hidden;background:var(--bg)}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-#app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
-header,.bar{display:flex;align-items:center;gap:8px;padding:8px 12px}
-header{background:#14161f}.logo{display:flex;align-items:center;gap:6px;cursor:pointer}.logo img{height:24px}.sp{flex:1}
-.acc{background:var(--pn);padding:5px 12px;border-radius:8px;font-size:11px;color:var(--mu);line-height:1.3}.acc b{display:block;font-size:15px;color:var(--tx)}.acc i{color:#ff8a00;font-style:normal;font-weight:700;margin-right:4px}
-.ib{background:var(--pn);border:0;color:var(--tx);border-radius:8px;padding:0 12px;min-height:40px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px}.ib img{width:16px;height:16px;filter:brightness(0) invert(1)}
-.bar{overflow-x:auto;scrollbar-width:none}.bar::-webkit-scrollbar{display:none}
-.pairbtn{flex:none;display:flex;gap:6px;align-items:center;background:var(--pn);border:0;color:var(--tx);padding:0 14px;min-height:40px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
-.tfs{display:flex;gap:4px}.tfs button{flex:none;background:none;border:1px solid var(--ln);color:var(--mu);min-width:40px;min-height:40px;border-radius:8px;cursor:pointer;font-size:12px;padding:0 8px}.tfs .on{background:var(--ac);border-color:var(--ac);color:#fff}
-.body{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(160px,1fr) auto;min-height:0}
-.chart{position:relative;min-height:0;min-width:0;background:#14161f}.chart canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
-#loader{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;color:var(--tx);font-weight:600;font-size:15px;gap:12px}
-#loader img{width:42px;height:42px}
-#na{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:clamp(15px,3.5vw,20px);color:var(--mu);background:var(--bg);z-index:2}
-.ttl{position:absolute;top:6px;left:10px;font-size:12px;color:var(--mu);pointer-events:none;z-index:3}
-.panel{background:var(--pn);padding:10px 12px;display:flex;flex-direction:column;gap:10px;min-height:0}
-.ph{display:flex;justify-content:space-between;font-weight:700;font-size:15px}.ph span:last-child{color:#ff8a00}
-.fldrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fld{border:1px solid var(--ln);border-radius:8px;padding:6px 8px;position:relative}.fld small{position:absolute;top:-8px;left:8px;background:var(--pn);padding:0 4px;color:var(--mu);font-size:11px}
-.fld div{display:flex;align-items:center;gap:6px;min-height:34px}.fld select,.fld input{flex:1;min-width:0;width:100%;background:none;border:0;color:var(--tx);font-size:16px;outline:0}.fld input{text-align:center}.fld select option{background:var(--pn)}
-.fld button{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:var(--ln);color:var(--tx);cursor:pointer;display:grid;place-items:center}.fld button img{width:16px;height:16px;filter:brightness(0) invert(1)}
-.row{display:flex;justify-content:space-between;font-size:13px;color:var(--mu)}.row b{color:var(--up)}
-.go{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.go button{display:flex;justify-content:space-between;align-items:center;border:0;border-radius:10px;padding:0 14px;min-height:52px;color:#fff;font-size:17px;font-weight:700;cursor:pointer}
-.go button img{width:22px;height:22px;filter:brightness(0) invert(1)}
-.go .u{background:var(--up)}.go .d{background:var(--dn)}.go span{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center}.go button:active{transform:scale(.97)}
-#tr{display:none;background:var(--pn)}#tr h5{color:var(--mu);font-size:12px;margin:6px 0}
-.t{display:grid;grid-template-columns:1fr auto;padding:9px 0;border-top:1px solid var(--ln);font-size:13px}.t small{color:var(--mu)}.t .r{text-align:right;font-weight:700}.w{color:var(--up)}.l{color:var(--dn)}.n{color:var(--mu)}
-#tr.on{display:block;position:fixed;left:0;right:0;bottom:0;max-height:65%;overflow:auto;padding:14px 14px calc(14px + env(safe-area-inset-bottom));border-radius:14px 14px 0 0;z-index:15;box-shadow:0 -10px 40px #0009}
-#modal{position:fixed;inset:0;background:rgba(10,11,18,.85);display:none;z-index:20;padding:12px}#modal.on{display:block}
-#modal .in{max-width:520px;margin:0 auto;background:var(--bg);border-radius:12px;max-height:100%;overflow:auto;padding:14px}
-.pi{display:flex;justify-content:space-between;align-items:center;padding:0 10px;min-height:52px;border-bottom:1px solid var(--ln);cursor:pointer}.pi:hover{background:var(--pn)}.pi div{display:flex;align-items:center;gap:10px}.pi img{width:22px;height:16px;border-radius:2px}.pi em{color:#ff8a00;font-style:normal}
-#toast{position:fixed;top:calc(60px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:11px 18px;border-radius:8px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:30;max-width:92%;text-align:center}
-@media (min-aspect-ratio:1/1) and (min-width:640px){
- .body{grid-template-columns:minmax(0,1fr) clamp(250px,30vw,320px);grid-template-rows:minmax(0,1fr)}
- .panel{overflow-y:auto;padding:14px;gap:14px}.fldrow{grid-template-columns:1fr;gap:16px}
- #tr{display:block;flex:1}#tr.on{position:static;max-height:none;padding:0;box-shadow:none;border-radius:0}#tb{display:none}
+/* Base & Variables */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #14161f; --pn: #1e2130; --ln: #2a2e42; --tx: #e8ebf4; --mu: #8f95ad;
+  --up: #0faf59; --dn: #ef5d4e; --ac: #2b99ff;
 }
-@media (max-height:480px){header{padding:4px 12px}.bar{padding:4px 12px}.ib,.pairbtn,.tfs button{min-height:34px}.go button{min-height:44px}}
-</style></head>
-<body><div id="app">
+html, body { height: 100%; overflow: hidden; background: var(--bg); }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--tx);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  display: flex; flex-direction: column;
+}
+/* Prevent image dragging & selection */
+img { pointer-events: none; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+
+/* Preloader */
+#preloader {
+  position: fixed; inset: 0; background: var(--bg); z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.4s ease;
+}
+#preloader.hide { opacity: 0; pointer-events: none; }
+#preloader img { width: 50px; height: 50px; margin-bottom: 16px; }
+#preloader span { font-size: 14px; color: var(--mu); font-weight: 500; }
+
+/* Header */
+header { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg); z-index: 10; }
+.logo-desk { display: none; cursor: pointer; height: 24px; }
+.sp { flex: 1; }
+.ib {
+  background: var(--pn); border: 1px solid var(--ln); color: var(--tx);
+  border-radius: 8px; padding: 0 12px; height: 36px; cursor: pointer;
+  font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.ib img { width: 16px; height: 16px; }
+.acc {
+  background: var(--pn); padding: 4px 10px; border-radius: 8px; font-size: 11px;
+  color: var(--mu); line-height: 1.3; border: 1px solid var(--ln); min-width: 80px;
+}
+.acc b { display: block; font-size: 14px; color: var(--tx); }
+.acc i { color: #ff8a00; font-style: normal; font-weight: 700; margin-right: 4px; }
+
+/* Top Bar (Pairs & TFs) */
+.bar { display: flex; align-items: center; gap: 8px; padding: 0 12px 8px; overflow-x: auto; scrollbar-width: none; z-index: 10; }
+.bar::-webkit-scrollbar { display: none; }
+.pairbtn {
+  flex: none; display: flex; gap: 8px; align-items: center; background: var(--pn);
+  border: 1px solid var(--ln); color: var(--tx); padding: 0 12px; height: 38px;
+  border-radius: 8px; font-weight: 700; cursor: pointer; white-space: nowrap; font-size: 14px;
+}
+.pairbtn img.flag { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
+.tfs { display: flex; gap: 4px; }
+.tfs button {
+  flex: none; background: var(--pn); border: 1px solid var(--ln); color: var(--mu);
+  min-width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 12px; padding: 0 8px;
+}
+.tfs .on { background: var(--ac); border-color: var(--ac); color: #fff; }
+
+/* Main Layout */
+.body { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.chart-area { position: relative; flex: 1; min-height: 200px; display: flex; flex-direction: column; }
+.canvas-wrap { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; display: block; }
+#pending-anim { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; z-index: 5; pointer-events: none; }
+#pending-anim img { width: 60px; height: 60px; animation: spin 2s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.ttl { position: absolute; top: 8px; left: 12px; font-size: 12px; color: var(--mu); pointer-events: none; z-index: 2; background: rgba(20,22,31,0.6); padding: 4px 8px; border-radius: 4px; }
+#na { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; text-align: center; padding: 24px; font-size: 16px; color: var(--mu); background: var(--bg); z-index: 6; }
+#na span { font-weight: bold; color: var(--tx); }
+
+/* Drawing Toolbar */
+.draw-tools { display: flex; gap: 8px; padding: 8px 12px; background: var(--pn); border-top: 1px solid var(--ln); border-bottom: 1px solid var(--ln); z-index: 10; }
+.draw-tools button { background: var(--bg); border: 1px solid var(--ln); border-radius: 6px; padding: 6px 12px; color: var(--mu); display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
+.draw-tools button.active { background: var(--ac); color: #fff; border-color: var(--ac); }
+.draw-tools button img { width: 14px; height: 14px; }
+.draw-tools .sp { flex: 1; }
+.draw-tools button.clear { color: var(--dn); }
+
+/* Bottom Panel (Trade Controls) */
+.panel { background: var(--pn); padding: 10px 12px; display: flex; flex-direction: column; gap: 10px; z-index: 10; }
+.ph { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; }
+.ph span:last-child { color: #ff8a00; }
+.fldrow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fld { border: 1px solid var(--ln); border-radius: 8px; padding: 4px 8px; position: relative; background: var(--bg); }
+.fld small { position: absolute; top: -8px; left: 8px; background: var(--pn); padding: 0 4px; color: var(--mu); font-size: 10px; }
+.fld div { display: flex; align-items: center; gap: 6px; min-height: 34px; }
+.fld select, .fld input { flex: 1; min-width: 0; width: 100%; background: none; border: 0; color: var(--tx); font-size: 15px; outline: 0; font-weight: 600; }
+.fld input { text-align: center; }
+.fld select option { background: var(--pn); }
+.fld button { flex: none; width: 28px; height: 28px; border-radius: 6px; border: 0; background: var(--pn); color: var(--tx); cursor: pointer; display: grid; place-items: center; }
+.fld button img { width: 14px; height: 14px; }
+.row { display: flex; justify-content: space-between; font-size: 13px; color: var(--mu); }
+.row b { color: var(--up); }
+.go { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.go button { display: flex; justify-content: center; align-items: center; gap: 8px; border: 0; border-radius: 8px; height: 46px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
+.go .u { background: var(--up); } .go .d { background: var(--dn); }
+.go button img { width: 18px; height: 18px; }
+
+/* Modals */
+#modal { position: fixed; inset: 0; background: rgba(10,11,18,0.85); display: none; z-index: 50; padding: 20px; align-items: center; justify-content: center; }
+#modal.on { display: flex; }
+#modal .in { width: 100%; max-width: 400px; background: var(--bg); border-radius: 12px; max-height: 80vh; display: flex; flex-direction: column; border: 1px solid var(--ln); overflow: hidden; }
+.in-header { display: flex; justify-content: space-between; align-items: center; padding: 14px; border-bottom: 1px solid var(--ln); }
+.in-header button { background: none; border: none; cursor: pointer; }
+.in-header button img { width: 18px; height: 18px; }
+#pl { overflow-y: auto; flex: 1; }
+.pi { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--ln); cursor: pointer; transition: background 0.2s; }
+.pi:hover { background: var(--pn); }
+.pi div { display: flex; align-items: center; gap: 10px; }
+.pi img.flag { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+.pi em { color: #ff8a00; font-style: normal; font-weight: bold; }
+
+/* Trades List */
+#tr { display: none; background: var(--pn); position: fixed; left: 0; right: 0; bottom: 0; max-height: 60%; overflow: auto; padding: 14px 14px calc(14px + env(safe-area-inset-bottom)); border-radius: 14px 14px 0 0; z-index: 40; box-shadow: 0 -10px 40px #0009; }
+#tr.on { display: block; }
+#tr h5 { color: var(--mu); font-size: 12px; margin: 10px 0 4px; display: flex; justify-content: space-between; }
+.t { display: grid; grid-template-columns: 1fr auto; padding: 10px 0; border-top: 1px solid var(--ln); font-size: 13px; }
+.t small { color: var(--mu); }
+.t .r { text-align: right; font-weight: 700; }
+.w { color: var(--up); } .l { color: var(--dn); } .n { color: var(--mu); }
+
+/* Desktop Layout */
+@media (min-width: 768px) {
+  .logo-desk { display: block; }
+  .body { display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: minmax(0, 1fr); }
+  .chart-area { height: 100%; }
+  .draw-tools { border-top: none; }
+  .panel { height: 100%; overflow-y: auto; border-left: 1px solid var(--ln); padding: 16px; gap: 16px; }
+  .fldrow { grid-template-columns: 1fr; gap: 16px; }
+  #tb { display: none; }
+  #tr { display: flex; flex-direction: column; position: static; max-height: 300px; padding: 0; box-shadow: none; border-radius: 0; background: transparent; margin-top: 10px; }
+  .go button { height: 52px; font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Preloader -->
+<div id="preloader">
+  <img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg" alt="Loading">
+  <span>Loading...</span>
+</div>
+
+<!-- Header -->
 <header>
-<div class="logo" id="logoBtn" title="Market / Refresh"><img src="/logo.svg" alt="Logo"></div>
-<div class="logo">ZEE<b>TEX</b></div><div class="sp"></div>
-<button class="ib" id="tb"><img src="/profile/imgs/more.svg" alt=""> Trades <span id="tn">0</span></button>
-<div class="acc"><i>DEMO</i>Balance<b id="bal">$0.00</b></div>
-<button class="ib" id="out">Logout</button>
+  <img src="https://zeetex-dashboard.vercel.app/logo.svg" class="logo-desk" id="logo-btn" style="filter: brightness(0) invert(1);" alt="Logo">
+  <div class="sp"></div>
+  <button class="ib" id="tb">Trades <span id="tn">0</span></button>
+  <div class="acc">
+    <i>DEMO</i>Balance<b id="bal">$0.00</b>
+  </div>
+  <button class="ib" id="out" title="Logout">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/left.svg" style="transform: rotate(180deg); filter: brightness(0) invert(1);" alt="Out">
+  </button>
 </header>
-<div class="bar"><button class="pairbtn" id="pb">Loading…</button><div class="tfs" id="tfs"></div></div>
+
+<!-- Top Bar -->
+<div class="bar">
+  <button class="pairbtn" id="pb">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag1">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg" class="flag" id="pb-flag2">
+    <span id="pb-txt">Loading...</span> ▾
+  </button>
+  <div class="tfs" id="tfs"></div>
+</div>
+
+<!-- Main Area -->
 <div class="body">
- <div class="chart">
-  <canvas id="cv"></canvas>
-  <div id="loader"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg" alt=""><span>Loading...</span></div>
-  <div class="ttl" id="ttl"></div><h2 id="na"></h2>
- </div>
- <aside class="panel">
-  <div class="ph"><span id="pn">—</span><span id="pp">85%</span></div>
-  <div class="fldrow">
-   <div class="fld"><small>Trade time</small><div><select id="dv"></select></div></div>
-   <div class="fld"><small>Investment ($)</small><div><button id="am"><img src="/profile/imgs/minus.svg" alt=""></button><input id="av" type="number" inputmode="decimal" min="1" value="10"><button id="ap"><img src="/profile/imgs/plus.svg" alt=""></button></div></div>
+  <div class="chart-area">
+    <div class="canvas-wrap">
+      <canvas id="cv"></canvas>
+      <div class="ttl" id="ttl"></div>
+      <div id="pending-anim"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/pending.png" alt="Pending"></div>
+      <h2 id="na"></h2>
+    </div>
+    <!-- Drawing Toolbar -->
+    <div class="draw-tools">
+      <button id="tool-pen"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" style="filter: brightness(0) invert(1);" alt="Pen"> Draw</button>
+      <button id="tool-clear" class="clear"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" style="filter: brightness(0) invert(1);" alt="Clear"> Clear</button>
+    </div>
   </div>
-  <div class="row"><span>Profit if win</span><b id="po">$0.00</b></div>
-  <div class="go">
-   <button class="u" id="up">UP <span><img src="/profile/imgs/buy.svg" alt=""></span></button>
-   <button class="d" id="dn">DOWN <span><img src="/profile/imgs/sell.svg" alt=""></span></button>
+
+  <!-- Side/Bottom Panel -->
+  <aside class="panel">
+    <div class="ph"><span id="pn">—</span><span id="pp">85%</span></div>
+    <div class="fldrow">
+      <div class="fld">
+        <small>Trade time</small>
+        <div><select id="dv"></select></div>
+      </div>
+      <div class="fld">
+        <small>Investment ($)</small>
+        <div>
+          <button id="am"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/minus.svg" style="filter: brightness(0) invert(1);" alt="-"></button>
+          <input id="av" type="number" inputmode="decimal" min="1" value="10">
+          <button id="ap"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/plus.svg" style="filter: brightness(0) invert(1);" alt="+"></button>
+        </div>
+      </div>
+    </div>
+    <div class="row"><span>Profit if win</span><b id="po">$0.00</b></div>
+    <div class="go">
+      <button class="u" id="up"><img src="https://zeetex-dashboard.vercel.app/imgs/up.svg" style="filter: brightness(0) invert(1);" alt="Up"> UP</button>
+      <button class="d" id="dn"><img src="https://zeetex-dashboard.vercel.app/imgs/down.svg" style="filter: brightness(0) invert(1);" alt="Down"> DOWN</button>
+    </div>
+    <div id="tr">
+      <h5>OPEN TRADES</h5><div id="ol"></div>
+      <h5>CLOSED</h5><div id="cl"></div>
+    </div>
+  </aside>
+</div>
+
+<!-- Pair Selector Modal -->
+<div id="modal">
+  <div class="in">
+    <div class="in-header">
+      <b>Select trade pair</b>
+      <button id="mc"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" style="filter: brightness(0) invert(1);" alt="Close"></button>
+    </div>
+    <div id="pl"></div>
   </div>
-  <div id="tr"><h5>OPEN TRADES</h5><div id="ol"></div><h5>CLOSED</h5><div id="cl"></div></div>
- </aside>
-</div></div>
-<div id="modal"><div class="in"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b>Select trade pair</b><button class="ib" id="mc"><img src="/profile/imgs/multiply.svg" alt=""></button></div><div id="pl"></div></div></div>
-<div id="toast"></div>
-<script src="chart.js"></script>
+</div>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); padding:11px 18px; border-radius:8px; font-weight:700; opacity:0; transition:opacity .3s; pointer-events:none; z-index:100; max-width:92%; text-align:center; color:#fff;"></div>
+
 <script>
-const API='https://zeetex-chart.vercel.app',S=JSON.parse(localStorage.getItem('zt_session')||'null');if(!S)location.href='sign-in.html';
-const $=id=>document.getElementById(id);
-const TFS={'5s':5,'10s':10,'15s':15,'30s':30,'1m':60,'2m':120,'3m':180,'5m':300,'10m':600,'15m':900,'30m':1800,'1h':3600,'4h':14400,'1d':86400};
-const DUR=[5,10,15,30,60,120,300,600,900,1800,3600,7200,14400],dl=s=>s>=3600?s/3600+'h':s>=60?s/60+'m':s+'s';
-const FALLBACK=[{name:'USDPKR-OTC',payout:85},{name:'USDINR-OTC',payout:85},{name:'USDBDT-OTC',payout:85}];
-let pair=localStorage.getItem('zt_pair')||'USDPKR-OTC',pairs=[],tf=localStorage.getItem('zt_tf')||'1m',di=Number(localStorage.getItem('zt_di')||4),ctl=null,skew=0,payout=85,bal=0,trades=[],seq=0,first=true;
+// Configuration
+const API = 'https://zeetex-chart.vercel.app';
+const S = JSON.parse(localStorage.getItem('zt_session') || 'null');
+if (!S) location.href = 'sign-in.html';
 
-const ch=new CandleChart($('cv')),money=v=>'$'+Number(v||0).toFixed(2),fmtT=s=>{s=Math.max(0,s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(Math.floor(s%60)).padStart(2,'0')};
-const j=async(p,o)=>{const r=await fetch(API+p,o);try{return await r.json()}catch(e){return{status:false,code:'BAD_RESPONSE'}}};
-const post=(p,b)=>j(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
-const logout=()=>{localStorage.removeItem('zt_session');location.href='sign-in.html'};
-function toast(m,c){const t=$('toast');t.textContent=m;t.style.background=c;t.style.opacity=1;clearTimeout(t.h);t.h=setTimeout(()=>t.style.opacity=0,2800)}
+const $ = id => document.getElementById(id);
+const TFS = {'5s':5, '10s':10, '15s':15, '30s':30, '1m':60, '2m':120, '3m':180, '5m':300, '10m':600, '15m':900, '30m':1800, '1h':3600, '4h':14400, '1d':86400};
+const DUR = [5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600, 7200, 14400];
+const dl = s => s >= 3600 ? s/3600 + 'h' : s >= 60 ? s/60 + 'm' : s + 's';
 
-function getFlag(p){const base=p.replace('-OTC','').split('/')[0]||p.substring(0,3);const map={'USD':'us','PKR':'pk','INR':'in','BDT':'bd','ARS':'ar','MXN':'mx','BRL':'br','NGN':'ng','NZD':'nz','COP':'co','EGP':'eg'};return map[base]||'us'}
-const nm=p=>p.replace('-OTC','').replace(/^(...)(...)$/,'$1/$2')+' (OTC)';
+const FALLBACK = [
+  {name: 'USDPKR-OTC', payout: 85}, {name: 'USDINR-OTC', payout: 85}, 
+  {name: 'USDBDT-OTC', payout: 85}, {name: 'USDARS-OTC', payout: 85},
+  {name: 'USDMXN-OTC', payout: 85}, {name: 'USDBRL-OTC', payout: 85},
+  {name: 'USDNGN-OTC', payout: 85}, {name: 'NZDCAD-OTC', payout: 85},
+  {name: 'USDCOP-OTC', payout: 85}, {name: 'USDEGP-OTC', payout: 85}
+];
 
-function na(msg){
- const el=$('na');
- if(msg){el.style.display='flex';el.textContent=msg;$('loader').style.display='none'}
- else{el.style.display='none';el.textContent=''}
+let pair = '', pairs = [], tf = '1m', di = 4, ctl = null, skew = 0, payout = 85, bal = 0, trades = [], seq = 0, first = true;
+let isDrawing = false;
+let drawings = [];
+let currentDraw = null;
+
+const ch = new CandleChart($('cv'));
+const money = v => '$' + Number(v || 0).toFixed(2);
+const fmtT = s => { s = Math.max(0, s); const h = Math.floor(s/3600), m = Math.floor(s%3600/60); return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(Math.floor(s%60)).padStart(2, '0'); };
+
+// Disable context menu globally for images and canvas to prevent long-press saving
+document.addEventListener('contextmenu', e => { if(e.target.tagName === 'IMG' || e.target.tagName === 'CANVAS') e.preventDefault(); });
+
+// API Helpers
+const j = async (p, o) => { 
+  const r = await fetch(API + p, o); 
+  try { return await r.json() } catch(e) { return {status: false, code: 'BAD_RESPONSE'} } 
+};
+const post = (p, b) => j(p, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(b)});
+const logout = () => { localStorage.removeItem('zt_session'); location.href = 'sign-in.html'; };
+
+// UI Helpers
+function toast(m, c) { 
+  const t = $('toast'); t.textContent = m; t.style.background = c || '#2b99ff'; t.style.opacity = 1; 
+  clearTimeout(t.h); t.h = setTimeout(() => t.style.opacity = 0, 2800); 
 }
 
-async function initUI(){
- $('tfs').innerHTML=Object.keys(TFS).map(t=>`<button data-t="${t}" class="${t===tf?'on':''}">${t}</button>`).join('');
- $('dv').innerHTML=DUR.map((d,i)=>`<option ${i===di?'selected':''}>${dl(d)}</option>`).join('');
- try{const r=await j('/api/live');pairs=r.status&&r.pairs&&r.pairs.length?r.pairs:FALLBACK}catch(e){pairs=FALLBACK}
- $('pl').innerHTML=pairs.map(p=>`<div class="pi" data-p="${p.name}"><div><img src="/profile/imgs/flag/flag-${getFlag(p.name)}.svg" onerror="this.style.display='none'"><b>${nm(p.name)}</b></div><span>Profit <em>${p.payout}%</em></span></div>`).join('');
+function getFlagCode(name) {
+  if (name.startsWith('USD')) return 'us';
+  if (name.startsWith('EUR')) return 'eu';
+  if (name.startsWith('GBP')) return 'gb';
+  if (name.startsWith('CAD')) return 'ca';
+  if (name.startsWith('NZD')) return 'nz';
+  return 'us'; // Default
 }
 
-async function load(){
- const my=++seq;
- $('loader').style.display='flex';
- try{
-  const r=await j(`/api/chart/${pair}?id=${S.id}&tf=${tf}`);
-  $('loader').style.display='none';
-  if(my!==seq)return;
-  if(['USER_NOT_FOUND','USER_BLOCKED'].includes(r.code))return logout();
-  if(r.status===false){
-    const pairName=r.pair||pair;
-    return na(`${pairName} chart is not available at the moment`);
+function getPairName(p) {
+  const clean = p.replace('-OTC', '');
+  const base = clean.slice(0, 3);
+  const quote = clean.slice(3);
+  return `${base}/${quote}(OTC)`;
+}
+
+function na(msg) { 
+  if (msg) {
+    $('na').style.display = 'flex'; 
+    $('na').innerHTML = `<span>${msg}</span>`; 
+    $('pending-anim').style.display = 'none';
+  } else {
+    $('na').style.display = 'none'; 
   }
-  if(!r.candle||!r.candle.length)return na(`${pair} chart is not available at the moment`);
-  na('');ctl=r.control;payout=r.payout;skew=r.serverTime-Date.now();ch.skew=skew;bal=r.stats.balance;$('bal').textContent=money(bal);
-  if(first){trades=r.trades||[];first=false}
-  ch.setData(r.candle,priceAt(ctl,Date.now()+skew),TFS[tf],decOf(ctl.price));renderMarks();list();upd();
- }catch(e){
-  $('loader').style.display='none';
-  if(my===seq)na(`${pair} chart is not available at the moment`);
- }
 }
 
-function select(p){
- pair=p;localStorage.setItem('zt_pair',p);
- ctl=null;ch.marks=[];$('pb').textContent=nm(p)+' ▾';$('pn').textContent=nm(p);na('');load();
+async function loadPairs() {
+  try {
+    const r = await j('/api/live');
+    pairs = (r.status && r.pairs && r.pairs.length) ? r.pairs : FALLBACK;
+  } catch(e) { pairs = FALLBACK; }
+  
+  // Duplicate pairs as requested (e.g. USD/BRL(OTC) shown twice)
+  const duplicatedPairs = [...pairs, ...pairs];
+
+  $('pl').innerHTML = duplicatedPairs.map(p => {
+    const flag = getFlagCode(p.name);
+    const name = getPairName(p.name);
+    return `<div class="pi" data-p="${p.name}">
+      <div>
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg" class="flag" alt="flag">
+        <b>${name}</b>
+      </div>
+      <span>Profit <em>${p.payout}%</em></span>
+    </div>`;
+  }).join('');
 }
 
-setInterval(async()=>{if(!pair||!ctl)return;try{const r=await j('/api/live?pair='+pair);if(r.status&&r.control&&r.pair===pair){payout=r.payout;skew=r.serverTime-Date.now();ch.skew=skew;if(r.control.since!==ctl.since)load();else upd()}}catch(e){}},2000);
-setInterval(()=>{if(ctl&&ch.C.length){const n=Date.now()+skew,p=priceAt(ctl,n);ch.tick(p,n);$('ttl').textContent=nm(pair)+'  '+p.toFixed(ch.dec)}},300);
+// ONE call gives candles + control + payout + balance + my trades
+async function load() {
+  const my = ++seq;
+  $('pending-anim').style.display = 'flex';
+  $('na').style.display = 'none';
 
-function upd(){const a=+$('av').value||0;$('po').textContent=money(a*payout/100);$('pp').textContent=payout+'%'}
-$('dv').onchange=e=>{di=e.target.selectedIndex;localStorage.setItem('zt_di',di)};
-$('am').onclick=()=>{$('av').value=Math.max(1,(+$('av').value||1)-5);upd()};
-$('ap').onclick=()=>{$('av').value=(+$('av').value||0)+5;upd()};
-$('av').oninput=upd;
-
-function renderMarks(){ch.marks=trades.filter(t=>t.status==='open'&&t.pair===pair).map(t=>({price:t.entryPrice,dir:t.direction,amt:t.amount,exp:t.expiryTime}))}
-
-async function trade(d){
- if(!ctl||$('na').style.display==='flex')return toast('Chart not available','#ef5d4e');
- try{
-  const r=await post('/api/trade',{userId:S.id,pair,direction:d,amount:+$('av').value,duration:DUR[di]});
-  if(['USER_NOT_FOUND','USER_BLOCKED'].includes(r.code))return logout();
-  if(!r.status)return toast(r.message||r.code||'Trade failed','#ef5d4e');
-  trades.unshift(r.trade);bal=r.newBalance;$('bal').textContent=money(bal);renderMarks();list();toast((d==='buy'?'UP':'DOWN')+' trade placed @ '+Number(r.trade.entryPrice).toFixed(ch.dec),'#2b99ff');
- }catch(e){toast('Network error','#ef5d4e')}
+  try {
+    const r = await j(`/api/chart/${pair}?id=${S.id}&tf=${tf}`);
+    if (my !== seq) return;
+    
+    if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
+    
+    if (r.status === false || !r.candle || !r.candle.length) {
+      $('pending-anim').style.display = 'none';
+      return na(`${getPairName(pair)} chart is not available at the moment`);
+    }
+    
+    na('');
+    $('pending-anim').style.display = 'none';
+    
+    ctl = r.control; payout = r.payout; skew = r.serverTime - Date.now(); ch.skew = skew;
+    bal = r.stats.balance; $('bal').textContent = money(bal);
+    
+    if (first) { trades = r.trades || []; first = false; }
+    
+    // Update pair button
+    $('pb-txt').textContent = getPairName(pair);
+    const flag = getFlagCode(pair);
+    $('pb-flag1').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg`;
+    $('pb-flag2').style.display = 'none'; // Hide second flag on button for simplicity
+    
+    ch.setData(r.candle, priceAt(ctl, Date.now() + skew), TFS[tf], decOf(ctl.price));
+    renderMarks();
+    list();
+    upd();
+  } catch(e) {
+    if (my === seq) {
+      $('pending-anim').style.display = 'none';
+      na(`${getPairName(pair)} chart is not available at the moment`);
+    }
+  }
 }
-$('up').onclick=()=>trade('buy');
-$('dn').onclick=()=>trade('sell');
 
-async function settle(t){if(t.busy)return;t.busy=1;
- try{const r=await post('/api/settle',{userId:S.id,tradeId:t.id});
-  if(r.status&&r.trade&&r.trade.status==='closed'){Object.assign(t,r.trade);bal=r.newBalance;$('bal').textContent=money(bal);renderMarks();list();
-   toast(t.result==='win'?'WIN +'+money(t.pnl):t.result==='loss'?'LOSS −'+money(t.amount):'Tie — refunded',t.result==='win'?'#0faf59':t.result==='loss'?'#ef5d4e':'#686f86')}
-  else setTimeout(()=>t.busy=0,1500)}catch(e){setTimeout(()=>t.busy=0,1500)}}
-setInterval(()=>trades.forEach(t=>{if(t.status==='open'&&Date.now()+skew>=t.expiryTime+100)settle(t)}),500);
+function select(p) {
+  pair = p; ctl = null; ch.marks = []; drawings = []; ch.clearDrawings();
+  $('pn').textContent = getPairName(p);
+  na(''); load();
+}
 
-function row(t){const left=Math.ceil((t.expiryTime-Date.now()-skew)/1000),o=t.status==='open'||t.status==='settling',c=t.result==='win'?'w':t.result==='loss'?'l':'n';
- return `<div class="t"><div><b>${nm(t.pair)}</b> <span class="${t.direction==='buy'?'w':'l'}">${t.direction==='buy'?'↑ UP':'↓ DOWN'}</span> <small>${dl(t.duration)}</small><br><small>${money(t.amount)} · ${Number(t.entryPrice).toFixed(ch.dec)}${o?'':' → '+Number(t.closePrice).toFixed(ch.dec)}</small></div><div class="r ${o?'':c}">${o?`<span data-e="${t.expiryTime}">${fmtT(left)}</span>`:(t.result==='tie'?'Tie':(t.pnl>0?'+':'−')+money(Math.abs(t.pnl)))}</div></div>`}
-function list(){const o=trades.filter(t=>t.status==='open'||t.status==='settling'),c=trades.filter(t=>t.status==='closed').slice(0,30);$('ol').innerHTML=o.map(row).join('')||'<small class="n">No open trades</small>';$('cl').innerHTML=c.map(row).join('')||'<small class="n">No closed trades</small>';$('tn').textContent=o.length}
-setInterval(()=>document.querySelectorAll('[data-e]').forEach(e=>e.textContent=fmtT(Math.ceil((+e.dataset.e-Date.now()-skew)/1000))),500);
+// Periodic refresh of control
+setInterval(async () => {
+  if (!pair || !ctl) return;
+  try {
+    const r = await j('/api/live?pair=' + pair);
+    if (r.status && r.control && r.pair === pair) {
+      payout = r.payout; skew = r.serverTime - Date.now(); ch.skew = skew;
+      if (r.control.since !== ctl.since) load();
+      else upd();
+    }
+  } catch(e) {}
+}, 2000);
 
-$('tfs').onclick=e=>{if(e.target.dataset.t&&pair){tf=e.target.dataset.t;localStorage.setItem('zt_tf',tf);[...$('tfs').children].forEach(b=>b.classList.toggle('on',b.dataset.t===tf));load()}};
-$('logoBtn').onclick=()=>load();
-$('pb').onclick=()=>$('modal').classList.add('on');
-$('mc').onclick=()=>$('modal').classList.remove('on');
-$('pl').onclick=e=>{const p=e.target.closest('.pi');if(p){$('modal').classList.remove('on');select(p.dataset.p)}};
-$('tb').onclick=()=>$('tr').classList.toggle('on');
-$('out').onclick=logout;
+// Fast tick for real-time price
+setInterval(() => {
+  if (ctl && ch.C.length) {
+    const n = Date.now() + skew, p = priceAt(ctl, n);
+    ch.tick(p, n);
+    $('ttl').textContent = getPairName(pair) + '  ' + p.toFixed(ch.dec);
+  }
+}, 300);
 
-(async()=>{
-  await initUI();
-  upd();
-  list();
-  select(pair);
+function upd() {
+  const a = +$('av').value || 0;
+  $('po').textContent = money(a * payout / 100);
+  $('pp').textContent = payout + '%';
+}
+
+$('dv').onchange = e => { di = e.target.selectedIndex; };
+$('am').onclick = () => { $('av').value = Math.max(1, (+$('av').value || 1) - 5); upd(); };
+$('ap').onclick = () => { $('av').value = (+$('av').value || 0) + 5; upd(); };
+$('av').oninput = upd;
+
+function renderMarks() {
+  ch.marks = trades.filter(t => t.status === 'open' && t.pair === pair).map(t => ({
+    price: t.entryPrice, dir: t.direction, amt: t.amount, exp: t.expiryTime
+  }));
+}
+
+async function trade(d) {
+  if (!ctl || $('na').style.display === 'flex') return toast('Chart not available', '#ef5d4e');
+  
+  try {
+    const r = await post('/api/trade', {userId: S.id, pair, direction: d, amount: +$('av').value, duration: DUR[di]});
+    if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
+    if (!r.status) return toast(r.message || r.code || 'Trade failed', '#ef5d4e');
+    
+    trades.unshift(r.trade); bal = r.newBalance; $('bal').textContent = money(bal);
+    renderMarks(); list(); 
+    toast((d === 'buy' ? 'UP' : 'DOWN') + ' trade placed @ ' + Number(r.trade.entryPrice).toFixed(ch.dec), '#2b99ff');
+  } catch(e) { toast('Network error', '#ef5d4e'); }
+}
+
+$('up').onclick = () => trade('buy');
+$('dn').onclick = () => trade('sell');
+
+async function settle(t) {
+  if (t.busy) return; t.busy = 1;
+  try {
+    const r = await post('/api/settle', {userId: S.id, tradeId: t.id});
+    if (r.status && r.trade && r.trade.status === 'closed') {
+      Object.assign(t, r.trade); bal = r.newBalance; $('bal').textContent = money(bal);
+      renderMarks(); list();
+      toast(t.result === 'win' ? 'WIN +' + money(t.pnl) : t.result === 'loss' ? 'LOSS −' + money(t.amount) : 'Tie — refunded', 
+            t.result === 'win' ? '#0faf59' : t.result === 'loss' ? '#ef5d4e' : '#686f86');
+    } else {
+      setTimeout(() => t.busy = 0, 1500);
+    }
+  } catch(e) { setTimeout(() => t.busy = 0, 1500); }
+}
+
+setInterval(() => trades.forEach(t => { if (t.status === 'open' && Date.now() + skew >= t.expiryTime + 100) settle(t); }), 500);
+
+function row(t) {
+  const left = Math.ceil((t.expiryTime - Date.now() - skew) / 1000);
+  const o = t.status === 'open' || t.status === 'settling';
+  const c = t.result === 'win' ? 'w' : t.result === 'loss' ? 'l' : 'n';
+  return `<div class="t">
+    <div>
+      <b>${getPairName(t.pair)}</b> <span class="${t.direction === 'buy' ? 'w' : 'l'}">${t.direction === 'buy' ? '↑ UP' : '↓ DOWN'}</span> <small>${dl(t.duration)}</small><br>
+      <small>${money(t.amount)} · ${Number(t.entryPrice).toFixed(ch.dec)}${o ? '' : ' → ' + Number(t.closePrice).toFixed(ch.dec)}</small>
+    </div>
+    <div class="r ${o ? '' : c}">
+      ${o ? `<span data-e="${t.expiryTime}">${fmtT(left)}</span>` : (t.result === 'tie' ? 'Tie' : (t.pnl > 0 ? '+' : '−') + money(Math.abs(t.pnl)))}
+    </div>
+  </div>`;
+}
+
+function list() {
+  const o = trades.filter(t => t.status === 'open' || t.status === 'settling');
+  const c = trades.filter(t => t.status === 'closed').slice(0, 30);
+  $('ol').innerHTML = o.map(row).join('') || '<small class="n">No open trades</small>';
+  $('cl').innerHTML = c.map(row).join('') || '<small class="n">No closed trades</small>';
+  $('tn').textContent = o.length;
+}
+
+setInterval(() => document.querySelectorAll('[data-e]').forEach(e => e.textContent = fmtT(Math.ceil((+e.dataset.e - Date.now() - skew) / 1000))), 500);
+
+// UI Init
+$('tfs').innerHTML = Object.keys(TFS).map(t => `<button data-t="${t}" class="${t === tf ? 'on' : ''}">${t}</button>`).join('');
+$('dv').innerHTML = DUR.map((d, i) => `<option ${i === di ? 'selected' : ''}>${dl(d)}</option>`).join('');
+
+$('tfs').onclick = e => {
+  if (e.target.dataset.t && pair) {
+    tf = e.target.dataset.t;
+    [...$('tfs').children].forEach(b => b.classList.toggle('on', b.dataset.t === tf));
+    load();
+  }
+};
+
+$('pb').onclick = () => $('modal').classList.add('on');
+$('mc').onclick = () => $('modal').classList.remove('on');
+$('pl').onclick = e => {
+  const p = e.target.closest('.pi');
+  if (p) { $('modal').classList.remove('on'); select(p.dataset.p); }
+};
+
+$('tb').onclick = () => $('tr').classList.toggle('on');
+$('out').onclick = logout;
+
+// Logo Click (Desktop)
+$('logo-btn').onclick = () => { if(pair) load(); };
+
+// Drawing Tools Logic
+$('tool-pen').onclick = () => {
+  isDrawing = !isDrawing;
+  $('tool-pen').classList.toggle('active', isDrawing);
+  ch.isDrawing = isDrawing;
+};
+$('tool-clear').onclick = () => {
+  ch.clearDrawings();
+};
+
+// Init App
+(async () => {
+  // Artificial delay to show preloader as requested
+  setTimeout(async () => {
+    $('preloader').classList.add('hide');
+    await loadPairs();
+    upd();
+    list();
+    select((pairs.find(p => p.name === 'USDPKR-OTC') || pairs[0]).name);
+  }, 1200);
 })();
-</script></body></html>
+
+</script>
+
+<!-- Custom Canvas Charting Engine -->
+<script>
+function priceAt(ctl, t) {
+  if (!ctl) return 0;
+  const base = ctl.price || 1.0;
+  const isUp = ctl.dir !== 'down';
+  const speed = ctl.speed || 1;
+  const p = base * (1 + (isUp ? 1 : -1) * speed * Math.sin((t - ctl.since) / 10000) * 0.001);
+  return Math.max(0.00001, p);
+}
+function decOf(p) { return p > 10 ? 2 : 4; }
+
+class CandleChart {
+  constructor(canvas) {
+    this.c = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.C = []; this.dec = 4; this.skew = 0; this.marks = [];
+    this.dpr = window.devicePixelRatio || 1;
+    this.isDrawing = false; this.drawings = []; this.currentDraw = null;
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
+    
+    this.c.addEventListener('pointerdown', this.onPointerDown.bind(this));
+    window.addEventListener('pointermove', this.onPointerMove.bind(this));
+    window.addEventListener('pointerup', this.onPointerUp.bind(this));
+  }
+  resize() {
+    const r = this.c.getBoundingClientRect();
+    this.c.width = r.width * this.dpr;
+    this.c.height = r.height * this.dpr;
+    this.ctx.scale(this.dpr, this.dpr);
+    this.w = r.width; this.h = r.height;
+    this.draw();
+  }
+  setData(C, price, tf, dec) {
+    this.C = C; this.price = price; this.tf = tf; this.dec = dec;
+    this.draw();
+  }
+  tick(price, time) {
+    this.price = price;
+    this.now = time;
+    this.draw();
+  }
+  clearDrawings() {
+    this.drawings = []; this.currentDraw = null; this.draw();
+  }
+  onPointerDown(e) {
+    if (!this.isDrawing) return;
+    const r = this.c.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    this.currentDraw = [{x, y}, {x, y}];
+    this.draw();
+  }
+  onPointerMove(e) {
+    if (!this.isDrawing || !this.currentDraw) return;
+    const r = this.c.getBoundingClientRect();
+    this.currentDraw[1] = {x: e.clientX - r.left, y: e.clientY - r.top};
+    this.draw();
+  }
+  onPointerUp() {
+    if (this.currentDraw) {
+      this.drawings.push(this.currentDraw);
+      this.currentDraw = null;
+      this.draw();
+    }
+  }
+  draw() {
+    const {ctx, w, h, C} = this;
+    if (!w || !h) return;
+    ctx.clearRect(0, 0, w, h);
+    
+    // Draw Grid
+    ctx.strokeStyle = '#2a2e42'; ctx.lineWidth = 1;
+    for(let i=0; i<w; i+=w/6) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+    for(let i=0; i<h; i+=h/6) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
+
+    if (!C.length || !this.price) return;
+
+    // Determine Min/Max for Y scale
+    let min = Infinity, max = -Infinity;
+    C.forEach(c => { min = Math.min(min, c.low); max = Math.max(max, c.high); });
+    min = Math.min(min, this.price); max = Math.max(max, this.price);
+    const pad = (max - min) * 0.1 || 0.001;
+    min -= pad; max += pad;
+    
+    const scaleY = v => h - ((v - min) / (max - min)) * (h - 40) - 20;
+    const scaleX = i => (i / C.length) * (w - 60) + 30; // Leave room for right axis
+
+    // Draw Candles
+    const cw = Math.max(2, (w / C.length) * 0.6);
+    C.forEach((c, i) => {
+      const x = scaleX(i);
+      const isUp = c.close >= c.open;
+      ctx.fillStyle = isUp ? '#0faf59' : '#ef5d4e';
+      ctx.strokeStyle = isUp ? '#0faf59' : '#ef5d4e';
+      
+      // Wick
+      ctx.beginPath(); ctx.moveTo(x, scaleY(c.high)); ctx.lineTo(x, scaleY(c.low)); ctx.stroke();
+      // Body
+      const yOpen = scaleY(c.open), yClose = scaleY(c.close);
+      ctx.fillRect(x - cw/2, Math.min(yOpen, yClose), cw, Math.max(1, Math.abs(yOpen - yClose)));
+    });
+
+    // Draw Current Price Line
+    const cy = scaleY(this.price);
+    ctx.strokeStyle = '#2b99ff'; ctx.setLineDash([5, 5]);
+    ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+    ctx.setLineDash([]);
+    
+    // Price Label
+    ctx.fillStyle = '#2b99ff';
+    ctx.fillRect(w - 60, cy - 10, 60, 20);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(this.price.toFixed(this.dec), w - 30, cy);
+
+    // Crosshairs Animation (Quotex style pending cross)
+    const time = Date.now() / 1000;
+    const crossOpacity = 0.3 + Math.sin(time * 2) * 0.15;
+    
+    // Horizontal line
+    ctx.strokeStyle = `rgba(143, 149, 173, ${crossOpacity})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+    // Vertical line
+    ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
+    
+    // Draw Trade Marks
+    this.marks.forEach(m => {
+      const y = scaleY(m.price);
+      ctx.fillStyle = m.dir === 'buy' ? '#0faf59' : '#ef5d4e';
+      ctx.beginPath(); ctx.arc(w - 30, y, 4, 0, Math.PI * 2); ctx.fill();
+    });
+
+    // Draw User Drawings
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+    const renderLine = (line) => {
+      ctx.beginPath(); ctx.moveTo(line[0].x, line[0].y); ctx.lineTo(line[1].x, line[1].y); ctx.stroke();
+    };
+    this.drawings.forEach(renderLine);
+    if (this.currentDraw) renderLine(this.currentDraw);
+  }
+}
+</script>
+
+</body>
+</html>
