@@ -9,45 +9,35 @@ html,body{height:100%;overflow:hidden;background:var(--bg)}
 body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 #app{height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr)}
 header,.bar{display:flex;align-items:center;gap:8px;padding:8px 12px}
-header{background:#14161f}.logo{font-weight:800}.logo b{color:var(--ac)}.sp{flex:1}
+header{background:#14161f}.logo{display:flex;align-items:center;gap:6px;cursor:pointer}.logo img{height:24px}.sp{flex:1}
 .acc{background:var(--pn);padding:5px 12px;border-radius:8px;font-size:11px;color:var(--mu);line-height:1.3}.acc b{display:block;font-size:15px;color:var(--tx)}.acc i{color:#ff8a00;font-style:normal;font-weight:700;margin-right:4px}
-.ib{background:var(--pn);border:0;color:var(--tx);border-radius:8px;padding:0 12px;min-height:40px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px}
+.ib{background:var(--pn);border:0;color:var(--tx);border-radius:8px;padding:0 12px;min-height:40px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px}.ib img{width:16px;height:16px;filter:brightness(0) invert(1)}
 .bar{overflow-x:auto;scrollbar-width:none}.bar::-webkit-scrollbar{display:none}
-.pairbtn{flex:none;display:flex;gap:8px;align-items:center;background:var(--pn);border:1px solid var(--ln);color:var(--tx);padding:0 14px;min-height:40px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
-.pairbtn img{width:22px;height:16px;border-radius:3px;object-fit:cover}
+.pairbtn{flex:none;display:flex;gap:6px;align-items:center;background:var(--pn);border:0;color:var(--tx);padding:0 14px;min-height:40px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
 .tfs{display:flex;gap:4px}.tfs button{flex:none;background:none;border:1px solid var(--ln);color:var(--mu);min-width:40px;min-height:40px;border-radius:8px;cursor:pointer;font-size:12px;padding:0 8px}.tfs .on{background:var(--ac);border-color:var(--ac);color:#fff}
 .body{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(160px,1fr) auto;min-height:0}
 .chart{position:relative;min-height:0;min-width:0;background:#14161f}.chart canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
-#loader{position:absolute;inset:0;background:rgba(20,22,31,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;color:var(--mu);font-weight:600;font-size:14px;gap:12px}
-#loader img{width:42px;height:42px;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#na{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:clamp(15px,3.5vw,20px);color:var(--mu);background:var(--bg);z-index:3}
-.ttl{position:absolute;top:6px;left:10px;font-size:12px;color:var(--mu);pointer-events:none}
+#loader{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;color:var(--tx);font-weight:600;font-size:15px;gap:12px}
+#loader img{width:42px;height:42px}
+#na{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:clamp(15px,3.5vw,20px);color:var(--mu);background:var(--bg);z-index:2}
+.ttl{position:absolute;top:6px;left:10px;font-size:12px;color:var(--mu);pointer-events:none;z-index:3}
 .panel{background:var(--pn);padding:10px 12px;display:flex;flex-direction:column;gap:10px;min-height:0}
 .ph{display:flex;justify-content:space-between;font-weight:700;font-size:15px}.ph span:last-child{color:#ff8a00}
 .fldrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fld{border:1px solid var(--ln);border-radius:8px;padding:6px 8px;position:relative;background:var(--bg)}.fld small{position:absolute;top:-8px;left:8px;background:var(--pn);padding:0 4px;color:var(--mu);font-size:11px}
+.fld{border:1px solid var(--ln);border-radius:8px;padding:6px 8px;position:relative}.fld small{position:absolute;top:-8px;left:8px;background:var(--pn);padding:0 4px;color:var(--mu);font-size:11px}
 .fld div{display:flex;align-items:center;gap:6px;min-height:34px}.fld select,.fld input{flex:1;min-width:0;width:100%;background:none;border:0;color:var(--tx);font-size:16px;outline:0}.fld input{text-align:center}.fld select option{background:var(--pn)}
-.fld button{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:var(--ln);color:var(--tx);cursor:pointer;display:grid;place-items:center}
-.fld button img{width:16px;height:16px;filter:invert(1)}
+.fld button{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:var(--ln);color:var(--tx);cursor:pointer;display:grid;place-items:center}.fld button img{width:16px;height:16px;filter:brightness(0) invert(1)}
 .row{display:flex;justify-content:space-between;font-size:13px;color:var(--mu)}.row b{color:var(--up)}
 .go{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .go button{display:flex;justify-content:space-between;align-items:center;border:0;border-radius:10px;padding:0 14px;min-height:52px;color:#fff;font-size:17px;font-weight:700;cursor:pointer}
-.go .u{background:var(--up)}.go .d{background:var(--dn)}.go span{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center}
-.go button img{width:16px;height:16px;filter:invert(1)}
-.go button:active{transform:scale(.97)}
+.go button img{width:22px;height:22px;filter:brightness(0) invert(1)}
+.go .u{background:var(--up)}.go .d{background:var(--dn)}.go span{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center}.go button:active{transform:scale(.97)}
 #tr{display:none;background:var(--pn)}#tr h5{color:var(--mu);font-size:12px;margin:6px 0}
 .t{display:grid;grid-template-columns:1fr auto;padding:9px 0;border-top:1px solid var(--ln);font-size:13px}.t small{color:var(--mu)}.t .r{text-align:right;font-weight:700}.w{color:var(--up)}.l{color:var(--dn)}.n{color:var(--mu)}
 #tr.on{display:block;position:fixed;left:0;right:0;bottom:0;max-height:65%;overflow:auto;padding:14px 14px calc(14px + env(safe-area-inset-bottom));border-radius:14px 14px 0 0;z-index:15;box-shadow:0 -10px 40px #0009}
 #modal{position:fixed;inset:0;background:rgba(10,11,18,.85);display:none;z-index:20;padding:12px}#modal.on{display:block}
-#modal .in{max-width:520px;margin:0 auto;background:var(--bg);border-radius:12px;max-height:85vh;overflow:auto;padding:14px;border:1px solid var(--ln)}
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--ln)}
-.modal-header img{width:20px;height:20px;cursor:pointer;filter:invert(0.8)}
-.pi{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:8px;margin-bottom:6px;background:var(--pn);cursor:pointer;border:1px solid transparent}
-.pi:hover{border-color:var(--ac)}
-.pi-left{display:flex;align-items:center;gap:10px}
-.pi img{width:26px;height:18px;border-radius:3px;object-fit:cover}
-.pi em{color:#ff8a00;font-style:normal}
+#modal .in{max-width:520px;margin:0 auto;background:var(--bg);border-radius:12px;max-height:100%;overflow:auto;padding:14px}
+.pi{display:flex;justify-content:space-between;align-items:center;padding:0 10px;min-height:52px;border-bottom:1px solid var(--ln);cursor:pointer}.pi:hover{background:var(--pn)}.pi div{display:flex;align-items:center;gap:10px}.pi img{width:22px;height:16px;border-radius:2px}.pi em{color:#ff8a00;font-style:normal}
 #toast{position:fixed;top:calc(60px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:11px 18px;border-radius:8px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:30;max-width:92%;text-align:center}
 @media (min-aspect-ratio:1/1) and (min-width:640px){
  .body{grid-template-columns:minmax(0,1fr) clamp(250px,30vw,320px);grid-template-rows:minmax(0,1fr)}
@@ -57,36 +47,35 @@ header{background:#14161f}.logo{font-weight:800}.logo b{color:var(--ac)}.sp{flex
 @media (max-height:480px){header{padding:4px 12px}.bar{padding:4px 12px}.ib,.pairbtn,.tfs button{min-height:34px}.go button{min-height:44px}}
 </style></head>
 <body><div id="app">
-<header><div class="logo">ZEE<b>TEX</b></div><div class="sp"></div>
-<button class="ib" id="tb">Trades <span id="tn">0</span></button>
-<div class="acc"><i>DEMO</i>Balance<b id="bal">$0.00</b></div><button class="ib" id="out">Logout</button></header>
+<header>
+<div class="logo" id="logoBtn" title="Market / Refresh"><img src="/logo.svg" alt="Logo"></div>
+<div class="logo">ZEE<b>TEX</b></div><div class="sp"></div>
+<button class="ib" id="tb"><img src="/profile/imgs/more.svg" alt=""> Trades <span id="tn">0</span></button>
+<div class="acc"><i>DEMO</i>Balance<b id="bal">$0.00</b></div>
+<button class="ib" id="out">Logout</button>
+</header>
 <div class="bar"><button class="pairbtn" id="pb">Loading…</button><div class="tfs" id="tfs"></div></div>
 <div class="body">
  <div class="chart">
   <canvas id="cv"></canvas>
-  <div id="loader"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg"><span>Loading...</span></div>
+  <div id="loader"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg" alt=""><span>Loading...</span></div>
   <div class="ttl" id="ttl"></div><h2 id="na"></h2>
  </div>
  <aside class="panel">
   <div class="ph"><span id="pn">—</span><span id="pp">85%</span></div>
   <div class="fldrow">
    <div class="fld"><small>Trade time</small><div><select id="dv"></select></div></div>
-   <div class="fld"><small>Investment ($)</small><div><button id="am"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/minus.svg"></button><input id="av" type="number" inputmode="decimal" min="1" value="10"><button id="ap"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/plus.svg"></button></div></div>
+   <div class="fld"><small>Investment ($)</small><div><button id="am"><img src="/profile/imgs/minus.svg" alt=""></button><input id="av" type="number" inputmode="decimal" min="1" value="10"><button id="ap"><img src="/profile/imgs/plus.svg" alt=""></button></div></div>
   </div>
   <div class="row"><span>Profit if win</span><b id="po">$0.00</b></div>
   <div class="go">
-   <button class="u" id="up">UP <span><img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg"></span></button>
-   <button class="d" id="dn">DOWN <span><img src="https://zeetex-dashboard.vercel.app/profile/imgs/down.svg"></span></button>
+   <button class="u" id="up">UP <span><img src="/profile/imgs/buy.svg" alt=""></span></button>
+   <button class="d" id="dn">DOWN <span><img src="/profile/imgs/sell.svg" alt=""></span></button>
   </div>
   <div id="tr"><h5>OPEN TRADES</h5><div id="ol"></div><h5>CLOSED</h5><div id="cl"></div></div>
  </aside>
 </div></div>
-<div id="modal">
- <div class="in">
-  <div class="modal-header"><b>Select trade pair</b><img id="mc" src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg"></div>
-  <div id="pl"></div>
- </div>
-</div>
+<div id="modal"><div class="in"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b>Select trade pair</b><button class="ib" id="mc"><img src="/profile/imgs/multiply.svg" alt=""></button></div><div id="pl"></div></div></div>
 <div id="toast"></div>
 <script src="chart.js"></script>
 <script>
@@ -95,60 +84,66 @@ const $=id=>document.getElementById(id);
 const TFS={'5s':5,'10s':10,'15s':15,'30s':30,'1m':60,'2m':120,'3m':180,'5m':300,'10m':600,'15m':900,'30m':1800,'1h':3600,'4h':14400,'1d':86400};
 const DUR=[5,10,15,30,60,120,300,600,900,1800,3600,7200,14400],dl=s=>s>=3600?s/3600+'h':s>=60?s/60+'m':s+'s';
 const FALLBACK=[{name:'USDPKR-OTC',payout:85},{name:'USDINR-OTC',payout:85},{name:'USDBDT-OTC',payout:85}];
-let pair='',pairs=[],tf='1m',di=4,ctl=null,skew=0,payout=85,bal=0,trades=[],seq=0,first=true;
+let pair=localStorage.getItem('zt_pair')||'USDPKR-OTC',pairs=[],tf=localStorage.getItem('zt_tf')||'1m',di=Number(localStorage.getItem('zt_di')||4),ctl=null,skew=0,payout=85,bal=0,trades=[],seq=0,first=true;
+
 const ch=new CandleChart($('cv')),money=v=>'$'+Number(v||0).toFixed(2),fmtT=s=>{s=Math.max(0,s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(Math.floor(s%60)).padStart(2,'0')};
 const j=async(p,o)=>{const r=await fetch(API+p,o);try{return await r.json()}catch(e){return{status:false,code:'BAD_RESPONSE'}}};
 const post=(p,b)=>j(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
 const logout=()=>{localStorage.removeItem('zt_session');location.href='sign-in.html'};
 function toast(m,c){const t=$('toast');t.textContent=m;t.style.background=c;t.style.opacity=1;clearTimeout(t.h);t.h=setTimeout(()=>t.style.opacity=0,2800)}
 
-function getFlagCode(name){
- const clean=name.replace('-OTC','');
- if(clean.length>=6){const c1=clean.slice(0,3),c2=clean.slice(3,6);if(c1==='USD')return c2.toLowerCase();if(c2==='USD')return c1.toLowerCase();return c1.toLowerCase()}
- return 'us';
-}
+function getFlag(p){const base=p.replace('-OTC','').split('/')[0]||p.substring(0,3);const map={'USD':'us','PKR':'pk','INR':'in','BDT':'bd','ARS':'ar','MXN':'mx','BRL':'br','NGN':'ng','NZD':'nz','COP':'co','EGP':'eg'};return map[base]||'us'}
 const nm=p=>p.replace('-OTC','').replace(/^(...)(...)$/,'$1/$2')+' (OTC)';
-function na(msg){$('loader').style.display='none';$('na').style.display=msg?'flex':'none';$('na').textContent=msg||''}
+
+function na(msg){
+ const el=$('na');
+ if(msg){el.style.display='flex';el.textContent=msg;$('loader').style.display='none'}
+ else{el.style.display='none';el.textContent=''}
+}
 
 async function initUI(){
+ $('tfs').innerHTML=Object.keys(TFS).map(t=>`<button data-t="${t}" class="${t===tf?'on':''}">${t}</button>`).join('');
+ $('dv').innerHTML=DUR.map((d,i)=>`<option ${i===di?'selected':''}>${dl(d)}</option>`).join('');
  try{const r=await j('/api/live');pairs=r.status&&r.pairs&&r.pairs.length?r.pairs:FALLBACK}catch(e){pairs=FALLBACK}
- $('pl').innerHTML=pairs.map(p=>{
-  const fc=getFlagCode(p.name);
-  return `<div class="pi" data-p="${p.name}"><div class="pi-left"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${fc}.svg" onerror="this.style.display='none'"><b>${nm(p.name)}</b></div><span>Profit <em>${p.payout}%</em></span></div>`;
- }).join('');
+ $('pl').innerHTML=pairs.map(p=>`<div class="pi" data-p="${p.name}"><div><img src="/profile/imgs/flag/flag-${getFlag(p.name)}.svg" onerror="this.style.display='none'"><b>${nm(p.name)}</b></div><span>Profit <em>${p.payout}%</em></span></div>`).join('');
 }
 
 async function load(){
  const my=++seq;
  $('loader').style.display='flex';
- na('');
  try{
-  const r=await j(`/api/chart/${pair}?id=${S.id}&tf=${tf}`);if(my!==seq)return;
+  const r=await j(`/api/chart/${pair}?id=${S.id}&tf=${tf}`);
   $('loader').style.display='none';
+  if(my!==seq)return;
   if(['USER_NOT_FOUND','USER_BLOCKED'].includes(r.code))return logout();
   if(r.status===false){
-   const errPair=r.pair||pair;
-   return na(`${errPair} chart is not available at the moment`);
+    const pairName=r.pair||pair;
+    return na(`${pairName} chart is not available at the moment`);
   }
   if(!r.candle||!r.candle.length)return na(`${pair} chart is not available at the moment`);
   na('');ctl=r.control;payout=r.payout;skew=r.serverTime-Date.now();ch.skew=skew;bal=r.stats.balance;$('bal').textContent=money(bal);
   if(first){trades=r.trades||[];first=false}
   ch.setData(r.candle,priceAt(ctl,Date.now()+skew),TFS[tf],decOf(ctl.price));renderMarks();list();upd();
- }catch(e){$('loader').style.display='none';if(my!==seq)return;na(`${pair} chart is not available at the moment`)}}
+ }catch(e){
+  $('loader').style.display='none';
+  if(my===seq)na(`${pair} chart is not available at the moment`);
+ }
+}
 
 function select(p){
- pair=p;ctl=null;ch.marks=[];
- const fc=getFlagCode(p);
- $('pb`).innerHTML=`<img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${fc}.svg" onerror="this.style.display='none'">${nm(p)} ▾`;
- $('pn').textContent=nm(p);
- load()}
+ pair=p;localStorage.setItem('zt_pair',p);
+ ctl=null;ch.marks=[];$('pb').textContent=nm(p)+' ▾';$('pn').textContent=nm(p);na('');load();
+}
 
 setInterval(async()=>{if(!pair||!ctl)return;try{const r=await j('/api/live?pair='+pair);if(r.status&&r.control&&r.pair===pair){payout=r.payout;skew=r.serverTime-Date.now();ch.skew=skew;if(r.control.since!==ctl.since)load();else upd()}}catch(e){}},2000);
 setInterval(()=>{if(ctl&&ch.C.length){const n=Date.now()+skew,p=priceAt(ctl,n);ch.tick(p,n);$('ttl').textContent=nm(pair)+'  '+p.toFixed(ch.dec)}},300);
 
 function upd(){const a=+$('av').value||0;$('po').textContent=money(a*payout/100);$('pp').textContent=payout+'%'}
-$('dv').onchange=e=>{di=e.target.selectedIndex};
-$('am').onclick=()=>{$('av').value=Math.max(1,(+$('av').value||1)-5);upd()};$('ap').onclick=()=>{$('av').value=(+$('av').value||0)+5;upd()};$('av').oninput=upd;
+$('dv').onchange=e=>{di=e.target.selectedIndex;localStorage.setItem('zt_di',di)};
+$('am').onclick=()=>{$('av').value=Math.max(1,(+$('av').value||1)-5);upd()};
+$('ap').onclick=()=>{$('av').value=(+$('av').value||0)+5;upd()};
+$('av').oninput=upd;
+
 function renderMarks(){ch.marks=trades.filter(t=>t.status==='open'&&t.pair===pair).map(t=>({price:t.entryPrice,dir:t.direction,amt:t.amount,exp:t.expiryTime}))}
 
 async function trade(d){
@@ -158,8 +153,10 @@ async function trade(d){
   if(['USER_NOT_FOUND','USER_BLOCKED'].includes(r.code))return logout();
   if(!r.status)return toast(r.message||r.code||'Trade failed','#ef5d4e');
   trades.unshift(r.trade);bal=r.newBalance;$('bal').textContent=money(bal);renderMarks();list();toast((d==='buy'?'UP':'DOWN')+' trade placed @ '+Number(r.trade.entryPrice).toFixed(ch.dec),'#2b99ff');
- }catch(e){toast('Network error','#ef5d4e')}}
-$('up').onclick=()=>trade('buy');$('dn').onclick=()=>trade('sell');
+ }catch(e){toast('Network error','#ef5d4e')}
+}
+$('up').onclick=()=>trade('buy');
+$('dn').onclick=()=>trade('sell');
 
 async function settle(t){if(t.busy)return;t.busy=1;
  try{const r=await post('/api/settle',{userId:S.id,tradeId:t.id});
@@ -173,18 +170,18 @@ function row(t){const left=Math.ceil((t.expiryTime-Date.now()-skew)/1000),o=t.st
 function list(){const o=trades.filter(t=>t.status==='open'||t.status==='settling'),c=trades.filter(t=>t.status==='closed').slice(0,30);$('ol').innerHTML=o.map(row).join('')||'<small class="n">No open trades</small>';$('cl').innerHTML=c.map(row).join('')||'<small class="n">No closed trades</small>';$('tn').textContent=o.length}
 setInterval(()=>document.querySelectorAll('[data-e]').forEach(e=>e.textContent=fmtT(Math.ceil((+e.dataset.e-Date.now()-skew)/1000))),500);
 
-$('tfs').innerHTML=Object.keys(TFS).map(t=>`<button data-t="${t}" class="${t===tf?'on':''}">${t}</button>`).join('');
-$('dv').innerHTML=DUR.map((d,i)=>`<option ${i===di?'selected':''}>${dl(d)}</option>`).join('');
-$('tfs').onclick=e=>{if(e.target.dataset.t&&pair){tf=e.target.dataset.t;[...$('tfs').children].forEach(b=>b.classList.toggle('on',b.dataset.t===tf));load()}};
-$('pb').onclick=()=>$('modal').classList.add('on');$('mc').onclick=()=>$('modal').classList.remove('on');
+$('tfs').onclick=e=>{if(e.target.dataset.t&&pair){tf=e.target.dataset.t;localStorage.setItem('zt_tf',tf);[...$('tfs').children].forEach(b=>b.classList.toggle('on',b.dataset.t===tf));load()}};
+$('logoBtn').onclick=()=>load();
+$('pb').onclick=()=>$('modal').classList.add('on');
+$('mc').onclick=()=>$('modal').classList.remove('on');
 $('pl').onclick=e=>{const p=e.target.closest('.pi');if(p){$('modal').classList.remove('on');select(p.dataset.p)}};
-$('tb').onclick=()=>$('tr').classList.toggle('on');$('out').onclick=logout;
+$('tb').onclick=()=>$('tr').classList.toggle('on');
+$('out').onclick=logout;
 
 (async()=>{
- $('loader').style.display='flex';
- await initUI();
- upd();
- list();
- select((pairs.find(p=>p.name==='USDPKR-OTC')||pairs[0]).name);
+  await initUI();
+  upd();
+  list();
+  select(pair);
 })();
 </script></body></html>
