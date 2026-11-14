@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#14161f">
 <title>Zeetex Trade</title>
@@ -19,7 +17,6 @@ body {
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   display: flex; flex-direction: column;
 }
-/* Prevent image dragging & selection */
 img { pointer-events: none; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
 
 /* Preloader */
@@ -68,7 +65,7 @@ header { display: flex; align-items: center; gap: 8px; padding: 8px 12px; backgr
 /* Main Layout */
 .body { display: flex; flex-direction: column; flex: 1; min-height: 0; }
 .chart-area { position: relative; flex: 1; min-height: 200px; display: flex; flex-direction: column; }
-.canvas-wrap { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.canvas-wrap { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #14161f; }
 canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; display: block; }
 #pending-anim { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; z-index: 5; pointer-events: none; }
 #pending-anim img { width: 60px; height: 60px; animation: spin 2s linear infinite; }
@@ -166,8 +163,7 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: 
 <!-- Top Bar -->
 <div class="bar">
   <button class="pairbtn" id="pb">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag1">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg" class="flag" id="pb-flag2">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag">
     <span id="pb-txt">Loading...</span> ▾
   </button>
   <div class="tfs" id="tfs"></div>
@@ -233,7 +229,6 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: 
 <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); padding:11px 18px; border-radius:8px; font-weight:700; opacity:0; transition:opacity .3s; pointer-events:none; z-index:100; max-width:92%; text-align:center; color:#fff;"></div>
 
 <script>
-// Configuration
 const API = 'https://zeetex-chart.vercel.app';
 const S = JSON.parse(localStorage.getItem('zt_session') || 'null');
 if (!S) location.href = 'sign-in.html';
@@ -243,27 +238,15 @@ const TFS = {'5s':5, '10s':10, '15s':15, '30s':30, '1m':60, '2m':120, '3m':180, 
 const DUR = [5, 10, 15, 30, 60, 120, 300, 600, 900, 1800, 3600, 7200, 14400];
 const dl = s => s >= 3600 ? s/3600 + 'h' : s >= 60 ? s/60 + 'm' : s + 's';
 
-const FALLBACK = [
-  {name: 'USDPKR-OTC', payout: 85}, {name: 'USDINR-OTC', payout: 85}, 
-  {name: 'USDBDT-OTC', payout: 85}, {name: 'USDARS-OTC', payout: 85},
-  {name: 'USDMXN-OTC', payout: 85}, {name: 'USDBRL-OTC', payout: 85},
-  {name: 'USDNGN-OTC', payout: 85}, {name: 'NZDCAD-OTC', payout: 85},
-  {name: 'USDCOP-OTC', payout: 85}, {name: 'USDEGP-OTC', payout: 85}
-];
-
 let pair = '', pairs = [], tf = '1m', di = 4, ctl = null, skew = 0, payout = 85, bal = 0, trades = [], seq = 0, first = true;
 let isDrawing = false;
-let drawings = [];
-let currentDraw = null;
 
 const ch = new CandleChart($('cv'));
 const money = v => '$' + Number(v || 0).toFixed(2);
 const fmtT = s => { s = Math.max(0, s); const h = Math.floor(s/3600), m = Math.floor(s%3600/60); return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(Math.floor(s%60)).padStart(2, '0'); };
 
-// Disable context menu globally for images and canvas to prevent long-press saving
 document.addEventListener('contextmenu', e => { if(e.target.tagName === 'IMG' || e.target.tagName === 'CANVAS') e.preventDefault(); });
 
-// API Helpers
 const j = async (p, o) => { 
   const r = await fetch(API + p, o); 
   try { return await r.json() } catch(e) { return {status: false, code: 'BAD_RESPONSE'} } 
@@ -271,19 +254,18 @@ const j = async (p, o) => {
 const post = (p, b) => j(p, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(b)});
 const logout = () => { localStorage.removeItem('zt_session'); location.href = 'sign-in.html'; };
 
-// UI Helpers
 function toast(m, c) { 
   const t = $('toast'); t.textContent = m; t.style.background = c || '#2b99ff'; t.style.opacity = 1; 
   clearTimeout(t.h); t.h = setTimeout(() => t.style.opacity = 0, 2800); 
 }
 
+// Automatically resolve flag code from backend pair name dynamically
 function getFlagCode(name) {
-  if (name.startsWith('USD')) return 'us';
-  if (name.startsWith('EUR')) return 'eu';
-  if (name.startsWith('GBP')) return 'gb';
-  if (name.startsWith('CAD')) return 'ca';
-  if (name.startsWith('NZD')) return 'nz';
-  return 'us'; // Default
+  if (!name) return 'us';
+  const clean = name.replace('-OTC', '').toLowerCase();
+  // Extract currency code prefix (e.g., 'usd', 'eur', 'pkr', 'inr')
+  const prefix = clean.substring(0, 3);
+  return prefix;
 }
 
 function getPairName(p) {
@@ -306,18 +288,18 @@ function na(msg) {
 async function loadPairs() {
   try {
     const r = await j('/api/live');
-    pairs = (r.status && r.pairs && r.pairs.length) ? r.pairs : FALLBACK;
-  } catch(e) { pairs = FALLBACK; }
-  
-  // Duplicate pairs as requested (e.g. USD/BRL(OTC) shown twice)
-  const duplicatedPairs = [...pairs, ...pairs];
+    if (r.status && r.pairs && r.pairs.length) {
+      pairs = r.pairs;
+    }
+  } catch(e) {}
 
-  $('pl').innerHTML = duplicatedPairs.map(p => {
+  // Render dynamic backend pairs into selector list modal
+  $('pl').innerHTML = pairs.map(p => {
     const flag = getFlagCode(p.name);
     const name = getPairName(p.name);
     return `<div class="pi" data-p="${p.name}">
       <div>
-        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg" class="flag" alt="flag">
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg" class="flag" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg'" alt="flag">
         <b>${name}</b>
       </div>
       <span>Profit <em>${p.payout}%</em></span>
@@ -325,7 +307,6 @@ async function loadPairs() {
   }).join('');
 }
 
-// ONE call gives candles + control + payout + balance + my trades
 async function load() {
   const my = ++seq;
   $('pending-anim').style.display = 'flex';
@@ -350,11 +331,9 @@ async function load() {
     
     if (first) { trades = r.trades || []; first = false; }
     
-    // Update pair button
     $('pb-txt').textContent = getPairName(pair);
     const flag = getFlagCode(pair);
-    $('pb-flag1').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg`;
-    $('pb-flag2').style.display = 'none'; // Hide second flag on button for simplicity
+    $('pb-flag').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg`;
     
     ch.setData(r.candle, priceAt(ctl, Date.now() + skew), TFS[tf], decOf(ctl.price));
     renderMarks();
@@ -369,12 +348,11 @@ async function load() {
 }
 
 function select(p) {
-  pair = p; ctl = null; ch.marks = []; drawings = []; ch.clearDrawings();
+  pair = p; ctl = null; ch.marks = []; ch.clearDrawings();
   $('pn').textContent = getPairName(p);
-  na(''); load();
+  load();
 }
 
-// Periodic refresh of control
 setInterval(async () => {
   if (!pair || !ctl) return;
   try {
@@ -387,7 +365,6 @@ setInterval(async () => {
   } catch(e) {}
 }, 2000);
 
-// Fast tick for real-time price
 setInterval(() => {
   if (ctl && ch.C.length) {
     const n = Date.now() + skew, p = priceAt(ctl, n);
@@ -415,7 +392,6 @@ function renderMarks() {
 
 async function trade(d) {
   if (!ctl || $('na').style.display === 'flex') return toast('Chart not available', '#ef5d4e');
-  
   try {
     const r = await post('/api/trade', {userId: S.id, pair, direction: d, amount: +$('av').value, duration: DUR[di]});
     if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
@@ -472,7 +448,6 @@ function list() {
 
 setInterval(() => document.querySelectorAll('[data-e]').forEach(e => e.textContent = fmtT(Math.ceil((+e.dataset.e - Date.now() - skew) / 1000))), 500);
 
-// UI Init
 $('tfs').innerHTML = Object.keys(TFS).map(t => `<button data-t="${t}" class="${t === tf ? 'on' : ''}">${t}</button>`).join('');
 $('dv').innerHTML = DUR.map((d, i) => `<option ${i === di ? 'selected' : ''}>${dl(d)}</option>`).join('');
 
@@ -493,32 +468,32 @@ $('pl').onclick = e => {
 
 $('tb').onclick = () => $('tr').classList.toggle('on');
 $('out').onclick = logout;
-
-// Logo Click (Desktop)
 $('logo-btn').onclick = () => { if(pair) load(); };
 
-// Drawing Tools Logic
 $('tool-pen').onclick = () => {
   isDrawing = !isDrawing;
   $('tool-pen').classList.toggle('active', isDrawing);
   ch.isDrawing = isDrawing;
 };
-$('tool-clear').onclick = () => {
-  ch.clearDrawings();
-};
+$('tool-clear').onclick = () => { ch.clearDrawings(); };
 
-// Init App
+// Main Startup sequence: Loads backend data first, then hides preloader and plots UI
 (async () => {
-  // Artificial delay to show preloader as requested
-  setTimeout(async () => {
+  await loadPairs();
+  if (pairs.length > 0) {
+    pair = pairs[0].name;
+  } else {
+    pair = 'USDPKR-OTC';
+  }
+  upd();
+  list();
+  await load();
+  
+  // Hide preloader smoothly after everything is initialized from backend
+  setTimeout(() => {
     $('preloader').classList.add('hide');
-    await loadPairs();
-    upd();
-    list();
-    select((pairs.find(p => p.name === 'USDPKR-OTC') || pairs[0]).name);
-  }, 1200);
+  }, 400);
 })();
-
 </script>
 
 <!-- Custom Canvas Charting Engine -->
@@ -593,14 +568,13 @@ class CandleChart {
     if (!w || !h) return;
     ctx.clearRect(0, 0, w, h);
     
-    // Draw Grid
+    // Grid Lines
     ctx.strokeStyle = '#2a2e42'; ctx.lineWidth = 1;
     for(let i=0; i<w; i+=w/6) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
     for(let i=0; i<h; i+=h/6) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
 
     if (!C.length || !this.price) return;
 
-    // Determine Min/Max for Y scale
     let min = Infinity, max = -Infinity;
     C.forEach(c => { min = Math.min(min, c.low); max = Math.max(max, c.high); });
     min = Math.min(min, this.price); max = Math.max(max, this.price);
@@ -608,9 +582,8 @@ class CandleChart {
     min -= pad; max += pad;
     
     const scaleY = v => h - ((v - min) / (max - min)) * (h - 40) - 20;
-    const scaleX = i => (i / C.length) * (w - 60) + 30; // Leave room for right axis
+    const scaleX = i => (i / C.length) * (w - 60) + 30;
 
-    // Draw Candles
     const cw = Math.max(2, (w / C.length) * 0.6);
     C.forEach((c, i) => {
       const x = scaleX(i);
@@ -618,44 +591,35 @@ class CandleChart {
       ctx.fillStyle = isUp ? '#0faf59' : '#ef5d4e';
       ctx.strokeStyle = isUp ? '#0faf59' : '#ef5d4e';
       
-      // Wick
       ctx.beginPath(); ctx.moveTo(x, scaleY(c.high)); ctx.lineTo(x, scaleY(c.low)); ctx.stroke();
-      // Body
       const yOpen = scaleY(c.open), yClose = scaleY(c.close);
       ctx.fillRect(x - cw/2, Math.min(yOpen, yClose), cw, Math.max(1, Math.abs(yOpen - yClose)));
     });
 
-    // Draw Current Price Line
     const cy = scaleY(this.price);
     ctx.strokeStyle = '#2b99ff'; ctx.setLineDash([5, 5]);
     ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
     ctx.setLineDash([]);
     
-    // Price Label
     ctx.fillStyle = '#2b99ff';
     ctx.fillRect(w - 60, cy - 10, 60, 20);
     ctx.fillStyle = '#fff'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(this.price.toFixed(this.dec), w - 30, cy);
 
-    // Crosshairs Animation (Quotex style pending cross)
+    // Crosshairs Animation
     const time = Date.now() / 1000;
     const crossOpacity = 0.3 + Math.sin(time * 2) * 0.15;
-    
-    // Horizontal line
     ctx.strokeStyle = `rgba(143, 149, 173, ${crossOpacity})`;
     ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
-    // Vertical line
     ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
     
-    // Draw Trade Marks
     this.marks.forEach(m => {
       const y = scaleY(m.price);
       ctx.fillStyle = m.dir === 'buy' ? '#0faf59' : '#ef5d4e';
       ctx.beginPath(); ctx.arc(w - 30, y, 4, 0, Math.PI * 2); ctx.fill();
     });
 
-    // Draw User Drawings
     ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
     const renderLine = (line) => {
       ctx.beginPath(); ctx.moveTo(line[0].x, line[0].y); ctx.lineTo(line[1].x, line[1].y); ctx.stroke();
