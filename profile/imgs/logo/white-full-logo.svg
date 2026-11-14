@@ -1,0 +1,35 @@
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" width="100%" height="100%">
+  <g fill="#ffffff">
+    
+    <!-- Star Logo (Perfectly Centered Vertically) -->
+    <g transform="translate(0, 2)">
+      <!-- Outer Hexagon -->
+      <polygon points="30,5 70,5 95,30 95,70 70,95 30,95 5,70 5,30" fill="none" stroke="#ffffff" stroke-width="3" />
+      <!-- Inner Hexagon -->
+      <polygon points="31.5,7.5 68.5,7.5 92.5,31.5 92.5,68.5 68.5,92.5 31.5,92.5 7.5,68.5 7.5,31.5" fill="none" stroke="#ffffff" stroke-width="1" />
+      <!-- Star -->
+      <polygon points="50,15 59,38 84,38 64,53 71,76 50,61 29,76 36,53 16,38 41,38" fill="#ffffff" />
+    </g>
+    
+    <!-- Bold ZEETEX Text (Aligned with Star) -->
+    <g transform="translate(100, 0)">
+      <!-- Z -->
+      <path d="M 0,25 L 44,25 L 44,36 L 16,70 L 44,70 L 44,82 L 0,82 L 0,71 L 28,36 L 0,36 Z" />
+      
+      <!-- E -->
+      <path d="M 55,25 L 95,25 L 95,36 L 69,36 L 69,47 L 90,47 L 90,58 L 69,58 L 69,70 L 95,70 L 95,82 L 55,82 Z" />
+      
+      <!-- E -->
+      <path d="M 106,25 L 146,25 L 146,36 L 120,36 L 120,47 L 141,47 L 141,58 L 120,58 L 120,70 L 146,70 L 146,82 L 106,82 Z" />
+      
+      <!-- T -->
+      <path d="M 157,25 L 205,25 L 205,36 L 187,36 L 187,82 L 175,82 L 175,36 L 157,36 Z" />
+      
+      <!-- E -->
+      <path d="M 216,25 L 256,25 L 256,36 L 230,36 L 230,47 L 251,47 L 251,58 L 230,58 L 230,70 L 256,70 L 256,82 L 216,82 Z" />
+      
+      <!-- X (Perfectly Bold) -->
+      <path d="M 267,25 L 283,25 L 296,45 L 309,25 L 325,25 L 305,54 L 327,82 L 311,82 L 296,60 L 281,82 L 265,82 L 287,54 Z" />
+    </g>
+  </g>
+</svg>
