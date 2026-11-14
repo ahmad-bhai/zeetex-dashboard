@@ -1,203 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#14161f">
-<title>Zeetex Trade</title>
+<meta name="theme-color" content="#14161f"><title>Zeetex Trade</title>
 <style>
-/* Base & Variables */
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --bg: #14161f; --pn: #1e2130; --ln: #2a2e42; --tx: #e8ebf4; --mu: #8f95ad;
-  --up: #0faf59; --dn: #ef5d4e; --ac: #2b99ff;
-}
-html, body { height: 100%; overflow: hidden; background: var(--bg); }
-body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color: var(--tx);
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  display: flex; flex-direction: column;
-}
-img { pointer-events: none; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#14161f;--pn:#1e2130;--ln:#2a2e42;--tx:#e8ebf4;--mu:#8f95ad;--up:#0faf59;--dn:#ef5d4e;--ac:#2b99ff}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);display:flex;flex-direction:column}
+img{pointer-events:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
 
 /* Preloader */
-#preloader {
-  position: fixed; inset: 0; background: var(--bg); z-index: 9999;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.4s ease;
-}
-#preloader.hide { opacity: 0; pointer-events: none; }
-#preloader img { width: 50px; height: 50px; margin-bottom: 16px; }
-#preloader span { font-size: 14px; color: var(--mu); font-weight: 500; }
+#preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.4s ease}
+#preloader.hide{opacity:0;pointer-events:none}
+#preloader img{width:50px;height:50px;margin-bottom:16px}
+#preloader span{font-size:14px;color:var(--mu);font-weight:500}
 
 /* Header */
-header { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg); z-index: 10; }
-.logo-desk { display: none; cursor: pointer; height: 24px; }
-.sp { flex: 1; }
-.ib {
-  background: var(--pn); border: 1px solid var(--ln); color: var(--tx);
-  border-radius: 8px; padding: 0 12px; height: 36px; cursor: pointer;
-  font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;
-}
-.ib img { width: 16px; height: 16px; }
-.acc {
-  background: var(--pn); padding: 4px 10px; border-radius: 8px; font-size: 11px;
-  color: var(--mu); line-height: 1.3; border: 1px solid var(--ln); min-width: 80px;
-}
-.acc b { display: block; font-size: 14px; color: var(--tx); }
-.acc i { color: #ff8a00; font-style: normal; font-weight: 700; margin-right: 4px; }
+header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);z-index:10}
+.logo-desk{display:none;cursor:pointer;height:24px}
+.sp{flex:1}
+.ib{background:var(--pn);border:1px solid var(--ln);color:var(--tx);border-radius:8px;padding:0 12px;height:36px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px}
+.ib img{width:16px;height:16px}
+.acc{background:var(--pn);padding:4px 10px;border-radius:8px;font-size:11px;color:var(--mu);line-height:1.3;border:1px solid var(--ln);min-width:80px}
+.acc b{display:block;font-size:14px;color:var(--tx)}
+.acc i{color:#ff8a00;font-style:normal;font-weight:700;margin-right:4px}
 
-/* Top Bar (Pairs & TFs) */
-.bar { display: flex; align-items: center; gap: 8px; padding: 0 12px 8px; overflow-x: auto; scrollbar-width: none; z-index: 10; }
-.bar::-webkit-scrollbar { display: none; }
-.pairbtn {
-  flex: none; display: flex; gap: 6px; align-items: center; background: var(--pn);
-  border: 1px solid var(--ln); color: var(--tx); padding: 0 12px; height: 38px;
-  border-radius: 8px; font-weight: 700; cursor: pointer; white-space: nowrap; font-size: 14px;
-}
-.pairbtn img.flag { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
-.tfs { display: flex; gap: 4px; }
-.tfs button {
-  flex: none; background: var(--pn); border: 1px solid var(--ln); color: var(--mu);
-  min-width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 12px; padding: 0 8px;
-}
-.tfs .on { background: var(--ac); border-color: var(--ac); color: #fff; }
+/* Top Bar */
+.bar{display:flex;align-items:center;gap:8px;padding:0 12px 8px;overflow-x:auto;scrollbar-width:none;z-index:10}
+.bar::-webkit-scrollbar{display:none}
+.pairbtn{flex:none;display:flex;gap:8px;align-items:center;background:var(--pn);border:1px solid var(--ln);color:var(--tx);padding:0 12px;height:38px;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px}
+.pairbtn img.flag{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.tfs{display:flex;gap:4px}
+.tfs button{flex:none;background:var(--pn);border:1px solid var(--ln);color:var(--mu);min-width:38px;height:38px;border-radius:8px;cursor:pointer;font-size:12px;padding:0 8px}
+.tfs .on{background:var(--ac);border-color:var(--ac);color:#fff}
 
 /* Main Layout */
-.body { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-.chart-area { position: relative; flex: 1; min-height: 200px; display: flex; flex-direction: column; background: #14161f; }
-.canvas-wrap { position: relative; flex: 1; min-height: 0; overflow: hidden; }
-canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; display: block; }
-#pending-anim { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; z-index: 5; pointer-events: none; background: rgba(20,22,31,0.7); }
-#pending-anim img { width: 60px; height: 60px; animation: spin 2s linear infinite; }
-@keyframes spin { 100% { transform: rotate(360deg); } }
-.ttl { position: absolute; top: 8px; left: 12px; font-size: 12px; color: var(--mu); pointer-events: none; z-index: 2; background: rgba(20,22,31,0.6); padding: 4px 8px; border-radius: 4px; }
-#na { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; text-align: center; padding: 24px; font-size: 16px; color: var(--mu); background: var(--bg); z-index: 6; }
-#na span { font-weight: bold; color: var(--tx); }
+.body{display:flex;flex-direction:column;flex:1;min-height:0}
+.chart-area{position:relative;flex:1;min-height:200px;display:flex;flex-direction:column}
+.canvas-wrap{position:relative;flex:1;min-height:0;overflow:hidden;background:#14161f}
+canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block}
+.ttl{position:absolute;top:8px;left:12px;font-size:12px;color:var(--mu);pointer-events:none;z-index:2;background:rgba(20,22,31,0.6);padding:4px 8px;border-radius:4px}
+#na{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:16px;color:var(--mu);background:var(--bg);z-index:6}
+#na span{font-weight:bold;color:var(--tx)}
 
 /* Drawing Toolbar */
-.draw-tools { display: flex; gap: 8px; padding: 8px 12px; background: var(--pn); border-top: 1px solid var(--ln); border-bottom: 1px solid var(--ln); z-index: 10; }
-.draw-tools button { background: var(--bg); border: 1px solid var(--ln); border-radius: 6px; padding: 6px 12px; color: var(--mu); display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
-.draw-tools button.active { background: var(--ac); color: #fff; border-color: var(--ac); }
-.draw-tools button img { width: 14px; height: 14px; }
-.draw-tools .sp { flex: 1; }
-.draw-tools button.clear { color: var(--dn); }
+.draw-tools{display:flex;gap:8px;padding:8px 12px;background:var(--pn);border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);z-index:10}
+.draw-tools button{background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:6px 12px;color:var(--mu);display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer}
+.draw-tools button.active{background:var(--ac);color:#fff;border-color:var(--ac)}
+.draw-tools button img{width:14px;height:14px}
+.draw-tools button.clear{color:var(--dn)}
 
-/* Bottom Panel (Trade Controls) */
-.panel { background: var(--pn); padding: 10px 12px; display: flex; flex-direction: column; gap: 10px; z-index: 10; }
-.ph { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; }
-.ph span:last-child { color: #ff8a00; }
-.fldrow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.fld { border: 1px solid var(--ln); border-radius: 8px; padding: 4px 8px; position: relative; background: var(--bg); }
-.fld small { position: absolute; top: -8px; left: 8px; background: var(--pn); padding: 0 4px; color: var(--mu); font-size: 10px; }
-.fld div { display: flex; align-items: center; gap: 6px; min-height: 34px; }
-.fld select, .fld input { flex: 1; min-width: 0; width: 100%; background: none; border: 0; color: var(--tx); font-size: 15px; outline: 0; font-weight: 600; }
-.fld input { text-align: center; }
-.fld select option { background: var(--pn); }
-.fld button { flex: none; width: 28px; height: 28px; border-radius: 6px; border: 0; background: var(--pn); color: var(--tx); cursor: pointer; display: grid; place-items: center; }
-.fld button img { width: 14px; height: 14px; }
-.row { display: flex; justify-content: space-between; font-size: 13px; color: var(--mu); }
-.row b { color: var(--up); }
-.go { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.go button { display: flex; justify-content: center; align-items: center; gap: 8px; border: 0; border-radius: 8px; height: 46px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
-.go .u { background: var(--up); } .go .d { background: var(--dn); }
-.go button img { width: 18px; height: 18px; }
+/* Panel */
+.panel{background:var(--pn);padding:10px 12px;display:flex;flex-direction:column;gap:10px;z-index:10}
+.ph{display:flex;justify-content:space-between;font-weight:700;font-size:15px}
+.ph span:last-child{color:#ff8a00}
+.fldrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fld{border:1px solid var(--ln);border-radius:8px;padding:4px 8px;position:relative;background:var(--bg)}
+.fld small{position:absolute;top:-8px;left:8px;background:var(--pn);padding:0 4px;color:var(--mu);font-size:10px}
+.fld div{display:flex;align-items:center;gap:6px;min-height:34px}
+.fld select,.fld input{flex:1;min-width:0;width:100%;background:none;border:0;color:var(--tx);font-size:15px;outline:0;font-weight:600}
+.fld input{text-align:center}
+.fld select option{background:var(--pn)}
+.fld button{flex:none;width:28px;height:28px;border-radius:6px;border:0;background:var(--pn);color:var(--tx);cursor:pointer;display:grid;place-items:center}
+.fld button img{width:14px;height:14px}
+.row{display:flex;justify-content:space-between;font-size:13px;color:var(--mu)}
+.row b{color:var(--up)}
+.go{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.go button{display:flex;justify-content:center;align-items:center;gap:8px;border:0;border-radius:8px;height:46px;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+.go .u{background:var(--up)} .go .d{background:var(--dn)}
+.go button img{width:18px;height:18px}
 
 /* Modals */
-#modal { position: fixed; inset: 0; background: rgba(10,11,18,0.85); display: none; z-index: 50; padding: 20px; align-items: center; justify-content: center; }
-#modal.on { display: flex; }
-#modal .in { width: 100%; max-width: 400px; background: var(--bg); border-radius: 12px; max-height: 80vh; display: flex; flex-direction: column; border: 1px solid var(--ln); overflow: hidden; }
-.in-header { display: flex; justify-content: space-between; align-items: center; padding: 14px; border-bottom: 1px solid var(--ln); }
-.in-header button { background: none; border: none; cursor: pointer; }
-.in-header button img { width: 18px; height: 18px; }
-#pl { overflow-y: auto; flex: 1; }
-.pi { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--ln); cursor: pointer; transition: background 0.2s; }
-.pi:hover { background: var(--pn); }
-.pi div { display: flex; align-items: center; gap: 10px; }
-.pi img.flag { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
-.pi em { color: #ff8a00; font-style: normal; font-weight: bold; }
+#modal{position:fixed;inset:0;background:rgba(10,11,18,0.85);display:none;z-index:50;padding:20px;align-items:center;justify-content:center}
+#modal.on{display:flex}
+#modal .in{width:100%;max-width:400px;background:var(--bg);border-radius:12px;max-height:80vh;display:flex;flex-direction:column;border:1px solid var(--ln);overflow:hidden}
+.in-header{display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid var(--ln)}
+.in-header button{background:none;border:none;cursor:pointer}
+.in-header button img{width:18px;height:18px}
+#pl{overflow-y:auto;flex:1}
+.pi{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--ln);cursor:pointer;transition:background 0.2s}
+.pi:hover{background:var(--pn)}
+.pi div{display:flex;align-items:center;gap:10px}
+.pi img.flag{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.pi em{color:#ff8a00;font-style:normal;font-weight:bold}
 
 /* Trades List */
-#tr { display: none; background: var(--pn); position: fixed; left: 0; right: 0; bottom: 0; max-height: 60%; overflow: auto; padding: 14px 14px calc(14px + env(safe-area-inset-bottom)); border-radius: 14px 14px 0 0; z-index: 40; box-shadow: 0 -10px 40px #0009; }
-#tr.on { display: block; }
-#tr h5 { color: var(--mu); font-size: 12px; margin: 10px 0 4px; display: flex; justify-content: space-between; }
-.t { display: grid; grid-template-columns: 1fr auto; padding: 10px 0; border-top: 1px solid var(--ln); font-size: 13px; }
-.t small { color: var(--mu); }
-.t .r { text-align: right; font-weight: 700; }
-.w { color: var(--up); } .l { color: var(--dn); } .n { color: var(--mu); }
+#tr{display:none;background:var(--pn);position:fixed;left:0;right:0;bottom:0;max-height:60%;overflow:auto;padding:14px 14px calc(14px + env(safe-area-inset-bottom));border-radius:14px 14px 0 0;z-index:40;box-shadow:0 -10px 40px #0009}
+#tr.on{display:block}
+#tr h5{color:var(--mu);font-size:12px;margin:10px 0 4px;display:flex;justify-content:space-between}
+.t{display:grid;grid-template-columns:1fr auto;padding:10px 0;border-top:1px solid var(--ln);font-size:13px}
+.t small{color:var(--mu)}
+.t .r{text-align:right;font-weight:700}
+.w{color:var(--up)} .l{color:var(--dn)} .n{color:var(--mu)}
 
-/* Desktop Layout */
+/* Desktop */
 @media (min-width: 768px) {
-  .logo-desk { display: block; }
-  .body { display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: minmax(0, 1fr); }
-  .chart-area { height: 100%; }
-  .draw-tools { border-top: none; }
-  .panel { height: 100%; overflow-y: auto; border-left: 1px solid var(--ln); padding: 16px; gap: 16px; }
-  .fldrow { grid-template-columns: 1fr; gap: 16px; }
-  #tb { display: none; }
-  #tr { display: flex; flex-direction: column; position: static; max-height: 300px; padding: 0; box-shadow: none; border-radius: 0; background: transparent; margin-top: 10px; }
-  .go button { height: 52px; font-size: 18px; }
+  .logo-desk{display:block}
+  .body{display:grid;grid-template-columns:minmax(0, 1fr) 320px;grid-template-rows:minmax(0, 1fr)}
+  .chart-area{height:100%}
+  .draw-tools{border-top:none}
+  .panel{height:100%;overflow-y:auto;border-left:1px solid var(--ln);padding:16px;gap:16px}
+  .fldrow{grid-template-columns:1fr;gap:16px}
+  #tb{display:none}
+  #tr{display:flex;flex-direction:column;position:static;max-height:300px;padding:0;box-shadow:none;border-radius:0;background:transparent;margin-top:10px}
+  .go button{height:52px;font-size:18px}
 }
 </style>
 </head>
 <body>
 
-<!-- Preloader -->
 <div id="preloader">
   <img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/loading.svg" alt="Loading">
   <span>Loading...</span>
 </div>
 
-<!-- Header -->
 <header>
   <img src="https://zeetex-dashboard.vercel.app/logo.svg" class="logo-desk" id="logo-btn" style="filter: brightness(0) invert(1);" alt="Logo">
   <div class="sp"></div>
-  <button class="ib" id="tb">Trades <span id="tn">0</span></button>
-  <div class="acc">
-    <i>DEMO</i>Balance<b id="bal">$0.00</b>
-  </div>
+  <button class="ib" id="tb"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/more.svg" style="filter: brightness(0) invert(1);" alt=""> Trades <span id="tn">0</span></button>
+  <div class="acc"><i>DEMO</i>Balance<b id="bal">$0.00</b></div>
   <button class="ib" id="out" title="Logout">
     <img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/left.svg" style="transform: rotate(180deg); filter: brightness(0) invert(1);" alt="Out">
   </button>
 </header>
 
-<!-- Top Bar -->
 <div class="bar">
   <button class="pairbtn" id="pb">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag1">
-    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-pk.svg" class="flag" id="pb-flag2" style="display:none;">
+    <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg" class="flag" id="pb-flag">
     <span id="pb-txt">Loading...</span> ▾
   </button>
   <div class="tfs" id="tfs"></div>
 </div>
 
-<!-- Main Area -->
 <div class="body">
   <div class="chart-area">
     <div class="canvas-wrap">
       <canvas id="cv"></canvas>
       <div class="ttl" id="ttl"></div>
-      <div id="pending-anim"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/load/pending.png" alt="Pending"></div>
       <h2 id="na"></h2>
     </div>
-    <!-- Drawing Toolbar -->
     <div class="draw-tools">
       <button id="tool-pen"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/pencil.svg" style="filter: brightness(0) invert(1);" alt="Pen"> Draw</button>
       <button id="tool-clear" class="clear"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/multiply.svg" style="filter: brightness(0) invert(1);" alt="Clear"> Clear</button>
     </div>
   </div>
 
-  <!-- Side/Bottom Panel -->
   <aside class="panel">
     <div class="ph"><span id="pn">—</span><span id="pp">85%</span></div>
     <div class="fldrow">
-      <div class="fld">
-        <small>Trade time</small>
-        <div><select id="dv"></select></div>
-      </div>
-      <div class="fld">
-        <small>Investment ($)</small>
+      <div class="fld"><small>Trade time</small><div><select id="dv"></select></div></div>
+      <div class="fld"><small>Investment ($)</small>
         <div>
           <button id="am"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/minus.svg" style="filter: brightness(0) invert(1);" alt="-"></button>
           <input id="av" type="number" inputmode="decimal" min="1" value="10">
@@ -207,8 +159,8 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: 
     </div>
     <div class="row"><span>Profit if win</span><b id="po">$0.00</b></div>
     <div class="go">
-      <button class="u" id="up"><img src="https://zeetex-dashboard.vercel.app/imgs/up.svg" style="filter: brightness(0) invert(1);" alt="Up"> UP</button>
-      <button class="d" id="dn"><img src="https://zeetex-dashboard.vercel.app/imgs/down.svg" style="filter: brightness(0) invert(1);" alt="Down"> DOWN</button>
+      <button class="u" id="up"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/up.svg" style="filter: brightness(0) invert(1);" alt="Up"> UP</button>
+      <button class="d" id="dn"><img src="https://zeetex-dashboard.vercel.app/profile/imgs/down.svg" style="filter: brightness(0) invert(1);" alt="Down"> DOWN</button>
     </div>
     <div id="tr">
       <h5>OPEN TRADES</h5><div id="ol"></div>
@@ -217,7 +169,6 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: 
   </aside>
 </div>
 
-<!-- Pair Selector Modal -->
 <div id="modal">
   <div class="in">
     <div class="in-header">
@@ -228,11 +179,10 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: 
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); padding:11px 18px; border-radius:8px; font-weight:700; opacity:0; transition:opacity .3s; pointer-events:none; z-index:100; max-width:92%; text-align:center; color:#fff;"></div>
 
+<script src="chart.js"></script>
 <script>
-// Configuration
 const API = 'https://zeetex-chart.vercel.app';
 const S = JSON.parse(localStorage.getItem('zt_session') || 'null');
 if (!S) location.href = 'sign-in.html';
@@ -250,11 +200,7 @@ const FALLBACK = [
   {name: 'USDCOP-OTC', payout: 85}, {name: 'USDEGP-OTC', payout: 85}
 ];
 
-let pair = localStorage.getItem('zt_pair') || 'USDPKR-OTC';
-let tf = localStorage.getItem('zt_tf') || '1m';
-let di = Number(localStorage.getItem('zt_di') || 4);
-let pairs = [], ctl = null, skew = 0, payout = 85, bal = 0, trades = [], seq = 0, first = true;
-let isDrawing = false;
+let pair = localStorage.getItem('zt_pair') || 'USDPKR-OTC', pairs = [], tf = localStorage.getItem('zt_tf') || '1m', di = Number(localStorage.getItem('zt_di') || 4), ctl = null, skew = 0, payout = 85, bal = 0, trades = [], seq = 0, first = true;
 
 const ch = new CandleChart($('cv'));
 const money = v => '$' + Number(v || 0).toFixed(2);
@@ -263,10 +209,8 @@ const fmtT = s => { s = Math.max(0, s); const h = Math.floor(s/3600), m = Math.f
 document.addEventListener('contextmenu', e => { if(e.target.tagName === 'IMG' || e.target.tagName === 'CANVAS') e.preventDefault(); });
 
 const j = async (p, o) => { 
-  try {
-    const r = await fetch(API + p, o); 
-    return await r.json();
-  } catch(e) { return {status: false, code: 'BAD_RESPONSE'} } 
+  const r = await fetch(API + p, o); 
+  try { return await r.json() } catch(e) { return {status: false, code: 'BAD_RESPONSE'} } 
 };
 const post = (p, b) => j(p, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(b)});
 const logout = () => { localStorage.removeItem('zt_session'); location.href = 'sign-in.html'; };
@@ -276,35 +220,26 @@ function toast(m, c) {
   clearTimeout(t.h); t.h = setTimeout(() => t.style.opacity = 0, 2800); 
 }
 
-// Dynamic backend/frontend flag mapping for any pair automatically
-function getFlagCode(currencyCode) {
-  const map = {
-    'USD': 'us', 'PKR': 'pk', 'INR': 'in', 'BDT': 'bd', 'ARS': 'ar', 
-    'MXN': 'mx', 'BRL': 'br', 'NGN': 'ng', 'NZD': 'nz', 'COP': 'co', 
-    'EGP': 'eg', 'EUR': 'eu', 'GBP': 'gb', 'CAD': 'ca', 'AUD': 'au', 'JPY': 'jp'
-  };
-  return map[currencyCode] || 'us';
+function getFlagCode(name) {
+  const clean = name.replace('-OTC', '');
+  if (clean.length >= 6) {
+    const quote = clean.slice(3, 6).toLowerCase();
+    return quote;
+  }
+  return 'us';
 }
 
-function getPairDisplayInfo(p) {
+function getPairName(p) {
   const clean = p.replace('-OTC', '');
-  const base = clean.slice(0, 3);
-  const quote = clean.slice(3);
-  return {
-    name: `${base}/${quote} (OTC)`,
-    flag1: getFlagCode(base),
-    flag2: getFlagCode(quote)
-  };
+  if(clean.length >= 6) {
+    return clean.slice(0,3) + '/' + clean.slice(3,6) + ' (OTC)';
+  }
+  return p;
 }
 
 function na(msg) { 
-  if (msg) {
-    $('na').style.display = 'flex'; 
-    $('na').innerHTML = `<span>${msg}</span>`; 
-    $('pending-anim').style.display = 'none';
-  } else {
-    $('na').style.display = 'none'; 
-  }
+  if (msg) { $('na').style.display = 'flex'; $('na').innerHTML = `<span>${msg}</span>`; }
+  else { $('na').style.display = 'none'; }
 }
 
 async function loadPairs() {
@@ -314,11 +249,12 @@ async function loadPairs() {
   } catch(e) { pairs = FALLBACK; }
   
   $('pl').innerHTML = pairs.map(p => {
-    const info = getPairDisplayInfo(p.name);
+    const flag = getFlagCode(p.name);
+    const name = getPairName(p.name);
     return `<div class="pi" data-p="${p.name}">
       <div>
-        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${info.flag1}.svg" class="flag" alt="flag" onerror="this.style.display='none'">
-        <b>${info.name}</b>
+        <img src="https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg" class="flag" onerror="this.src='https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-us.svg'" alt="flag">
+        <b>${name}</b>
       </div>
       <span>Profit <em>${p.payout}%</em></span>
     </div>`;
@@ -327,52 +263,42 @@ async function loadPairs() {
 
 async function load() {
   const my = ++seq;
-  $('pending-anim').style.display = 'flex';
-  $('na').style.display = 'none';
-
+  na('');
   try {
     const r = await j(`/api/chart/${pair}?id=${S.id}&tf=${tf}`);
     if (my !== seq) return;
     
     if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
     
-    if (r.status === false || !r.candle || !r.candle.length) {
-      $('pending-anim').style.display = 'none';
-      const pairName = r.pair || getPairDisplayInfo(pair).name;
-      return na(`${pairName} chart is not available at the moment`);
+    if (r.status === false) {
+      const pairName = r.pair || pair;
+      return na(`${getPairName(pairName)} chart is not available at the moment`);
     }
+    if (!r.candle || !r.candle.length) return na(`${getPairName(pair)} chart is not available at the moment`);
     
     na('');
-    $('pending-anim').style.display = 'none';
-    
     ctl = r.control; payout = r.payout; skew = r.serverTime - Date.now(); ch.skew = skew;
     bal = r.stats.balance; $('bal').textContent = money(bal);
     
     if (first) { trades = r.trades || []; first = false; }
     
-    const info = getPairDisplayInfo(pair);
-    $('pb-txt').textContent = info.name;
-    $('pb-flag1').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${info.flag1}.svg`;
-    const f2 = $('pb-flag2');
-    f2.src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${info.flag2}.svg`;
-    f2.style.display = 'inline-block';
+    $('pb-txt').textContent = getPairName(pair);
+    const flag = getFlagCode(pair);
+    $('pb-flag').src = `https://zeetex-dashboard.vercel.app/profile/imgs/flag/flag-${flag}.svg`;
     
-    ch.setData(r.candle, priceAt(ctl, Date.now() + skew), TFS[tf], decOf(ctl ? ctl.price : 1.0));
+    ch.setData(r.candle, priceAt(ctl, Date.now() + skew), TFS[tf], decOf(ctl.price));
     renderMarks();
     list();
     upd();
   } catch(e) {
-    if (my === seq) {
-      $('pending-anim').style.display = 'none';
-      na(`${getPairDisplayInfo(pair).name} chart is not available at the moment`);
-    }
+    if (my === seq) na(`${getPairName(pair)} chart is not available at the moment`);
   }
 }
 
 function select(p) {
   pair = p; localStorage.setItem('zt_pair', p);
-  ctl = null; ch.marks = []; ch.clearDrawings();
-  $('pn').textContent = getPairDisplayInfo(p).name;
+  ctl = null; ch.marks = [];
+  $('pn').textContent = getPairName(p);
   na(''); load();
 }
 
@@ -392,7 +318,7 @@ setInterval(() => {
   if (ctl && ch.C.length) {
     const n = Date.now() + skew, p = priceAt(ctl, n);
     ch.tick(p, n);
-    $('ttl').textContent = getPairDisplayInfo(pair).name + '  ' + p.toFixed(ch.dec);
+    $('ttl').textContent = getPairName(pair) + '  ' + p.toFixed(ch.dec);
   }
 }, 300);
 
@@ -415,7 +341,6 @@ function renderMarks() {
 
 async function trade(d) {
   if (!ctl || $('na').style.display === 'flex') return toast('Chart not available', '#ef5d4e');
-  
   try {
     const r = await post('/api/trade', {userId: S.id, pair, direction: d, amount: +$('av').value, duration: DUR[di]});
     if (['USER_NOT_FOUND', 'USER_BLOCKED'].includes(r.code)) return logout();
@@ -439,9 +364,7 @@ async function settle(t) {
       renderMarks(); list();
       toast(t.result === 'win' ? 'WIN +' + money(t.pnl) : t.result === 'loss' ? 'LOSS −' + money(t.amount) : 'Tie — refunded', 
             t.result === 'win' ? '#0faf59' : t.result === 'loss' ? '#ef5d4e' : '#686f86');
-    } else {
-      setTimeout(() => t.busy = 0, 1500);
-    }
+    } else { setTimeout(() => t.busy = 0, 1500); }
   } catch(e) { setTimeout(() => t.busy = 0, 1500); }
 }
 
@@ -453,7 +376,7 @@ function row(t) {
   const c = t.result === 'win' ? 'w' : t.result === 'loss' ? 'l' : 'n';
   return `<div class="t">
     <div>
-      <b>${getPairDisplayInfo(t.pair).name}</b> <span class="${t.direction === 'buy' ? 'w' : 'l'}">${t.direction === 'buy' ? '↑ UP' : '↓ DOWN'}</span> <small>${dl(t.duration)}</small><br>
+      <b>${getPairName(t.pair)}</b> <span class="${t.direction === 'buy' ? 'w' : 'l'}">${t.direction === 'buy' ? '↑ UP' : '↓ DOWN'}</span> <small>${dl(t.duration)}</small><br>
       <small>${money(t.amount)} · ${Number(t.entryPrice).toFixed(ch.dec)}${o ? '' : ' → ' + Number(t.closePrice).toFixed(ch.dec)}</small>
     </div>
     <div class="r ${o ? '' : c}">
@@ -472,14 +395,12 @@ function list() {
 
 setInterval(() => document.querySelectorAll('[data-e]').forEach(e => e.textContent = fmtT(Math.ceil((+e.dataset.e - Date.now() - skew) / 1000))), 500);
 
-// UI Init
 $('tfs').innerHTML = Object.keys(TFS).map(t => `<button data-t="${t}" class="${t === tf ? 'on' : ''}">${t}</button>`).join('');
 $('dv').innerHTML = DUR.map((d, i) => `<option ${i === di ? 'selected' : ''}>${dl(d)}</option>`).join('');
 
 $('tfs').onclick = e => {
   if (e.target.dataset.t && pair) {
-    tf = e.target.dataset.t;
-    localStorage.setItem('zt_tf', tf);
+    tf = e.target.dataset.t; localStorage.setItem('zt_tf', tf);
     [...$('tfs').children].forEach(b => b.classList.toggle('on', b.dataset.t === tf));
     load();
   }
@@ -496,165 +417,23 @@ $('tb').onclick = () => $('tr').classList.toggle('on');
 $('out').onclick = logout;
 $('logo-btn').onclick = () => { if(pair) load(); };
 
+let drawingActive = false;
 $('tool-pen').onclick = () => {
-  isDrawing = !isDrawing;
-  $('tool-pen').classList.toggle('active', isDrawing);
-  ch.isDrawing = isDrawing;
+  drawingActive = !drawingActive;
+  $('tool-pen').classList.toggle('active', drawingActive);
+  ch.setDrawingMode(drawingActive);
 };
-$('tool-clear').onclick = () => { ch.clearDrawings(); };
+$('tool-clear').onclick = () => ch.clearDrawings();
 
-// Init App Execution
 (async () => {
   setTimeout(async () => {
     $('preloader').classList.add('hide');
     await loadPairs();
     upd();
     list();
-    if (!pairs.some(p => p.name === pair)) {
-      pair = pairs.length ? pairs[0].name : 'USDPKR-OTC';
-    }
     select(pair);
-  }, 1000);
+  }, 800);
 })();
 </script>
-
-<!-- Custom Canvas Charting Engine -->
-<script>
-function priceAt(ctl, t) {
-  if (!ctl) return 1.0;
-  const base = Number(ctl.price) || 1.0;
-  const isUp = ctl.dir !== 'down';
-  const speed = Number(ctl.speed) || 1;
-  const p = base * (1 + (isUp ? 1 : -1) * speed * Math.sin((t - (ctl.since || t)) / 10000) * 0.001);
-  return Math.max(0.00001, p);
-}
-function decOf(p) { return (p && p > 10) ? 2 : 4; }
-
-class CandleChart {
-  constructor(canvas) {
-    this.c = canvas;
-    this.ctx = canvas.getContext('2d');
-    this.C = []; this.dec = 4; this.skew = 0; this.marks = [];
-    this.dpr = window.devicePixelRatio || 1;
-    this.isDrawing = false; this.drawings = []; this.currentDraw = null;
-    this.resize();
-    window.addEventListener('resize', () => this.resize());
-    
-    this.c.addEventListener('pointerdown', this.onPointerDown.bind(this));
-    window.addEventListener('pointermove', this.onPointerMove.bind(this));
-    window.addEventListener('pointerup', this.onPointerUp.bind(this));
-  }
-  resize() {
-    const r = this.c.getBoundingClientRect();
-    this.c.width = r.width * this.dpr;
-    this.c.height = r.height * this.dpr;
-    this.ctx.scale(this.dpr, this.dpr);
-    this.w = r.width; this.h = r.height;
-    this.draw();
-  }
-  setData(C, price, tf, dec) {
-    this.C = C || []; this.price = price || 1.0; this.tf = tf; this.dec = dec || 4;
-    this.draw();
-  }
-  tick(price, time) {
-    this.price = price || this.price;
-    this.now = time;
-    this.draw();
-  }
-  clearDrawings() {
-    this.drawings = []; this.currentDraw = null; this.draw();
-  }
-  onPointerDown(e) {
-    if (!this.isDrawing) return;
-    const r = this.c.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
-    this.currentDraw = [{x, y}, {x, y}];
-    this.draw();
-  }
-  onPointerMove(e) {
-    if (!this.isDrawing || !this.currentDraw) return;
-    const r = this.c.getBoundingClientRect();
-    this.currentDraw[1] = {x: e.clientX - r.left, y: e.clientY - r.top};
-    this.draw();
-  }
-  onPointerUp() {
-    if (this.currentDraw) {
-      this.drawings.push(this.currentDraw);
-      this.currentDraw = null;
-      this.draw();
-    }
-  }
-  draw() {
-    const {ctx, w, h, C} = this;
-    if (!w || !h) return;
-    ctx.clearRect(0, 0, w, h);
-    
-    // Draw Grid
-    ctx.strokeStyle = '#2a2e42'; ctx.lineWidth = 1;
-    for(let i=0; i<w; i+=w/6) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
-    for(let i=0; i<h; i+=h/6) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
-
-    if (!C.length || !this.pressSafePrice()) return;
-
-    let min = Infinity, max = -Infinity;
-    C.forEach(c => { min = Math.min(min, c.low); max = Math.max(max, c.high); });
-    const currentP = this.pressSafePrice();
-    min = Math.min(min, currentP); max = Math.max(max, currentP);
-    const pad = (max - min) * 0.1 || 0.001;
-    min -= pad; max += pad;
-    
-    const scaleY = v => h - ((v - min) / (max - min || 1)) * (h - 40) - 20;
-    const scaleX = i => (i / (C.length || 1)) * (w - 60) + 30;
-
-    const cw = Math.max(2, (w / (C.length || 1)) * 0.6);
-    C.forEach((c, i) => {
-      const x = scaleX(i);
-      const isUp = c.close >= c.open;
-      ctx.fillStyle = isUp ? '#0faf59' : '#ef5d4e';
-      ctx.strokeStyle = isUp ? '#0faf59' : '#ef5d4e';
-      
-      ctx.beginPath(); ctx.moveTo(x, scaleY(c.high)); ctx.lineTo(x, scaleY(c.low)); ctx.stroke();
-      const yOpen = scaleY(c.open), yClose = scaleY(c.close);
-      ctx.fillRect(x - cw/2, Math.min(yOpen, yClose), cw, Math.max(1, Math.abs(yOpen - yClose)));
-    });
-
-    const cy = scaleY(currentP);
-    ctx.strokeStyle = '#2b99ff'; ctx.setLineDash([5, 5]);
-    ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
-    ctx.setLineDash([]);
-    
-    ctx.fillStyle = '#2b99ff';
-    ctx.fillRect(w - 60, cy - 10, 60, 20);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(Number(currentP).toFixed(this.dec), w - 30, cy);
-
-    // Crosshairs Animation
-    const time = Date.now() / 1000;
-    const crossOpacity = 0.3 + Math.sin(time * 2) * 0.15;
-    ctx.strokeStyle = `rgba(143, 149, 173, ${crossOpacity})`;
-    ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
-    
-    this.marks.forEach(m => {
-      const y = scaleY(m.price);
-      ctx.fillStyle = m.dir === 'buy' ? '#0faf59' : '#ef5d4e';
-      ctx.beginPath(); ctx.arc(w - 30, y, 4, 0, Math.PI * 2); ctx.fill();
-    });
-
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
-    const renderLine = (line) => {
-      ctx.beginPath(); ctx.moveTo(line[0].x, line[0].y); ctx.lineTo(line[1].x, line[1].y); ctx.stroke();
-    };
-    this.drawings.forEach(renderLine);
-    if (this.currentDraw) renderLine(this.currentDraw);
-  }
-  pressSafePrice() {
-    return Number(this.price) || (this.C.length ? this.C[this.C.length - 1].close : 1.0);
-  }
-}
-</script>
-
 </body>
 </html>
