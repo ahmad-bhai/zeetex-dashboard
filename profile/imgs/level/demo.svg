@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Graduation Cap Top -->
+  <polygon points="12 3 22 8 12 13 2 8 12 3"></polygon>
+  
+  <!-- Cap Base and Tassel -->
+  <path d="M6 10.5V15c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"></path>
+  
+  <!-- Tassel String -->
+  <line x1="22" y1="8" x2="22" y2="15"></line>
+</svg>
