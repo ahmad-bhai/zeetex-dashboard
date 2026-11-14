@@ -72,6 +72,7 @@ const DUR=[
   {s:60,l:'1m'},{s:120,l:'2m'},{s:300,l:'5m'},{s:600,l:'10m'},
   {s:900,l:'15m'},{s:1800,l:'30m'},{s:3600,l:'1h'},{s:7200,l:'2h'},{s:14400,l:'4h'}
 ];
+const FALLBACK_PAIRS=[{name:'USDPKR-OTC',payout:85},{name:'USDINR-OTC',payout:85},{name:'USDBDT-OTC',payout:85}];
 const TFS={'5s':5,'10s':10,'15s':15,'30s':30,'1m':60,'2m':120,'3m':180,'5m':300,'10m':600,'15m':900,'30m':1800,'1h':3600,'4h':14400,'1d':86400};
 const TF_KEYS=Object.keys(TFS);
 let pair='',pairs=[],tf='1m',di=4,ctl=null,skew=0,payout=85,bal=0,trades=[],seq=0;
@@ -83,7 +84,7 @@ function toast(m,c){const t=$('toast');t.textContent=m;t.style.background=c;t.st
 const nm=p=>p.replace('-OTC','').replace(/^(...)(...)$/,'$1/$2')+' (OTC)';
 function na(msg){$('na').style.display=msg?'flex':'none';$('na').textContent=msg||''}
 function drawPairs(){$('pl').innerHTML=pairs.map(p=>`<div class="pi" data-p="${p.name}"><b>${nm(p.name)}</b><span>Profit <em>${p.payout}%</em></span></div>`).join('')}
-async function loadPairs(){try{const r=await j('/api/live');pairs=r.status&&r.pairs&&r.pairs.length?r.pairs:[]}catch(e){}drawPairs()}
+async function loadPairs(){try{const r=await j('/api/live');pairs=r.status&&r.pairs&&r.pairs.length?r.pairs:FALLBACK_PAIRS}catch(e){pairs=FALLBACK_PAIRS}drawPairs()}
 async function select(p){
  pair=p;ctl=null;const my=++seq;$('pb').textContent=nm(p)+' ▾';$('pn').textContent=nm(p);ch.marks=[];na('');
  try{
@@ -124,11 +125,11 @@ function list(){const o=trades.filter(t=>t.status==='open'),c=trades.filter(t=>t
 setInterval(()=>document.querySelectorAll('[data-e]').forEach(e=>e.textContent=fmtT(Math.max(0,Math.ceil((+e.dataset.e-Date.now()-skew)/1000)))),500);
 
 $('tfs').innerHTML=TF_KEYS.map(t=>`<button data-t="${t}" class="${t===tf?'on':''}">${t}</button>`).join('');
-$('dv').innerHTML=DUR.map((d,i)==`<option value="${i}" ${i===di?'selected':''}>${d.l}</option>`).join('');
+$('dv').innerHTML=DUR.map((d,i)=>`<option value="${i}" ${i===di?'selected':''}>${d.l}</option>`).join('');
 
-$('tfs').onclick=e=>{if(e.target.dataset.t&&pair){tf=e.target.dataset.t;[...$('tfs').children].forEach(b=>b.classList.toggle('on',b.dataset.t===tf));select(pair)}};
+$('tfs').onclick=e=>{if(e.target.dataset.t&&pair){tf=e.target.dataset.t;[...$('tfs').children].forEach(b=>b.classList.toggle('on',b.dataset.t==tf));select(pair)}};
 $('pb').onclick=()=>$('modal').classList.add('on');$('mc').onclick=()=>$('modal').classList.remove('on');
 $('pl').onclick=e=>{const p=e.target.closest('.pi');if(p){$('modal').classList.remove('on');select(p.dataset.p)}};
 $('tb').onclick=()=>$('tr').classList.toggle('on');$('out').onclick=logout;
-(async()=>{await loadPairs();upd();list();select((pairs.find(p=>p.name==='USDPKR-OTC')||pairs[0]||{name:'USDPKR-OTC'}).name)})();
+(async()=>{await loadPairs();upd();list();select((pairs[0]||{name:'USDPKR-OTC'}).name)})();
 </script></body></html>
